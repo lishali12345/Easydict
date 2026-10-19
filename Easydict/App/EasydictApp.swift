@@ -84,13 +84,9 @@ struct EasydictApp: App {
                         }
                     }
             } icon: {
-                Image(menuBarIcon.rawValue)
+                menuBarImage
                     .resizable()
-                    #if DEBUG
-                    .renderingMode(.original)
-                    #else
                     .renderingMode(.template)
-                    #endif
                     .scaledToFit()
             }
             .help("Easydict 🍃")
@@ -141,6 +137,31 @@ struct EasydictApp: App {
     @StateObject private var languageState = LanguageState()
 
     @Default(.selectedMenuBarIcon) private var menuBarIcon
+
+    private var menuBarImage: Image {
+        #if DEBUG
+        let icon = NSImage(named: menuBarIcon.rawValue)
+        let marker = NSAttributedString(
+            string: "DEBUG",
+            attributes: [
+                .font: NSFont.monospacedSystemFont(ofSize: 9, weight: .bold),
+                .foregroundColor: NSColor.black,
+            ]
+        )
+        let markerSize = marker.size()
+        let image = NSImage(
+            size: NSSize(width: 22 + ceil(markerSize.width), height: 18), flipped: false
+        ) { _ in
+            icon?.draw(in: NSRect(x: 0, y: 0, width: 18, height: 18))
+            marker.draw(at: NSPoint(x: 22, y: (18 - markerSize.height) / 2))
+            return true
+        }
+        image.isTemplate = true
+        return Image(nsImage: image)
+        #else
+        return Image(menuBarIcon.rawValue)
+        #endif
+    }
 
     @MainActor
     private static func performPostLaunchTasks() {
