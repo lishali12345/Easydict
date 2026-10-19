@@ -18,12 +18,19 @@ class GlobalContext: NSObject {
         self.updaterHelper = SPUUpdaterHelper()
         self.userDriverHelper = SPUUserDriverHelper()
         self.updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
+            startingUpdater: !BuildConfig.isDebug,
             updaterDelegate: updaterHelper,
             userDriverDelegate: userDriverHelper
         )
 
         super.init()
+
+        if BuildConfig.isDebug {
+            // Override persisted preferences before scheduling any update checks.
+            updaterController.updater.automaticallyChecksForUpdates = false
+            updaterController.updater.automaticallyDownloadsUpdates = false
+            updaterController.startUpdater()
+        }
 
         reloadLLMServicesSubscribers()
     }

@@ -153,6 +153,7 @@ struct GeneralTab: View {
                 Toggle(isOn: $checkUpdaterViewModel.autoChecksForUpdates) {
                     Text("auto_check_update ")
                 }
+                .disabled(BuildConfig.isDebug)
 
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
