@@ -1,3 +1,5 @@
-DEVELOPMENT_TEAM = 45Z6V4YD5U
+DEVELOPMENT_TEAM =
 CODE_SIGN_IDENTITY = Apple Development
-CODE_SIGN_STYLE = Automatic
+CODE_SIGN_STYLE = Manual
+
+#include? "ME-Dict.local.xcconfig"

@@ -50,6 +50,17 @@
   同时运行；构建与 Archive 不受此限制。
 ## 常用命令
 
+### ME-Dict 本机更新
+
+此 fork 的日用版使用 `ME-Dict` scheme 的 Release 配置。更新本机安装时运行
+`python3 scripts/update-medict.py`，使用 Git 忽略的 `ME-Dict.local.xcconfig` 中固定的
+Apple 签名身份；不要再用 `CODE_SIGN_IDENTITY=-` 构建并覆盖日用版。
+脚本校验新包满足已安装包的 designated requirement，防止更新导致辅助功能授权失效。
+首次从 ad hoc 迁移才使用 `--migrate-from-adhoc`。
+配置方法和验证边界见[本地开发说明](../user-docs/zh/ME-Dict-local-development.md)。
+
+### 通用构建与测试
+
 ```bash
 # 每个 checkout 一个 agent 专用 DerivedData，与 Xcode 默认目录互不相交
 set -o pipefail
