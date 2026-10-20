@@ -271,6 +271,7 @@ def main():
             "xcodebuild", "build", "-workspace", "Easydict.xcworkspace",
             "-scheme", "ME-Dict", "-configuration", "Release",
             "-destination", "platform=macOS,arch=arm64",
+            "ONLY_ACTIVE_ARCH=YES",
             "-derivedDataPath", str(data),
             "-onlyUsePackageVersionsFromResolvedFile", "-disableAutomaticPackageResolution",
             "-skipPackageUpdates", f"DEVELOPMENT_TEAM={team}",

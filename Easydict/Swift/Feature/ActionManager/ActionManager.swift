@@ -156,7 +156,7 @@ class ActionManager: NSObject {
             } else {
                 let target = type == .polish ? source
                     : (source == .simplifiedChinese ? .english : model.queryTargetLanguage)
-                let service: StreamService = type == .polish ? PolishingService() : BuiltInAIService()
+                let service: StreamService = type == .polish ? PolishingService() : OpenAIService()
                 services.append(service)
                 do {
                     let result = try await completedText(queryText, from: source, to: target, service: service)
@@ -165,7 +165,7 @@ class ActionManager: NSObject {
                 } catch {
                     guard isCurrent(identifier) else { return }
                     let preview = makePreview(languages: [target], context: context, identifier: identifier)
-                    preview.fail(target, error: error)
+                    preview.fail(target, error: serviceError(error, from: service))
                     preview.show()
                 }
             }
@@ -188,7 +188,7 @@ class ActionManager: NSObject {
 
         await withTaskGroup(of: Void.self) { group in
             for target in targets {
-                let service = BuiltInAIService()
+                let service = OpenAIService()
                 services.append(service)
                 group.addTask { @MainActor in
                     do {
@@ -197,7 +197,7 @@ class ActionManager: NSObject {
                         preview.complete(target, text: result)
                     } catch {
                         guard self.isCurrent(identifier) else { return }
-                        preview.fail(target, error: error)
+                        preview.fail(target, error: self.serviceError(error, from: service))
                     }
                 }
             }
@@ -218,6 +218,14 @@ class ActionManager: NSObject {
         if prehandled, let error = result.error { throw error }
         try Task.checkCancellation()
 
+        // Custom prompt variables must use this request's languages, not the query window defaults.
+        service.queryModel.userSourceLanguage = from
+        service.queryModel.userTargetLanguage = to
+        logInfo(
+            "Replacement request: service=\(service.serviceType().rawValue), model=\(service.model), "
+                + "from=\(from.rawValue), to=\(to.rawValue)"
+        )
+
         var output = ""
         for try await chunk in service.contentStreamTranslate(text, from: from, to: to) {
             try Task.checkCancellation()
@@ -228,7 +236,19 @@ class ActionManager: NSObject {
         guard !finalText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw ReplacementError.emptyResult
         }
+        logInfo(
+            "Replacement completed: service=\(service.serviceType().rawValue), model=\(service.model), "
+                + "to=\(to.rawValue), characters=\(finalText.count)"
+        )
         return finalText
+    }
+
+    private func serviceError(_ error: Error, from service: StreamService) -> QueryError {
+        QueryError(
+            type: .api,
+            message: "\(service.name()) (\(service.model))",
+            errorDataMessage: error.localizedDescription
+        )
     }
 
     private func replaceDirectly(

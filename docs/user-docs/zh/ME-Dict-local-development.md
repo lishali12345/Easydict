@@ -39,7 +39,8 @@ ME-Dict。若开关无效，移除旧条目后重新添加 `/Applications/ME-Dic
 python3 scripts/update-medict.py
 ```
 
-脚本在独立 DerivedData 中构建 Release，验证证书、团队、Bundle ID、签名及关闭自动更新的配置。
+脚本在独立 DerivedData 中增量构建本机 arm64 的 Release，不额外编译 Intel 版本。
+保留固定签名，验证证书、团队、Bundle ID、签名及关闭自动更新的配置。
 安装前要求新包满足已安装包的 designated requirement；检查失败会停止，不会退回 ad hoc。
 安装仅停止并替换 ME-Dict，失败时恢复旧包，同时核对官方 Easydict 文件未变。
 
