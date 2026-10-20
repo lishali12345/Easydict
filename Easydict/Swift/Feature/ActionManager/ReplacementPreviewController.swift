@@ -129,6 +129,7 @@ final class ReplacementPreviewController: NSObject, ObservableObject, NSWindowDe
     }
 
     func copy(_ text: String) {
+        guard window?.isKeyWindow == true, !isReplacing else { return }
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
         notice = NSLocalizedString("replacement.preview.copied", comment: "")
@@ -282,24 +283,36 @@ private struct ReplacementPreviewView: View {
                         controller.choose(text)
                     } label: {
                         HStack(spacing: 6) {
-                            Text("replacement.preview.replace")
+                            Image(systemSymbol: .arrowLeftArrowRight)
                             if index < 9 {
                                 Text(verbatim: "⌃\(index + 1)")
                                     .foregroundStyle(.secondary)
                             }
                         }
+                        .frame(height: 22)
+                        .padding(.horizontal, 4)
                     }
-                    .controlSize(.small)
-                    .keyboardShortcut(shortcut(for: index))
+                    .buttonStyle(.borderless)
+                    .keyboardShortcut(shortcut(for: index, modifiers: .control))
+                    .accessibilityLabel(Text("replacement.preview.replace"))
+                    .help("replacement.preview.replace")
                     .disabled(!controller.canReplace || controller.isReplacing)
                     Spacer(minLength: 8)
                     Button {
                         controller.copy(text)
                     } label: {
-                        Image(systemSymbol: .docOnDoc)
-                            .frame(width: 24, height: 22)
+                        HStack(spacing: 6) {
+                            Image(systemSymbol: .docOnDoc)
+                            if index < 9 {
+                                Text(verbatim: "⌘\(index + 1)")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .frame(height: 22)
+                        .padding(.horizontal, 4)
                     }
                     .buttonStyle(.borderless)
+                    .keyboardShortcut(shortcut(for: index, modifiers: .command))
                     .accessibilityLabel(Text("replacement.preview.copy"))
                     .help("replacement.preview.copy")
                     .disabled(controller.isReplacing)
@@ -327,8 +340,8 @@ private struct ReplacementPreviewView: View {
         .padding(.top, 6)
     }
 
-    private func shortcut(for index: Int) -> KeyboardShortcut? {
+    private func shortcut(for index: Int, modifiers: SwiftUI.EventModifiers) -> KeyboardShortcut? {
         guard index < 9 else { return nil }
-        return KeyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: .control)
+        return KeyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: modifiers)
     }
 }
