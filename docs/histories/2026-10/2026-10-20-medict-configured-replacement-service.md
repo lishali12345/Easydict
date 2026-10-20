@@ -1,6 +1,6 @@
 ## 2026-10-20 | 任务：替换流程使用已配置的 OpenAI 翻译服务
 
-**Links:** [执行计划](../../exec-plans/active/2026-10-20-medict-configured-replacement-service.md)
+**Links:** [执行计划](../../exec-plans/completed/2026-10/2026-10-20-medict-configured-replacement-service.md)
 
 ### 执行上下文
 
@@ -47,17 +47,26 @@
 - 安装后运行时只读 `AXIsProcessTrusted()` 为 true，无需再次授权。
 - 本机更新脚本增量 review 无 finding，Python 源码 SHA256 为
   `5b5cc774c8aaff206195e8e78224603f00a6f1d40ad220c7191f1dd877c44ad3`。
-- 真实替换：已准备独立 TextEdit 中文样例；因自动化工具无法可靠发送全局快捷键，
-  待用户操作后与应用日志及本机路由记录交叉核验。
+- 真实替换：用户实际按键确认中文转英文、四语预览和 Control+1 替换均成功。
+- 21:36:42 至 21:36:59（UTC+8），应用日志记录中文到英文及英文到印尼语、马来语、
+  菲律宾语、越南语的请求和完成事件。对照安装后基线，路由日志新增 5 个 ME-Dict 请求，
+  全部使用 `group/translate`，均为 HTTP 200 且完成；成功尝试与 usage 记录相符，
+  实际提供方为 `codex`、模型为 `gpt-6-luna`，未发生回退。
+- 请求 ID：`1792483087905`、`1792483087907`、`1792483087906`、
+  `1792483087909`、`1792483087908`。
+- TextEdit「Untitled 2」回读为
+  `Halo, kami telah menerima masukan Anda dan akan menindaklanjutinya sesegera mungkin.`，
+  确认 Control+1 将印尼语实际写回原输入框。
+- 实现已本地提交为 `21b1c5ef`，未推送；本次仅补齐验收记录并归档计划。
 
 ### 受影响文件
 
 - `Easydict/Swift/Feature/ActionManager/ActionManager.swift`
 - `scripts/update-medict.py`
 - `docs/user-docs/zh/ME-Dict-local-development.md`
-- `docs/exec-plans/active/2026-10-20-medict-configured-replacement-service.md`
+- `docs/exec-plans/completed/2026-10/2026-10-20-medict-configured-replacement-service.md`
 - `docs/histories/2026-10/2026-10-20-medict-configured-replacement-service.md`
 
 ### 后续事项
 
-- 安装后结合应用日志、路由记录及原输入框回读完成验收。
+- None；本任务的安装、路由和实际写回验收均已完成。

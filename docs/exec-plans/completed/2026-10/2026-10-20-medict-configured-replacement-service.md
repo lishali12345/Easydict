@@ -1,6 +1,6 @@
 # 替换流程使用已配置的翻译服务
 
-- 状态：active
+- 状态：completed
 - 创建日期：2026-10-20
 - 负责人：/root
 - 关联 Issue/PR：None
@@ -51,8 +51,8 @@
 - [x] 确认硬编码内置服务与当前配置不一致。
 - [x] 修改路由及失败来源。
 - [x] 测试、构建与审查。
-- [ ] 安装、权限与实际请求核验。
-- [ ] 记录和提交。
+- [x] 安装、权限与实际请求核验。
+- [x] 记录和提交（实现提交 `21b1c5ef`，本次补齐验收记录）。
 
 ## 验证
 
@@ -66,7 +66,13 @@
   不以普通翻译查询成功代替替换流程验收。
 - 本机 arm64 Release 构建通过，`lipo -archs` 为 `arm64`，固定团队签名检查通过。
 - 安装后应用包与产物摘要一致；官方 Easydict 318 个条目摘要不变。
-- 安装后 `AXIsProcessTrusted()` 为 true；实际快捷键验收等待用户按键。
+- 安装后 `AXIsProcessTrusted()` 为 true，无需再次授权。
+- 用户确认中文转英文、四语预览、Control+1 替换均成功。
+- 21:36:42 至 21:36:59（UTC+8）的应用日志记录中文到英文及英文到四个目标语言均完成；
+  对照安装后基线新增的 5 个路由请求全部为 `group/translate`、HTTP 200。
+  成功尝试及 usage 记录确认实际提供方为 `codex`、模型为 `gpt-6-luna`，无回退。
+- TextEdit 原输入框回读为印尼语：
+  `Halo, kami telah menerima masukan Anda dan akan menindaklanjutinya sesegera mungkin.`
 
 ## 完成条件
 
