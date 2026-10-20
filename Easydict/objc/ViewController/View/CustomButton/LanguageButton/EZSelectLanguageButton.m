@@ -31,6 +31,10 @@ DefineMethodMMMake_m(EZSelectLanguageButton);
         self.title = @"";
         [self setupMenu];
         self.autoSelectedLanguage = EZLanguageAuto;
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                              selector:@selector(enabledLanguagesDidChange:)
+                                                  name:LanguagePreferences.didChangeNotificationName
+                                                object:nil];
         
         mm_weakify(self)
         [self setClickBlock:^(EZButton *_Nonnull button) {
@@ -111,7 +115,7 @@ DefineMethodMMMake_m(EZSelectLanguageButton);
 
 - (void)setupMenu {
     EZLanguageManager *languageManager = [EZLanguageManager shared];
-    NSArray *allLanguages = [languageManager allLanguages];
+    NSArray *allLanguages = [@[ EZLanguageAuto ] arrayByAddingObjectsFromArray:LanguagePreferences.enabledLanguages];
     self.languageDict = [[MMOrderedDictionary alloc] init];
     for (EZLanguage language in allLanguages) {
         NSString *languageName = [languageManager showingLanguageName:language];
@@ -143,6 +147,13 @@ DefineMethodMMMake_m(EZSelectLanguageButton);
     [self updateLanguageMenuItem:self.selectedLanguage state:NSControlStateValueOn];
 }
 
+- (void)enabledLanguagesDidChange:(NSNotification *)notification {
+    [self setupMenu];
+    if (![self.languageDict.allKeys containsObject:self.selectedLanguage]) {
+        self.selectedLanguage = EZLanguageAuto;
+    }
+}
+
 - (void)clickItem:(NSMenuItem *)item {
     EZLanguage selectedLanguage = self.languageDict.sortedKeys[item.tag];
     self.selectedLanguage = selectedLanguage;
@@ -162,7 +173,7 @@ DefineMethodMMMake_m(EZSelectLanguageButton);
     
     _selectedLanguage = selectedLanguage;
     
-    if ([self.languageDict.allKeys containsObject:selectedLanguage]) {
+    if ([[EZLanguageManager.shared allLanguages] containsObject:selectedLanguage]) {
         EZLanguageManager *languageManager = [EZLanguageManager shared];
         
         NSString *languageName = [languageManager showingLanguageName:selectedLanguage];

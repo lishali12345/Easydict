@@ -17,13 +17,15 @@ import Foundation
 final class AppConstants: NSObject {
     // MARK: - App
 
-    static let bundleID = "com.izual.Easydict"
-    static let debugBundleID = "com.izual.Easydict-debug"
+    static let bundleID = "com.helihua.medict"
+    static let debugBundleID = "com.helihua.medict.debug"
+    static let displayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+        ?? "ME-Dict"
 
     // MARK: - Repository
 
     /// Repository full name, eg. tisfeng/Easydict
-    static let repoName = "tisfeng/Easydict"
+    static let repoName = "lishali12345/Easydict"
     static let repoURL = URL(string: "https://github.com/\(repoName)")!
     static let releasesURL = repoURL.appending(path: "releases")
     static let issuesURL = repoURL.appending(path: "issues")

@@ -9,7 +9,6 @@
 import Defaults
 import SettingsAccess
 import SFSafeSymbols
-import Sparkle
 import SwiftUI
 import ZipArchive
 
@@ -54,15 +53,11 @@ struct MenuItemView: View {
             Divider()
 
             settingItem.keyboardShortcut(.init(","))
-            checkUpdateItem
             helpItem
 
             Divider()
 
             quitItem.keyboardShortcut(.init("q"))
-        }
-        .task(id: includeBetaUpdates) {
-            latestVersion = await GitHubReleaseFetcher.latestVersion(includePrerelease: includeBetaUpdates)
         }
     }
 
@@ -74,27 +69,17 @@ struct MenuItemView: View {
 
     // MARK: Private
 
-    @ObservedObject private var store = MenuItemStore()
-
     @State private var currentVersion =
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-
-    @State private var latestVersion: String?
 
     @Environment(\.openURL) private var openURL
 
     @Default(.showOCRMenuItems) private var showOCRMenuItems
     @Default(.mouseSelectTranslateWindowType) private var mouseSelectTranslateWindowType
     @Default(.shortcutSelectTranslateWindowType) private var shortcutSelectTranslateWindowType
-    @Default(.includeBetaUpdates) private var includeBetaUpdates
 
     private var versionString: String {
-        let defaultLabel = "Easydict  \(currentVersion)"
-        if let latestVersion, GitHubReleaseFetcher.isNewer(latestVersion, than: currentVersion) {
-            return defaultLabel + "  (✨\(latestVersion) )"
-        } else {
-            return defaultLabel
-        }
+        "\(AppConstants.displayName)  \(currentVersion)"
     }
 
     @ViewBuilder private var screenshotItem: some View {
@@ -142,7 +127,7 @@ struct MenuItemView: View {
     /// Version item
     @ViewBuilder private var versionItem: some View {
         Button(versionString) {
-            openURL(AppConstants.releasesURL)
+            HostWindowManager.shared.showAboutWindow()
         }
     }
 
@@ -169,16 +154,6 @@ struct MenuItemView: View {
                 )
             }
         }
-    }
-
-    /// Check Updates item
-    @ViewBuilder private var checkUpdateItem: some View {
-        Button("check_updates") {
-            logInfo("Check Updates")
-            NSApp.activateApp()
-            MyConfiguration.shared.updater.checkForUpdates()
-        }
-        .disabled(!store.canCheckForUpdates)
     }
 
     /// Quit item
@@ -220,7 +195,7 @@ struct MenuItemView: View {
         let downloadDirectory = FileManager.default.urls(
             for: .downloadsDirectory, in: .userDomainMask
         )[0]
-        let zipPath = downloadDirectory.appendingPathComponent("Easydict log \(dataString).zip")
+        let zipPath = downloadDirectory.appendingPathComponent("\(AppConstants.displayName) log \(dataString).zip")
             .path(percentEncoded: false)
         let success = SSZipArchive.createZipFile(
             atPath: zipPath,
@@ -287,22 +262,6 @@ private struct MenuItemBuilder: View {
             }
         }
     }
-}
-
-// MARK: - MenuItemStore
-
-final class MenuItemStore: ObservableObject {
-    // MARK: Lifecycle
-
-    init() {
-        MyConfiguration.shared.updater
-            .publisher(for: \.canCheckForUpdates)
-            .assign(to: &$canCheckForUpdates)
-    }
-
-    // MARK: Internal
-
-    @Published var canCheckForUpdates = false
 }
 
 #Preview {

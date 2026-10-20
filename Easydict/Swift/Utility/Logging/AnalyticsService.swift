@@ -6,58 +6,22 @@
 //  Copyright © 2025 izual. All rights reserved.
 //
 
-import FirebaseAnalytics
-import FirebaseCore
 import Foundation
-import Sentry
 
 /// Provides analytics and crash logging utilities.
 @objc(EZAnalyticsService)
 @objcMembers
 final class AnalyticsService: NSObject {
-    // MARK: Internal
-
-    /// Configures crash logging services in non-debug builds.
+    /// Keeps the upstream API available without initializing remote telemetry in ME-Dict.
     @objc(setupCrashLogService)
-    static func setupCrashService() {
-        #if !DEBUG
-        configureFirebaseIfNeeded()
-        SentrySDK.start { options in
-            options.dsn = SecretKeyManager.keyValues["sentryDSN"]
-            options.debug = true
-            options.tracesSampleRate = NSNumber(value: 0.1)
-            options.swiftAsyncStacktraces = true
-        }
-        #endif
-    }
+    static func setupCrashService() {}
 
-    /// Enables or disables crash logging, and always disables it in debug builds.
-    static func setCrashEnabled(_ enabled: Bool) {
-        #if DEBUG
-        SentrySDK.close()
-        #else
-        if enabled {
-            setupCrashService()
-        } else {
-            SentrySDK.close()
-        }
-        #endif
-    }
+    /// Remote crash reporting remains disabled regardless of legacy preferences.
+    static func setCrashEnabled(_ enabled: Bool) {}
 
-    /// Logs an analytics event with the given name and parameters.
-    ///
-    /// - Note: Event names must contain only letters, numbers, or underscores.
-    /// - Parameters should use string keys and values that are compatible with analytics.
+    /// Preserves call-site compatibility while disabling upstream analytics collection.
     @objc(logEventWithName:parameters:)
-    static func logEvent(withName name: String, parameters: [String: Any]?) {
-        guard MyConfiguration.shared.allowAnalytics else {
-            return
-        }
-
-        #if !DEBUG
-        Analytics.logEvent(name, parameters: parameters)
-        #endif
-    }
+    static func logEvent(withName name: String, parameters: [String: Any]?) {}
 
     /// Logs window appearance events.
     @objc(logWindowAppear:)
@@ -108,18 +72,5 @@ final class AnalyticsService: NSObject {
             "system_version": version,
         ]
         logEvent(withName: "app_info", parameters: parameters)
-    }
-
-    // MARK: Private
-
-    private static let firebaseConfigurationToken: () = {
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
-    }()
-
-    /// Ensures Firebase is configured only once.
-    private static func configureFirebaseIfNeeded() {
-        _ = firebaseConfigurationToken
     }
 }

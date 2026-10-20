@@ -9,7 +9,6 @@
 import Combine
 import Defaults
 import SettingsAccess
-import Sparkle
 import SwiftUI
 
 // MARK: - EasydictCmpatibilityEntry
@@ -70,7 +69,7 @@ struct EasydictApp: App {
                 .environment(\.locale, .init(identifier: I18nHelper.shared.localizeCode))
         } label: {
             Label {
-                Text("Easydict")
+                Text(verbatim: AppConstants.displayName)
                     .openSettingsAccess() // trick way for open setting
                     .onReceive(
                         NotificationCenter.default.publisher(
@@ -89,7 +88,7 @@ struct EasydictApp: App {
                     .renderingMode(.template)
                     .scaledToFit()
             }
-            .help("Easydict 🍃")
+            .help(AppConstants.displayName)
         }
         .menuBarExtraStyle(.menu)
         .commands {
@@ -139,10 +138,9 @@ struct EasydictApp: App {
     @Default(.selectedMenuBarIcon) private var menuBarIcon
 
     private var menuBarImage: Image {
-        #if DEBUG
         let icon = NSImage(named: menuBarIcon.rawValue)
         let marker = NSAttributedString(
-            string: "DEBUG",
+            string: BuildConfig.isDebug ? "ME DEBUG" : "ME",
             attributes: [
                 .font: NSFont.monospacedSystemFont(ofSize: 9, weight: .bold),
                 .foregroundColor: NSColor.black,
@@ -158,9 +156,6 @@ struct EasydictApp: App {
         }
         image.isTemplate = true
         return Image(nsImage: image)
-        #else
-        return Image(menuBarIcon.rawValue)
-        #endif
     }
 
     @MainActor

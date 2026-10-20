@@ -402,7 +402,6 @@
 		03D0F0112F00000100ABCDEF /* QueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0012F00000100ABCDEF /* QueryService.swift */; };
 		03D0F0122F00000100ABCDEF /* BaiduService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0022F00000100ABCDEF /* BaiduService.swift */; };
 		03D0F0132F00000200ABCDEF /* QueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0032F00000200ABCDEF /* QueryResult.swift */; };
-		03D1C8782952B1CD00F2C7BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03D1C8772952B1CD00F2C7BD /* GoogleService-Info.plist */; };
 		03D35DAA2AA6C49B00B023FE /* NSString+EZRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D35DA92AA6C49B00B023FE /* NSString+EZRegex.m */; };
 		03D486502E3F2021009313B3 /* Regex+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D4864F2E3F2021009313B3 /* Regex+List.swift */; };
 		03D486532E3F2190009313B3 /* ListRegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D486522E3F2190009313B3 /* ListRegexTests.swift */; };
@@ -662,6 +661,11 @@
 		13A893BFBE2B4FD695223394 /* GitHubCopilotCatalogClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C335534370E4C3DB5E2B412 /* GitHubCopilotCatalogClient.swift */; };
 		8FA639CB01DB48FFB856FAF6 /* GitHubCopilotModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D62DA53787E49EC9011BB14 /* GitHubCopilotModelStore.swift */; };
 		49DAA0A4B12B418BA7791B8F /* GitHubCopilotModelCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBAB49A71BBA4870A9C4FF0C /* GitHubCopilotModelCache.swift */; };
+		972C187D8F5846C48EB0E299 /* LanguagePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDD0CBBC2204D1183F3117B /* LanguagePreferences.swift */; };
+		07F11C2214B84174BB4F89F8 /* LanguagesSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED21CAF1DE504F28A360E7EB /* LanguagesSettingView.swift */; };
+		6D77D635590348A9A49431EF /* ReplacementContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2AEF543A484782AF4F7CE5 /* ReplacementContext.swift */; };
+		54E731E14C864FEB84463BFD /* ReplacementPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81838343AFB34184A0D38EA6 /* ReplacementPreviewController.swift */; };
+		6D529823E3CC4C62B1C87BCD /* ME-Dict.icon in Resources */ = {isa = PBXBuildFile; fileRef = 05F0939C2B6A4B03AD0BAE81 /* ME-Dict.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1412,7 +1416,7 @@
 		C4DE3D6C2AC00EB500C2B85D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Easydict/App/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		C59C7EA362DF42E3A968F294 /* ClaudeCodeServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeCodeServiceTests.swift; sourceTree = "<group>"; };
 		C7C3650B1BBD12D1980FE6C6 /* CodexManagedProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexManagedProcess.swift; sourceTree = "<group>"; };
-		C99EEB182385796700FEE666 /* Easydict-debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Easydict-debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C99EEB182385796700FEE666 /* ME-Dict-debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ME-Dict-debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AB6CC6A83844F992CD49D6 /* MDictConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDictConfigurationView.swift; sourceTree = "<group>"; };
 		CA9CF8A22D2E6CE6000C1860 /* good_v4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = good_v4.json; sourceTree = "<group>"; };
 		CA9CF8A42D2E6D13000C1860 /* 美_v4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "美_v4.json"; sourceTree = "<group>"; };
@@ -1446,6 +1450,11 @@
 		3C335534370E4C3DB5E2B412 /* GitHubCopilotCatalogClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotCatalogClient.swift; sourceTree = "<group>"; };
 		9D62DA53787E49EC9011BB14 /* GitHubCopilotModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotModelStore.swift; sourceTree = "<group>"; };
 		FBAB49A71BBA4870A9C4FF0C /* GitHubCopilotModelCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubCopilotModelCache.swift; sourceTree = "<group>"; };
+		DDDD0CBBC2204D1183F3117B /* LanguagePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguagePreferences.swift"; sourceTree = "<group>"; };
+		ED21CAF1DE504F28A360E7EB /* LanguagesSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguagesSettingView.swift"; sourceTree = "<group>"; };
+		1A2AEF543A484782AF4F7CE5 /* ReplacementContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementContext.swift"; sourceTree = "<group>"; };
+		81838343AFB34184A0D38EA6 /* ReplacementPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementPreviewController.swift"; sourceTree = "<group>"; };
+		05F0939C2B6A4B03AD0BAE81 /* ME-Dict.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "ME-Dict.icon"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1554,6 +1563,7 @@
 			isa = PBXGroup;
 			children = (
 				278540332B3DE04F004E9488 /* GeneralTab.swift */,
+				ED21CAF1DE504F28A360E7EB /* LanguagesSettingView.swift */,
 				0A057D6C2B499A000025C51D /* ServiceTab.swift */,
 				0A1189A12F700001005C51D /* ServiceTabListViews.swift */,
 				0377C0F22F13FA4B00302A2C /* FavoritesTab.swift */,
@@ -2378,6 +2388,8 @@
 			isa = PBXGroup;
 			children = (
 				03A00D872E616D56001A4D82 /* ActionManager.swift */,
+				81838343AFB34184A0D38EA6 /* ReplacementPreviewController.swift */,
+				1A2AEF543A484782AF4F7CE5 /* ReplacementContext.swift */,
 			);
 			path = ActionManager;
 			sourceTree = "<group>";
@@ -2796,6 +2808,7 @@
 				E34250B52E681A3100CEC295 /* Easydict-26.icon */,
 				E35441A93032BEB2002DB5A6 /* Easydict-27.icon */,
 				D6B9664915C7497B83D1E201 /* Easydict-debug.icon */,
+				05F0939C2B6A4B03AD0BAE81 /* ME-Dict.icon */,
 			);
 			path = Icons;
 			sourceTree = "<group>";
@@ -3796,7 +3809,7 @@
 		C99EEB192385796700FEE666 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C99EEB182385796700FEE666 /* Easydict-debug.app */,
+				C99EEB182385796700FEE666 /* ME-Dict-debug.app */,
 				03022F2E2B370B7100B63209 /* EasydictTests.xctest */,
 			);
 			name = Products;
@@ -3827,6 +3840,7 @@
 				DC46DF7F2B4417B900DEAE3E /* MyConfiguration.swift */,
 				0327A5A52CCA7ACF002BA81B /* Configuration+Extension.swift */,
 				EA3B81F82B5254AA004C0E8B /* Defaults.Keys+Extension.swift */,
+				DDDD0CBBC2204D1183F3117B /* LanguagePreferences.swift */,
 				DCF176F12B57CED700CA6026 /* Configuration+UserData.swift */,
 				03926A722CCD3A8500511C01 /* ServiceConfigurationKey.swift */,
 				036BCD492BDE8A96009C893F /* WindowConfigurationKey.swift */,
@@ -4009,7 +4023,6 @@
 				C0DEC1340000000000000001 /* Prepare bundled Codex */,
 				124D690EE7236D6430CF945E /* [CP] Embed Pods Frameworks */,
 				C98CAE74239F45DA005F7DCA /* CopyFiles */,
-				0A10B7439899441180660AF2 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -4042,7 +4055,7 @@
 				0322D74B2EDC1C72005E67D8 /* OmenTextField */,
 			);
 			productName = Bob;
-			productReference = C99EEB182385796700FEE666 /* Easydict-debug.app */;
+			productReference = C99EEB182385796700FEE666 /* ME-Dict-debug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4220,11 +4233,11 @@
 				03BFBB7229239E9F00C48725 /* blue-white-icon@3x.png in Resources */,
 				E35441AA3032BEB2002DB5A6 /* Easydict-27.icon in Resources */,
 				D6B9664915C7497B83D1E202 /* Easydict-debug.icon in Resources */,
+				6D529823E3CC4C62B1C87BCD /* ME-Dict.icon in Resources */,
 				03BFBB782923A09B00C48725 /* white-blue-icon@3x.png in Resources */,
 				030D612C2CD9BB34000DF298 /* Pods-Easydict-acknowledgements.plist in Resources */,
 				CA9CF8A52D2E6D13000C1860 /* 美_v4.json in Resources */,
 				03B022E629231FA6001C7E63 /* Assets.xcassets in Resources */,
-				03D1C8782952B1CD00F2C7BD /* GoogleService-Info.plist in Resources */,
 				C4DE3D6D2AC00EB500C2B85D /* Localizable.xcstrings in Resources */,
 				CA9CF8A32D2E6CE6000C1860 /* good_v4.json in Resources */,
 				03BFBB662923998300C48725 /* black-white-icon@3x.png in Resources */,
@@ -4255,24 +4268,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n# Easydict SwiftFormat Script\n\nset -e\n\n#Docs https://github.com/nicklockwood/SwiftFormat#using-swift-package-manager\n\nif [ \"${EASYDICT_RELEASE_PACKAGING}\" = \"YES\" ]; then\n  echo \"SwiftFormat skipped for Easydict release packaging.\"\n  exit 0;\nfi\n\nif [ \"${ENABLE_PREVIEWS}\" = \"YES\" ]; then\n  echo \"SwiftFormat skipped for Xcode Previews.\"\n  exit 0;\nfi\n# \"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"$SRCROOT\"\n\ncd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\"\n";
-		};
-		0A10B7439899441180660AF2 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/sentry-upload-debug-symbols.log",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script uploads debug symbols and source context to Sentry.\n\nLOG_FILE=\"${SCRIPT_OUTPUT_FILE_0:-$BUILT_PRODUCTS_DIR/sentry-upload-debug-symbols.log}\"\n: > \"$LOG_FILE\"\n\nlog_message() {\n    printf '%s\\n' \"$1\"\n    printf '%s\\n' \"$1\" >> \"$LOG_FILE\"\n}\n\nappend_log() {\n    printf '%s\\n' \"$1\" >> \"$LOG_FILE\"\n}\n\nif [ \"$(uname -m)\" = \"arm64\" ]; then\n    PATH=\"/opt/homebrew/bin:$PATH\"\n    export PATH\nfi\n\n# Only run this script in Release configuration.\nif [ \"$CONFIGURATION\" != \"Release\" ]; then\n    log_message \"Skipping Sentry debug symbol upload for $CONFIGURATION configuration.\"\n    exit 0\nfi\n\nif ! command -v sentry-cli >/dev/null 2>&1; then\n    log_message \"warning: sentry-cli not found. Skipping Sentry debug symbol upload.\"\n    exit 0\nfi\n\nexport SENTRY_ORG=izual\nexport SENTRY_PROJECT=easydict\n\nSENTRY_CONFIG_FILE=\"$PROJECT_DIR/.sentryclirc\"\nif [ -z \"$SENTRY_AUTH_TOKEN\" ] && [ ! -f \"$SENTRY_CONFIG_FILE\" ]; then\n    log_message \"warning: Release mode - SENTRY_AUTH_TOKEN is not set and $SENTRY_CONFIG_FILE was not found. Skipping Sentry debug symbol upload.\"\n    exit 0\nfi\n\nAPP_DSYM_PATH=\"$DWARF_DSYM_FOLDER_PATH/$DWARF_DSYM_FILE_NAME\"\nif [ ! -d \"$APP_DSYM_PATH\" ]; then\n    log_message \"warning: App dSYM not found at $APP_DSYM_PATH. Skipping Sentry debug symbol upload.\"\n    exit 0\nfi\n\nattempt=1\nmax_attempts=3\nUPLOAD_STATUS=1\nwhile [ $attempt -le $max_attempts ]; do\n    append_log \"sentry-cli upload attempt $attempt/$max_attempts for $APP_DSYM_PATH\"\n    UPLOAD_OUTPUT=$(sentry-cli debug-files upload --include-sources \"$APP_DSYM_PATH\" 2>&1)\n    UPLOAD_STATUS=$?\n    if [ -n \"$UPLOAD_OUTPUT\" ]; then\n        append_log \"$UPLOAD_OUTPUT\"\n    fi\n    if [ $UPLOAD_STATUS -eq 0 ]; then\n        break\n    fi\n    attempt=$((attempt + 1))\n    if [ $attempt -le $max_attempts ]; then\n        sleep 2\n    fi\ndone\n\nif [ $UPLOAD_STATUS -ne 0 ]; then\n    log_message \"warning: Sentry debug symbol upload failed after $max_attempts attempts. See $LOG_FILE for details.\"\n    exit 0\nfi\n\nlog_message \"Uploaded debug symbols to Sentry from $APP_DSYM_PATH.\"\n";
 		};
 		124D690EE7236D6430CF945E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4626,6 +4621,7 @@
 				039223C02E4B61980052F695 /* OCRImageView.swift in Sources */,
 				0AC11B222B4D16A500F07198 /* WindowAccessor.swift in Sources */,
 				278540342B3DE04F004E9488 /* GeneralTab.swift in Sources */,
+				07F11C2214B84174BB4F89F8 /* LanguagesSettingView.swift in Sources */,
 				AA0000012E00000000000001 /* QueryRecord.swift in Sources */,
 				03BDA7BC2A26DA280079D04F /* XPMArgumentSignature.m in Sources */,
 				03B0230229231FA6001C7E63 /* EZWordResultView.m in Sources */,
@@ -4688,6 +4684,7 @@
 				035166F92E0C0FF9004C65BB /* Int+ToDouble.swift in Sources */,
 				62E2BF4C2B4082BA00E42D38 /* AliTranslateType.swift in Sources */,
 				EA3B81F92B5254AA004C0E8B /* Defaults.Keys+Extension.swift in Sources */,
+				972C187D8F5846C48EB0E299 /* LanguagePreferences.swift in Sources */,
 				036BCD4A2BDE8A96009C893F /* WindowConfigurationKey.swift in Sources */,
 				03E3E7C22ADE318800812C84 /* EZQueryMenuTextView.m in Sources */,
 				033EAA9F2CBBBE2B004DC199 /* ForceGetSelectedTextType.swift in Sources */,
@@ -4838,6 +4835,8 @@
 				031760F42E07FB2800CE8FD7 /* AppleLanguageDetector.swift in Sources */,
 				EAE3D3502B62E9DE001EE3E3 /* GlobalContext.swift in Sources */,
 				03715A292E6D25170067259C /* ActionManager.swift in Sources */,
+				54E731E14C864FEB84463BFD /* ReplacementPreviewController.swift in Sources */,
+				6D77D635590348A9A49431EF /* ReplacementContext.swift in Sources */,
 				EA9943F02B5354C400EE7B97 /* ShowWindowPositionExtensions.swift in Sources */,
 				96B2F1C52C07782400AD3126 /* GitHubReleaseFetcher.swift in Sources */,
 				CB8C43002C441B74004EC86F /* BaiduApiResponse.swift in Sources */,
@@ -4965,7 +4964,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.izual.EasydictSwiftTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.helihua.medict.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -4973,7 +4972,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easydict-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Easydict-debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ME-Dict-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ME-Dict-debug";
 			};
 			name = Debug;
 		};
@@ -4994,13 +4993,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.izual.EasydictSwiftTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.helihua.medict.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easydict-debug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Easydict-debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ME-Dict.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ME-Dict";
 			};
 			name = Release;
 		};
@@ -5167,9 +5166,9 @@
 		);
 		"MACOSX_DEPLOYMENT_TARGET" = "13.0";
 		"MARKETING_VERSION" = "2.24.0";
-		"PRODUCT_BUNDLE_IDENTIFIER" = "com.izual.Easydict-debug";
+		"PRODUCT_BUNDLE_IDENTIFIER" = "com.helihua.medict.debug";
 		"PRODUCT_MODULE_NAME" = Easydict;
-		"PRODUCT_NAME" = "Easydict-debug";
+		"PRODUCT_NAME" = "ME-Dict-debug";
 		"RUNTIME_EXCEPTION_ALLOW_JIT" = YES;
 		"RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION" = YES;
 		"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG AGENT_CLI_DEBUG $(inherited)";
@@ -5185,13 +5184,13 @@
 	baseConfigurationReference = 91E3E579C6DB88658B4BB102;
 	buildSettings = {
 		"ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES" = "";
-		"ASSETCATALOG_COMPILER_APPICON_NAME" = "Easydict-27";
+		"ASSETCATALOG_COMPILER_APPICON_NAME" = "ME-Dict";
 		"ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS" = NO;
 		"AUTOMATION_APPLE_EVENTS" = YES;
 		"CLANG_ENABLE_MODULES" = YES;
 		"CODE_SIGN_ENTITLEMENTS" = "Easydict/App/Easydict.entitlements";
 		"CODE_SIGN_IDENTITY" = "$CODE_SIGN_IDENTITY";
-		"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+		"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 		"CODE_SIGN_STYLE" = Manual;
 		"COMBINE_HIDPI_IMAGES" = YES;
 		"COPY_PHASE_STRIP" = NO;
@@ -5199,7 +5198,7 @@
 		"DEAD_CODE_STRIPPING" = YES;
 		"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
 		"DEVELOPMENT_TEAM" = "";
-		"DEVELOPMENT_TEAM[sdk=macosx*]" = 45Z6V4YD5U;
+		"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 		"ENABLE_APP_SANDBOX" = NO;
 		"ENABLE_DEBUG_DYLIB" = YES;
 		"ENABLE_HARDENED_RUNTIME" = YES;
@@ -5216,9 +5215,9 @@
 		);
 		"MACOSX_DEPLOYMENT_TARGET" = "13.0";
 		"MARKETING_VERSION" = "2.24.0";
-		"PRODUCT_BUNDLE_IDENTIFIER" = "com.izual.Easydict";
+		"PRODUCT_BUNDLE_IDENTIFIER" = "com.helihua.medict";
 		"PRODUCT_MODULE_NAME" = Easydict;
-		"PRODUCT_NAME" = "$(TARGET_NAME)";
+		"PRODUCT_NAME" = "ME-Dict";
 		"PROVISIONING_PROFILE_SPECIFIER" = "";
 		"RUNTIME_EXCEPTION_ALLOW_JIT" = YES;
 		"RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION" = YES;

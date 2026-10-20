@@ -16,34 +16,13 @@ import SwiftUI
 struct GeneralTab: View {
     // MARK: Internal
 
-    class CheckUpdaterViewModel: ObservableObject {
-        // MARK: Lifecycle
-
-        init() {
-            updater
-                .publisher(for: \.automaticallyChecksForUpdates)
-                .assign(to: &$autoChecksForUpdates)
-        }
-
-        // MARK: Internal
-
-        @Published var autoChecksForUpdates = true {
-            didSet {
-                updater.automaticallyChecksForUpdates = autoChecksForUpdates
-            }
-        }
-
-        // MARK: Private
-
-        private let updater = MyConfiguration.shared.updater
-    }
-
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         Form {
             Section {
                 FirstAndSecondLanguageSettingView()
+                LanguagesSettingView()
                 Picker(
                     "setting.general.language.language_detect_optimize",
                     selection: $languageDetectOptimize
@@ -136,45 +115,9 @@ struct GeneralTab: View {
                     }
                 }
 
-                // Check for updates
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("check_for_updates")
-                        Text("lastest_version \(displayedLatestVersion)")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button("check_now") {
-                        MyConfiguration.shared.updater.checkForUpdates()
-                    }
-                }
-
-                Toggle(isOn: $checkUpdaterViewModel.autoChecksForUpdates) {
-                    Text("auto_check_update ")
-                }
-                .disabled(BuildConfig.isDebug)
-
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("setting.general.startup_and_update.include_beta")
-                        Text("setting.general.startup_and_update.include_beta.description")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Toggle(
-                        isOn: $includeBetaUpdates.didSet(execute: { state in
-                            logSettings(["include_beta_updates": state])
-                            if state {
-                                MyConfiguration.shared.updater.checkForUpdates()
-                            }
-                        })
-                    ) {
-                        EmptyView()
-                    }
-                    .labelsHidden()
-                }
+                Text("setting.general.update.local_only")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
 
                 LaunchAtLogin.Toggle {
                     Text("launch_at_startup")
@@ -243,9 +186,6 @@ struct GeneralTab: View {
             }
         }
         .formStyle(.grouped)
-        .task(id: includeBetaUpdates) {
-            lastestVersion = await GitHubReleaseFetcher.latestVersion(includePrerelease: includeBetaUpdates)
-        }
         .alert("hide_menu_bar_icon", isPresented: $showRefuseAlert) {
             Button("ok") {
                 showRefuseAlert = false
@@ -273,10 +213,6 @@ struct GeneralTab: View {
     @EnvironmentObject private var languageState: LanguageState
     @State private var showRefuseAlert = false
     @State private var showHideMenuBarIconAlert = false
-
-    @StateObject private var checkUpdaterViewModel = CheckUpdaterViewModel()
-
-    @State private var lastestVersion: String?
 
     // Query language
     @Default(.languageDetectOptimize) private var languageDetectOptimize
@@ -311,20 +247,6 @@ struct GeneralTab: View {
     @Default(.fontSizeOptionIndex) private var fontSizeOptionIndex
     @Default(.enableMarkdownRendering) private var enableMarkdownRendering
 
-    @Default(.includeBetaUpdates) private var includeBetaUpdates
-
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
-
-    /// Never lower than the running version.
-    private var displayedLatestVersion: String {
-        guard let lastestVersion, GitHubReleaseFetcher.isNewer(lastestVersion, than: version) else {
-            return version
-        }
-        return lastestVersion
-    }
-
     private var shortcutsHaveSetuped: Bool {
         Defaults[.inputShortcut] != nil || Defaults[.selectionShortcut] != nil
     }
@@ -346,13 +268,19 @@ private struct FirstAndSecondLanguageSettingView: View {
     var body: some View {
         Group {
             Picker("setting.general.language.first_language", selection: $firstLanguage) {
-                ForEach(Language.allAvailableOptions, id: \.rawValue) { option in
+                ForEach(
+                    enabledLanguages.filter { Language.allAvailableOptions.contains($0) },
+                    id: \.rawValue
+                ) { option in
                     Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
                         .tag(option)
                 }
             }
             Picker("setting.general.language.second_language", selection: $secondLanguage) {
-                ForEach(Language.allAvailableOptions, id: \.rawValue) { option in
+                ForEach(
+                    enabledLanguages.filter { Language.allAvailableOptions.contains($0) },
+                    id: \.rawValue
+                ) { option in
                     Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
                         .tag(option)
                 }
@@ -423,6 +351,7 @@ private struct FirstAndSecondLanguageSettingView: View {
 
     @State private var languageDuplicatedAlert: LanguageDuplicateAlert?
 
+    @Default(.enabledLanguages) private var enabledLanguages
     @Default(.firstLanguage) private var firstLanguage
     @Default(.secondLanguage) private var secondLanguage
 

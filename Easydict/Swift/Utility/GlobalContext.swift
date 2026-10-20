@@ -18,19 +18,16 @@ class GlobalContext: NSObject {
         self.updaterHelper = SPUUpdaterHelper()
         self.userDriverHelper = SPUUserDriverHelper()
         self.updaterController = SPUStandardUpdaterController(
-            startingUpdater: !BuildConfig.isDebug,
+            startingUpdater: false,
             updaterDelegate: updaterHelper,
             userDriverDelegate: userDriverHelper
         )
 
         super.init()
 
-        if BuildConfig.isDebug {
-            // Override persisted preferences before scheduling any update checks.
-            updaterController.updater.automaticallyChecksForUpdates = false
-            updaterController.updater.automaticallyDownloadsUpdates = false
-            updaterController.startUpdater()
-        }
+        // ME-Dict is maintained locally and must never install upstream releases.
+        updaterController.updater.automaticallyChecksForUpdates = false
+        updaterController.updater.automaticallyDownloadsUpdates = false
 
         reloadLLMServicesSubscribers()
     }

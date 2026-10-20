@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Easydict Scheme: easydict://
-static NSString *const EZAppScheme = @"easydict";
-static NSString *const EZAppDebugScheme = @"easydictd";
+/// ME-Dict Scheme: medict://
+static NSString *const EZAppScheme = @"medict";
+static NSString *const EZAppDebugScheme = @"medict-debug";
 
 static NSString *const EZWriteKeyValueKey = @"writeKeyValue";
 static NSString *const EZReadValueOfKeyKey = @"readValueOfKey";
@@ -23,7 +23,7 @@ static NSString *const EZQueryKey = @"query";
 
 @interface EZSchemeParser : NSObject
 
-// Check if text started with easydict://
+// Check if text starts with a ME-Dict URL scheme.
 - (BOOL)isEasydictScheme:(NSString *)text;
 
 /// Open Easydict URL Schema.

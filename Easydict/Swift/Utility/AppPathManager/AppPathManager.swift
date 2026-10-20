@@ -30,7 +30,7 @@ final class AppPathManager: NSObject {
     // MARK: Internal
 
     static let current = AppPathManager(
-        bundleIdentifier: Bundle.main.bundleIdentifier ?? "com.izual.Easydict",
+        bundleIdentifier: Bundle.main.bundleIdentifier ?? AppConstants.bundleID,
         applicationSupportBaseURL: FileManager.default.urls(
             for: .applicationSupportDirectory,
             in: .userDomainMask

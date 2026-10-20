@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C99EEB172385796700FEE666"
-               BuildableName = "Easydict.app"
+               BuildableName = "ME-Dict.app"
                BlueprintName = "Easydict"
                ReferencedContainer = "container:Easydict.xcodeproj">
             </BuildableReference>
@@ -73,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C99EEB172385796700FEE666"
-            BuildableName = "Easydict.app"
+            BuildableName = "ME-Dict.app"
             BlueprintName = "Easydict"
             ReferencedContainer = "container:Easydict.xcodeproj">
          </BuildableReference>
@@ -114,7 +114,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C99EEB172385796700FEE666"
-            BuildableName = "Easydict.app"
+            BuildableName = "ME-Dict.app"
             BlueprintName = "Easydict"
             ReferencedContainer = "container:Easydict.xcodeproj">
          </BuildableReference>
@@ -125,7 +125,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      customArchiveName = "Easydict"
+      customArchiveName = "ME-Dict"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

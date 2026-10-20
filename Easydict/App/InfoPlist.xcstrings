@@ -7,38 +7,38 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Easydict requires permission to execute AppleScript."
+            "state" : "translated",
+            "value" : "ME-Dict requires permission to execute AppleScript."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict が AppleScript を実行するには権限が必要です。"
+            "value" : "ME-Dict が AppleScript を実行するには権限が必要です。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict vyžaduje povolenie na vykonanie AppleScriptu."
+            "value" : "ME-Dict vyžaduje povolenie na vykonanie AppleScriptu."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 需要权限来执行 AppleScript。"
+            "value" : "ME-Dict 需要权限来执行 AppleScript。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict 需要權限來執行 AppleScript。"
+            "value" : "ME-Dict 需要權限來執行 AppleScript。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict requiere permiso para ejecutar AppleScript."
+            "value" : "ME-Dict requiere permiso para ejecutar AppleScript."
           }
         }
       }

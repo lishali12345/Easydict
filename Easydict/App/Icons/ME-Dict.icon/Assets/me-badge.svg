@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>ME</title>
+  <rect x="256" y="732" width="512" height="164" rx="34" fill="#2266DD" stroke="#FFFFFF" stroke-width="12"/>
+  <path fill="#FFFFFF" d="M360 866 V762 H392 L436 818 L480 762 H512 V866 H480 V810 L436 864 L392 810 V866 Z M544 762 H664 V790 H578 V800 H654 V828 H578 V838 H664 V866 H544 Z"/>
+</svg>

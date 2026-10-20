@@ -16,7 +16,7 @@ struct AboutTab: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 30) {
-            Image(.logo)
+            Image(nsImage: NSApplication.shared.applicationIconImage)
                 .resizable()
                 .renderingMode(.original)
                 .frame(width: 100, height: 100)
@@ -44,9 +44,7 @@ struct AboutTab: View {
 
                 HStack(spacing: 15) {
                     Button {
-                        NSWorkspace.shared.open(
-                            URL(string: "https://github.com/tisfeng/Easydict")!
-                        )
+                        NSWorkspace.shared.open(AppConstants.repoURL)
                     } label: {
                         Label("setting.about.github_link", systemSymbol: .starFill)
                     }

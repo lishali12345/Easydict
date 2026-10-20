@@ -105,7 +105,7 @@ struct AdvancedTab: View {
                 Group {
                     LabeledContent {
                         Picker(selection: $autoShowQueryIconExcludedLanguage) {
-                            ForEach(Language.allAvailableOptions, id: \.rawValue) { option in
+                            ForEach(enabledLanguageOptions, id: \.rawValue) { option in
                                 Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
                                     .tag(option)
                             }
@@ -455,6 +455,8 @@ struct AdvancedTab: View {
 
     // MARK: Private
 
+    @Default(.enabledLanguages) private var enabledLanguages
+
     @Default(.enableBetaFeature) private var enableBetaFeature
 
     @Default(.defaultTTSServiceType) private var defaultTTSServiceType
@@ -496,6 +498,10 @@ struct AdvancedTab: View {
     @Default(.vocabularyNotebookDirectory) private var vocabularyNotebookDirectory
 
     @Default(.maxWindowHeightPercentage) private var maxWindowHeightPercentageValue
+
+    private var enabledLanguageOptions: [Language] {
+        enabledLanguages.filter { Language.allAvailableOptions.contains($0) }
+    }
 
     /// The directory path shown in the picker row, or a placeholder when unset.
     private var displayedVocabularyNotebookDirectory: String {

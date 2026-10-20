@@ -27,6 +27,10 @@ extension AppPathManager {
     var legacyCodexDirectories: [URL] {
         let bundleScopedDirectory = appSupportDirectory
             .appendingPathComponent("codex-managed", isDirectory: true)
+        // The fork must not move the official app's shared legacy runtime or account state.
+        if bundleIdentifier == AppConstants.bundleID || bundleIdentifier == AppConstants.debugBundleID {
+            return [bundleScopedDirectory]
+        }
         let sharedDirectory = appSupportDirectory
             .deletingLastPathComponent()
             .appendingPathComponent("Easydict", isDirectory: true)

@@ -102,7 +102,7 @@
     }
     [self.customMenu removeAllItems];
     
-    NSArray *showingLanguages = [EZLanguageManager.shared allLanguages];
+    NSArray *showingLanguages = LanguagePreferences.enabledLanguages;
     self.languageDict = [[MMOrderedDictionary alloc] init];
     for (EZLanguage language in showingLanguages) {
         if (![language isEqualToString:EZLanguageAuto]) {

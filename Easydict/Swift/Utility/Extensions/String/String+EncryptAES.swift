@@ -11,8 +11,8 @@ import Foundation
 
 extension String {
     private var aes: AES {
-        let bundleName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
-        let key = String(bundleName.sha256().prefix(16))
+        // Bundled credentials were encrypted with this name; app branding must not change their key.
+        let key = String("Easydict".sha256().prefix(16))
         let aes = try! AES(key: key, iv: key) // aes128
         return aes
     }
@@ -25,7 +25,7 @@ extension String {
 
     public func decryptAES() -> String {
         let ciphertext = try? aes.decrypt(Array(base64: self))
-        let decryptedString = String(bytes: ciphertext ?? [], encoding: .utf8)!
+        let decryptedString = String(bytes: ciphertext ?? [], encoding: .utf8) ?? ""
         return decryptedString
     }
 }

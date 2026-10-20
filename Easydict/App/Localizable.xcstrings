@@ -5116,37 +5116,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About Easydict"
+            "value" : "About ME-Dict"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Easydict"
+            "value" : "Acerca de ME-Dict"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Easydict について"
+            "value" : "ME-Dict について"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikácii Easydict"
+            "value" : "O aplikácii ME-Dict"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关于 Easydict"
+            "value" : "关于 ME-Dict"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於 Easydict"
+            "value" : "關於 ME-Dict"
           }
         }
       }
@@ -22426,6 +22426,1072 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在 Finder 中顯示"
+          }
+        }
+      }
+    },
+    "setting.general.update.local_only" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict is updated through local builds. It does not check for or install official Easydict updates."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict 由本地构建更新，不检查或安装 Easydict 官方更新。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict 由本機建置更新，不檢查或安裝 Easydict 官方更新。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict se actualiza mediante compilaciones locales. No busca ni instala actualizaciones oficiales de Easydict."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict はローカルビルドで更新します。Easydict 公式の更新は確認もインストールもしません。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict sa aktualizuje lokálnymi zostaveniami. Nevyhľadáva ani neinštaluje oficiálne aktualizácie Easydict."
+          }
+        }
+      }
+    },
+    "setting.languages.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the languages shown in menus and the translation previews offered for English text."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择下拉菜单中显示的语言，以及英文转译时提供的译文预览。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇下拉式選單中顯示的語言，以及英文轉譯時提供的譯文預覽。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige los idiomas de los menús y las vistas previas de traducción del texto en inglés."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メニューに表示する言語と、英語から翻訳する際のプレビュー言語を選択します。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte jazyky v ponukách a náhľadoch prekladu anglického textu."
+          }
+        }
+      }
+    },
+    "setting.languages.done" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
+          }
+        }
+      }
+    },
+    "setting.languages.empty_targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select at least one language to show translation previews for English text."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "至少选择一种目标语言，才能显示英文的译文预览。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "至少選擇一種目標語言，才能顯示英文的譯文預覽。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona al menos un idioma para ver las traducciones del texto en inglés."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英語の翻訳プレビューを表示するには、言語を1つ以上選択してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na zobrazenie náhľadov prekladu anglického textu vyberte aspoň jeden jazyk."
+          }
+        }
+      }
+    },
+    "setting.languages.enabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enabled languages"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用语言"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用語言"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idiomas activados"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有効な言語"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolené jazyky"
+          }
+        }
+      }
+    },
+    "setting.languages.manage" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configure languages…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "配置语言…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定語言…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar idiomas…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語を設定…"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaviť jazyky…"
+          }
+        }
+      }
+    },
+    "setting.languages.replacement_targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English translation targets"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英文转译目标语言"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英文轉譯目標語言"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinos del texto en inglés"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英語からの翻訳先"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cieľové jazyky anglického textu"
+          }
+        }
+      }
+    },
+    "setting.languages.required" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your first and second languages stay enabled. Change them in General settings before disabling them here."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一和第二语言保持启用。如需关闭，请先在通用设置中更换这两项。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一和第二語言保持啟用。如需關閉，請先在一般設定中更換這兩項。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El primer y segundo idioma permanecen activados. Cámbialos en General antes de desactivarlos aquí."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第1・第2言語は有効のままです。無効にするには、先に一般設定で変更してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prvý a druhý jazyk zostávajú povolené. Pred vypnutím ich zmeňte vo všeobecných nastaveniach."
+          }
+        }
+      }
+    },
+    "setting.languages.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language choices"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "语言选择"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "語言選擇"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selección de idiomas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語の選択"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výber jazykov"
+          }
+        }
+      }
+    },
+    "setting.privacy.telemetry_disabled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict does not send usage analytics or crash reports to the Easydict project. Diagnostic logs stay on this Mac. Translation text is processed by the translation services you choose."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict 不向 Easydict 官方发送使用统计或崩溃报告。诊断日志仅保存在本机。翻译内容会交给你选择的翻译服务处理。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict 不向 Easydict 官方傳送使用統計或當機報告。診斷日誌僅儲存在本機。翻譯內容會交給你選擇的翻譯服務處理。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict no envía estadísticas de uso ni informes de fallos al proyecto Easydict. Los registros se guardan en este Mac. Los servicios de traducción que elijas procesan el texto."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict は使用状況やクラッシュレポートを Easydict プロジェクトに送信しません。診断ログはこの Mac に保存されます。翻訳するテキストは、選択した翻訳サービスで処理されます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ME-Dict neposiela projektu Easydict štatistiky používania ani správy o pádoch. Diagnostické záznamy zostávajú na tomto Macu. Text spracúvajú prekladové služby, ktoré si vyberiete."
+          }
+        }
+      }
+    },
+    "replacement.preview.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replacement Preview"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "替换预览"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取代預覽"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa del reemplazo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "置換プレビュー"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Náhľad nahradenia"
+          }
+        }
+      }
+    },
+    "replacement.preview.instructions" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a completed translation to replace the original text. Closing this window keeps the original text."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择一条已完成的译文替换原文。关闭窗口会保留原文。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇一條已完成的譯文取代原文。關閉視窗會保留原文。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una traducción terminada para reemplazar el texto original. Cerrar esta ventana conserva el original."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了した翻訳を選択して原文を置き換えます。このウインドウを閉じると原文は保持されます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte dokončený preklad na nahradenie pôvodného textu. Zatvorením okna sa pôvodný text zachová."
+          }
+        }
+      }
+    },
+    "replacement.preview.translating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Translating…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在翻译…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在翻譯…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduciendo…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻訳中…"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prekladá sa…"
+          }
+        }
+      }
+    },
+    "replacement.preview.replace" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace Original"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "替换原文"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取代原文"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplazar original"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原文を置換"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahradiť pôvodný text"
+          }
+        }
+      }
+    },
+    "replacement.preview.copy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピー"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovať"
+          }
+        }
+      }
+    },
+    "replacement.preview.cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušiť"
+          }
+        }
+      }
+    },
+    "replacement.preview.copied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied. You can paste it into the original text field."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已复制，可粘贴到原输入框。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已複製，可貼上至原輸入框。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiado. Puedes pegarlo en el campo de texto original."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピーしました。元の入力欄に貼り付けられます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skopírované. Text môžete vložiť do pôvodného poľa."
+          }
+        }
+      }
+    },
+    "replacement.preview.no_targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable at least one replacement target language in Language settings."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在语言设置中启用至少一种英文替换目标语言。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請在語言設定中啟用至少一種英文取代目標語言。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa al menos un idioma de destino en los ajustes de idiomas."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語設定で、英語からの置換先言語を1つ以上有効にしてください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V nastaveniach jazykov povoľte aspoň jeden cieľový jazyk nahradenia."
+          }
+        }
+      }
+    },
+    "replacement.preview.copy_only" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The original text field cannot be located safely. The original text is unchanged; copy a translation and paste it manually."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法安全定位原输入框。原文保持不变，请复制译文后手动粘贴。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法安全定位原輸入框。原文保持不變，請複製譯文後手動貼上。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede localizar con seguridad el campo original. El texto no ha cambiado; copia una traducción y pégala manualmente."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "元の入力欄を安全に特定できません。原文は変更されていません。翻訳をコピーして手動で貼り付けてください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pôvodné pole nemožno bezpečne určiť. Text sa nezmenil; skopírujte preklad a vložte ho ručne."
+          }
+        }
+      }
+    },
+    "replacement.error.input_changed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The original text field, content, or selection has changed. Nothing was replaced; copy the result or select the text again."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原输入框、内容或选区已变化。未替换原文，请复制结果或重新选择文本。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原輸入框、內容或選取範圍已變更。未取代原文，請複製結果或重新選取文字。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El campo, contenido o selección original ha cambiado. No se reemplazó nada; copia el resultado o selecciona el texto de nuevo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "元の入力欄、内容、または選択範囲が変わりました。置換していません。結果をコピーするか、もう一度テキストを選択してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pôvodné pole, obsah alebo výber sa zmenil. Nič sa nenahradilo; skopírujte výsledok alebo text vyberte znova."
+          }
+        }
+      }
+    },
+    "replacement.error.write_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The replacement could not be confirmed. Check the original text field; you can still copy the result."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法确认替换成功，请检查原输入框；你仍可复制结果。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法確認取代成功，請檢查原輸入框；你仍可複製結果。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo confirmar el reemplazo. Revisa el campo original; todavía puedes copiar el resultado."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "置換の成功を確認できませんでした。元の入力欄を確認してください。結果は引き続きコピーできます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahradenie sa nepodarilo potvrdiť. Skontrolujte pôvodné pole; výsledok stále môžete skopírovať."
+          }
+        }
+      }
+    },
+    "replacement.error.empty_result" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The service returned no usable text. The original text is unchanged."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务未返回有效文本，原文保持不变。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服務未傳回有效文字，原文保持不變。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servicio no devolvió texto válido. El original no ha cambiado."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サービスから有効なテキストが返されませんでした。原文は変更されていません。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba nevrátila použiteľný text. Pôvodný text sa nezmenil."
+          }
+        }
+      }
+    },
+    "replacement.error.accessibility" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow ME-Dict in System Settings → Privacy & Security → Accessibility, then select the text again."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在系统设置的“隐私与安全性 → 辅助功能”中允许 ME-Dict 访问，然后重新选择文本。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請在系統設定的「隱私權與安全性 → 輔助使用」中允許 ME-Dict 存取，然後重新選取文字。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriza ME-Dict en Ajustes del Sistema → Privacidad y seguridad → Accesibilidad y vuelve a seleccionar el texto."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システム設定 → プライバシーとセキュリティ → アクセシビリティで ME-Dict を許可し、もう一度テキストを選択してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povoľte ME-Dict v Systémové nastavenia → Súkromie a bezpečnosť → Prístupnosť a znova vyberte text."
+          }
+        }
+      }
+    },
+    "replacement.error.no_selection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select text in another app’s text field, then run this action again."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在其他应用的输入框中选择要处理的文本，然后再次执行此操作。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請在其他應用程式的輸入框中選取要處理的文字，然後再次執行此操作。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona texto en el campo de otra aplicación y repite esta acción."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "別のアプリの入力欄でテキストを選択し、もう一度実行してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte text v poli inej aplikácie a zopakujte túto akciu."
+          }
+        }
+      }
+    },
+    "replacement.error.detect_language" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The text language could not be detected. The original text is unchanged."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法识别文本语言，原文保持不变。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法辨識文字語言，原文保持不變。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo detectar el idioma. El texto original no ha cambiado."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストの言語を検出できませんでした。原文は変更されていません。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jazyk textu sa nepodarilo rozpoznať. Pôvodný text sa nezmenil."
+          }
+        }
+      }
+    },
+    "replacement.preview.cancelled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取消"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelado"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル済み"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušené"
           }
         }
       }

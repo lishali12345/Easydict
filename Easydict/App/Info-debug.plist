@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>Easydict requires permission to execute AppleScript.</string>
+	<string>ME-Dict requires permission to execute AppleScript.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,10 +32,10 @@
 			<key>CFBundleURLIconFile</key>
 			<string>white-black-icon@2x</string>
 			<key>CFBundleURLName</key>
-			<string>com.izual.Easydict-debug</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>easydictd</string>
+				<string>medict-debug</string>
 			</array>
 		</dict>
 	</array>
@@ -60,13 +60,11 @@
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
-	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/tisfeng/Easydict/main/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>9Ee1FtAsmJHFD79H4bToJhAOJmTtkTYIUDr23ofEWiU=</string>
 	<key>SUEnableAutomaticChecks</key>
 	<false/>
 	<key>SUAutomaticallyUpdate</key>
 	<false/>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
+	<true/>
 </dict>
 </plist>

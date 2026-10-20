@@ -25,11 +25,20 @@ extension Defaults.Keys {
 
     static let firstLanguage = Key<Language>(
         "EZConfiguration_kFirstLanguageKey",
-        default: EZLanguageManager.shared().systemPreferredTwoLanguages[0]
+        default: .simplifiedChinese
     )
     static let secondLanguage = Key<Language>(
         "EZConfiguration_kSecondLanguageKey",
-        default: EZLanguageManager.shared().systemPreferredTwoLanguages[1]
+        default: .english
+    )
+
+    static let enabledLanguages = Key<[Language]>(
+        "enabledLanguages",
+        default: [.simplifiedChinese, .english, .indonesian, .malay, .filipino, .vietnamese]
+    )
+    static let replacementTargetLanguages = Key<[Language]>(
+        "replacementTargetLanguages",
+        default: [.indonesian, .malay, .filipino, .vietnamese]
     )
 
     static let autoShowQueryIcon = Key<Bool>("EZConfiguration_kAutoSelectTextKey", default: true)

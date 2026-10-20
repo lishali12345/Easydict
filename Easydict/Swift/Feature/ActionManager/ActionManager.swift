@@ -7,193 +7,292 @@
 //
 
 import AppKit
+import AXSwift
 import Defaults
-import Foundation
 import SelectedTextKit
 
 // MARK: - ActionManager
 
-/// Singleton class responsible for handling various application actions
+/// Coordinates replacement requests and keeps asynchronous results tied to their original selection.
+@MainActor
 @objc(EZActionManager)
 class ActionManager: NSObject {
     // MARK: Internal
 
-    // MARK: - Singleton
-
     @objc static let shared = ActionManager()
 
-    var translateService = BuiltInAIService()
-    var polishService = PolishingService()
-
-    // MARK: - Text Field Detection and Access
-
-    // MARK: - Public Methods
-
-    /// Translate selected text and replace it with the translation result
+    /// Translate Chinese directly to English, or preview configured translations for English.
     func translateAndReplace() async {
-        logInfo("Translate and Replace")
-        await executeTextReplacementAction(.translate)
+        await startAction(.translate)
     }
 
-    /// Polish selected text and replace it with the polished result
+    /// Polish in the detected source language and replace only after the result is complete.
     func polishAndReplace() async {
-        logInfo("Polish and Replace")
-        await executeTextReplacementAction(.polish)
+        await startAction(.polish)
     }
 
     // MARK: Private
 
-    /// Type of text processing action
     private enum ProcessingType {
         case translate
         case polish
     }
 
     private let systemUtility = SystemUtility.shared
+    private var operationID: UUID?
+    private var operationTask: Task<(), Never>?
+    private var services: [StreamService] = []
+    private var previewController: ReplacementPreviewController?
 
-    // MARK: - Core Action Methods
+    private func startAction(_ type: ProcessingType) async {
+        cancelCurrentAction()
+        let identifier = UUID()
+        operationID = identifier
+        let task = Task { await executeAction(type, identifier: identifier) }
+        operationTask = task
+        await task.value
+    }
 
-    /// Common method to execute text replacement actions
-    private func executeTextReplacementAction(_ type: ProcessingType) async {
+    private func cancelCurrentAction() {
+        operationID = nil
+        operationTask?.cancel()
+        operationTask = nil
+        services.forEach { $0.cancelStream() }
+        services.removeAll()
+        previewController?.close()
+        previewController = nil
+    }
+
+    private func isCurrent(_ identifier: UUID) -> Bool {
+        operationID == identifier && !Task.isCancelled
+    }
+
+    private func executeAction(_ type: ProcessingType, identifier: UUID) async {
+        guard AXIsProcessTrusted() else {
+            showNotice(NSLocalizedString("replacement.error.accessibility", comment: ""), identifier: identifier)
+            return
+        }
+        let frontmostApplication = NSWorkspace.shared.frontmostApplication
+        let application = frontmostApplication?.processIdentifier == NSRunningApplication.current.processIdentifier
+            ? NSWorkspace.shared.menuBarOwningApplication : frontmostApplication
+        guard let application,
+              application.processIdentifier != NSRunningApplication.current.processIdentifier
+        else {
+            showNotice(NSLocalizedString("replacement.error.no_selection", comment: ""), identifier: identifier)
+            return
+        }
+
+        let originalElement = try? Application(application)?.focusedUIElement()
+        let originalText = try? originalElement?.value()
+        let originalRange = try? originalElement?.selectedTextRange()
         let enableSelectAll = Defaults[.autoSelectAllTextFieldText]
-        let elementInfo = await systemUtility.focusedElementInfo(enableSelectAll: enableSelectAll)
-
-        // Prepare translation request
-        var queryText = elementInfo.focusedText
-        if queryText?.isEmpty ?? true {
-            queryText = await systemUtility.getSelectedText()
+        if frontmostApplication?.processIdentifier != application.processIdentifier {
+            guard application.activate(options: .activateIgnoringOtherApps) else {
+                showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
+                return
+            }
+            for _ in 0 ..< 10 {
+                try? await Task.sleep(nanoseconds: 50_000_000)
+                if !isCurrent(identifier) { return }
+                if NSWorkspace.shared.frontmostApplication?.processIdentifier == application.processIdentifier { break }
+            }
+            guard NSWorkspace.shared.frontmostApplication?.processIdentifier == application.processIdentifier else {
+                showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
+                return
+            }
         }
-
-        guard let queryText, !queryText.isEmpty else {
-            logInfo("No text selected or focused for \(type), skipping action")
-            return
-        }
-
-        // Prepare translation request
-        guard let request = await prepareTranslationRequest(queryText: queryText, type: type) else {
-            return
-        }
-
-        // Execute the streaming service
-        await performStreamingService(request: request, elementInfo: elementInfo)
-    }
-
-    // MARK: - Helper Methods
-
-    /// Prepare translation request from text field information
-    /// - Parameters:
-    ///   - elementInfo: Information about the current focused element
-    ///   - type: The type of processing (translate or polish)
-    /// - Returns: A configured TranslationRequest or nil if preparation fails
-    private func prepareTranslationRequest(
-        queryText: String,
-        type: ProcessingType
-    ) async
-        -> TranslationRequest? {
-        // Detect language and target
-        let queryModel = try? await DetectManager().detectText(queryText)
-        guard let detectedLanguage = queryModel?.detectedLanguage,
-              let targetLanguage = queryModel?.queryTargetLanguage
-        else {
-            logError("Failed to detect target language, skipping \(type) and replace")
-            return nil
-        }
-
-        // Create base request
-        var request = TranslationRequest(
-            text: queryText,
-            sourceLanguage: detectedLanguage.code,
-            targetLanguage: targetLanguage.code,
-            serviceType: "",
-            queryType: .translation
+        let elementInfo = await systemUtility.focusedElementInfo(
+            enableSelectAll: enableSelectAll
         )
-
-        // Set service type based on processing type
-        switch type {
-        case .translate:
-            request.serviceType = translateService.serviceType().rawValue
-        case .polish:
-            request.serviceType = polishService.serviceType().rawValue
+        guard isCurrent(identifier) else { return }
+        var capturedText = elementInfo.focusedText
+        if capturedText?.isEmpty ?? true {
+            capturedText = await systemUtility.getSelectedText()
         }
-
-        return request
-    }
-
-    // MARK: - Streaming Service Methods
-
-    /// Perform translation or polishing using a streaming service
-    private func performStreamingService(
-        request: TranslationRequest,
-        elementInfo: FocusedElementInfo
-    ) async {
-        guard let service = QueryServiceFactory.shared.service(withTypeId: request.serviceType)
-        else {
-            logError("Service type \(request.serviceType) not found")
+        guard isCurrent(identifier) else { return }
+        guard NSWorkspace.shared.frontmostApplication?.processIdentifier == application.processIdentifier else {
+            showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
             return
         }
 
-        guard let streamService = service as? StreamService else {
-            logError("\(service.name()) does not support streaming")
+        let element = try? Application(application)?.focusedUIElement()
+        if let originalElement {
+            guard element == originalElement, (try? element?.value()) == originalText else {
+                showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
+                return
+            }
+        }
+        if let originalRange {
+            let expectedRange = enableSelectAll && originalRange.length == 0
+                ? CFRange(location: 0, length: (originalText as NSString?)?.length ?? 0) : originalRange
+            guard let range = try? element?.selectedTextRange(),
+                  range.location == expectedRange.location, range.length == expectedRange.length
+            else {
+                showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
+                return
+            }
+        }
+        // Prefer the untrimmed AX selection so validation and replacement refer to the exact UTF-16 range.
+        let selectedText: String? = try? element?.attribute(.selectedText)
+        let queryText = selectedText?.isEmpty == false ? selectedText : capturedText
+        guard let queryText, !queryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            showNotice(NSLocalizedString("replacement.error.no_selection", comment: ""), identifier: identifier)
             return
         }
 
-        logInfo("Using model: \(streamService.model)")
-
+        let context = originalElement != nil && originalRange != nil
+            ? ReplacementContext(application: application, text: queryText) : nil
         do {
-            try Task.checkCancellation()
-            let contentStream = try await streamService.contentStreamTranslate(request: request)
-            try Task.checkCancellation()
-            await replaceTextWithStream(contentStream, elementInfo: elementInfo)
-        } catch {
-            if Task.isCancelled {
-                logInfo("Streaming task cancelled")
+            let model = try await DetectManager().detectText(queryText)
+            guard isCurrent(identifier) else { return }
+            let source = model.detectedLanguage
+            guard source != .auto else {
+                showNotice(NSLocalizedString("replacement.error.detect_language", comment: ""), identifier: identifier)
+                return
+            }
+
+            if type == .translate, source == .english {
+                await previewTranslations(queryText, context: context, identifier: identifier)
             } else {
-                logError("stream failed: \(error.localizedDescription)")
+                let target = type == .polish ? source
+                    : (source == .simplifiedChinese ? .english : model.queryTargetLanguage)
+                let service: StreamService = type == .polish ? PolishingService() : BuiltInAIService()
+                services.append(service)
+                do {
+                    let result = try await completedText(queryText, from: source, to: target, service: service)
+                    guard isCurrent(identifier) else { return }
+                    await replaceDirectly(result, target: target, context: context, identifier: identifier)
+                } catch {
+                    guard isCurrent(identifier) else { return }
+                    let preview = makePreview(languages: [target], context: context, identifier: identifier)
+                    preview.fail(target, error: error)
+                    preview.show()
+                }
+            }
+        } catch {
+            guard isCurrent(identifier) else { return }
+            showNotice(
+                NSLocalizedString("replacement.error.detect_language", comment: ""),
+                identifier: identifier
+            )
+        }
+    }
+
+    private func previewTranslations(_ text: String, context: ReplacementContext?, identifier: UUID) async {
+        let targets = LanguagePreferences.replacementTargetLanguages
+        let preview = makePreview(languages: targets, context: context, identifier: identifier)
+        if targets.isEmpty {
+            preview.notice = NSLocalizedString("replacement.preview.no_targets", comment: "")
+        }
+        preview.show()
+
+        await withTaskGroup(of: Void.self) { group in
+            for target in targets {
+                let service = BuiltInAIService()
+                services.append(service)
+                group.addTask { @MainActor in
+                    do {
+                        let result = try await self.completedText(text, from: .english, to: target, service: service)
+                        guard self.isCurrent(identifier) else { return }
+                        preview.complete(target, text: result)
+                    } catch {
+                        guard self.isCurrent(identifier) else { return }
+                        preview.fail(target, error: error)
+                    }
+                }
             }
         }
     }
 
-    /// Replace text with streaming data
-    @MainActor
-    private func replaceTextWithStream(
-        _ contentStream: AsyncThrowingStream<String, Error>,
-        elementInfo: FocusedElementInfo
+    /// Accumulates the complete stream so a failed request never leaves partial text in another app.
+    private func completedText(
+        _ text: String,
+        from: Language,
+        to: Language,
+        service: StreamService
+    ) async throws
+        -> String {
+        try Task.checkCancellation()
+        service.queryType = .translation
+        let (prehandled, result) = try await service.prehandleQueryText(text, from: from, to: to)
+        if prehandled, let error = result.error { throw error }
+        try Task.checkCancellation()
+
+        var output = ""
+        for try await chunk in service.contentStreamTranslate(text, from: from, to: to) {
+            try Task.checkCancellation()
+            output += chunk
+        }
+        try Task.checkCancellation()
+        let finalText = service.getFinalResultText(output)
+        guard !finalText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw ReplacementError.emptyResult
+        }
+        return finalText
+    }
+
+    private func replaceDirectly(
+        _ text: String, target: Language, context: ReplacementContext?, identifier: UUID
     ) async {
-        logInfo("Replacing text with streaming content")
-
-        // For avoding polluting user pasteboard content, we need to save and restore it when AX is not supported.
-        let pasteboard = NSPasteboard.general
-        var snapshotItems: [NSPasteboardItem]?
-
-        let isSupportedAX = elementInfo.isSupportedAXElement
-        if !isSupportedAX {
-            snapshotItems = pasteboard.backupItems()
-        }
-
-        do {
-            let textStrategy = systemUtility.textStrategies(for: elementInfo)
-
-            /**
-             - Note:
-             For GitHub web text area, if select all and insert empty string,
-             it will clear the text area and lose focus.
-             So we do not insert empty string.
-             */
-
-            var reuslt = ""
-            for try await content in contentStream where !content.isEmpty {
-                //                logInfo("Received streaming content chunk: \(content.prettyJSONString)")
-
-                reuslt += content
-                await systemUtility.insertText(content, using: textStrategy)
+        var failure: Error?
+        if let context {
+            do {
+                try await context.replace(with: text, fromPreview: false)
+                guard isCurrent(identifier) else { return }
+                cancelCurrentAction()
+                return
+            } catch {
+                failure = error
             }
-            logInfo("Final replacement result: \(reuslt.prettyJSONString)")
-        } catch {
-            logError("Streaming replacement failed: \(error)")
         }
+        guard isCurrent(identifier) else { return }
+        let preview = makePreview(languages: [target], context: nil, identifier: identifier)
+        preview.complete(target, text: text)
+        if let failure { preview.notice = failure.localizedDescription }
+        preview.show()
+    }
 
-        if let snapshotItems, !isSupportedAX {
-            pasteboard.restoreItems(snapshotItems)
+    private func makePreview(
+        languages: [Language], context: ReplacementContext?, identifier: UUID
+    )
+        -> ReplacementPreviewController {
+        let preview = ReplacementPreviewController(
+            languages: languages,
+            canReplace: context != nil,
+            notice: context == nil ? NSLocalizedString("replacement.preview.copy_only", comment: "") : nil
+        )
+        preview.onCancel = { [weak self] in
+            guard self?.operationID == identifier else { return }
+            self?.cancelCurrentAction()
         }
+        preview.onChoose = { [weak self, weak preview] text in
+            guard let self, let preview, let context, operationID == identifier else { return }
+            // A completed row can be selected while the remaining translation requests are running.
+            operationTask?.cancel()
+            services.forEach { $0.cancelStream() }
+            preview.cancelPendingRows()
+            operationTask = Task {
+                do {
+                    try await context.replace(with: text, fromPreview: true)
+                    guard self.isCurrent(identifier) else { return }
+                    self.cancelCurrentAction()
+                } catch {
+                    guard self.isCurrent(identifier) else { return }
+                    preview.canReplace = false
+                    preview.isReplacing = false
+                    preview.notice = error.localizedDescription
+                    preview.show()
+                }
+            }
+        }
+        previewController = preview
+        return preview
+    }
+
+    private func showNotice(_ message: String, identifier: UUID) {
+        guard isCurrent(identifier) else { return }
+        let preview = makePreview(languages: [], context: nil, identifier: identifier)
+        preview.notice = message
+        preview.show()
     }
 }
