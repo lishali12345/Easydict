@@ -17,6 +17,7 @@ private enum ReplacementPreviewLayout {
     static let padding: CGFloat = 12
     static let spacing: CGFloat = 10
     static let closeSize: CGFloat = 28
+    static let actionHeight: CGFloat = 24
     static let screenMargin: CGFloat = 16
     static let chromeHeight = padding * 2 + spacing + closeSize
 }
@@ -265,7 +266,12 @@ private struct ReplacementPreviewView: View {
     // MARK: Private
 
     private func translationRow(_ row: ReplacementPreviewController.Row, index: Int) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let actionInset: CGFloat = if case .completed = row.state {
+            ReplacementPreviewLayout.actionHeight / 2
+        } else {
+            0
+        }
+        return VStack(alignment: .leading, spacing: 0) {
             switch row.state {
             case .loading:
                 HStack(spacing: 8) {
@@ -273,63 +279,33 @@ private struct ReplacementPreviewView: View {
                     Text("replacement.preview.translating")
                         .foregroundStyle(.secondary)
                 }
+                .padding(12)
             case let .completed(text):
                 Text(text)
                     .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                HStack {
-                    Button {
-                        controller.choose(text)
-                    } label: {
-                        HStack(spacing: 6) {
-                            Image(systemSymbol: .arrowLeftArrowRight)
-                            if index < 9 {
-                                Text(verbatim: "⌃\(index + 1)")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .frame(height: 22)
-                        .padding(.horizontal, 4)
-                    }
-                    .buttonStyle(.borderless)
-                    .keyboardShortcut(shortcut(for: index, modifiers: .control))
-                    .accessibilityLabel(Text("replacement.preview.replace"))
-                    .help("replacement.preview.replace")
-                    .disabled(!controller.canReplace || controller.isReplacing)
-                    Spacer(minLength: 8)
-                    Button {
-                        controller.copy(text)
-                    } label: {
-                        HStack(spacing: 6) {
-                            Image(systemSymbol: .docOnDoc)
-                            if index < 9 {
-                                Text(verbatim: "⌘\(index + 1)")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .frame(height: 22)
-                        .padding(.horizontal, 4)
-                    }
-                    .buttonStyle(.borderless)
-                    .keyboardShortcut(shortcut(for: index, modifiers: .command))
-                    .accessibilityLabel(Text("replacement.preview.copy"))
-                    .help("replacement.preview.copy")
-                    .disabled(controller.isReplacing)
-                }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 12)
+                actionButtons(text, index: index)
             case let .failed(message):
                 Text(message)
                     .foregroundStyle(.red)
                     .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)
+                    .padding(12)
             }
         }
         .font(.system(size: 13))
-        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+        .background {
+            // Keep the full action strip in the layout while its lower half extends beyond the card.
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.quaternary.opacity(0.5))
+                .padding(.bottom, actionInset)
+        }
         .overlay(alignment: .topTrailing) {
-            Text(row.language.localizedName)
+            Text(verbatim: "\(row.language.flagEmoji) \(row.language.localizedName)")
                 .font(.system(size: 11, weight: .medium))
                 .padding(.horizontal, 8)
                 .padding(.vertical, 2)
@@ -338,6 +314,51 @@ private struct ReplacementPreviewView: View {
                 .offset(y: -6)
         }
         .padding(.top, 6)
+    }
+
+    private func actionButtons(_ text: String, index: Int) -> some View {
+        HStack(spacing: 4) {
+            Button {
+                controller.choose(text)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemSymbol: .arrowLeftArrowRight)
+                    if index < 9 {
+                        Text(verbatim: "⌃\(index + 1)")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(height: ReplacementPreviewLayout.actionHeight)
+                .padding(.horizontal, 4)
+            }
+            .buttonStyle(.borderless)
+            .keyboardShortcut(shortcut(for: index, modifiers: .control))
+            .accessibilityLabel(Text("replacement.preview.replace"))
+            .help("replacement.preview.replace")
+            .disabled(!controller.canReplace || controller.isReplacing)
+            Button {
+                controller.copy(text)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemSymbol: .docOnDoc)
+                    if index < 9 {
+                        Text(verbatim: "⌘\(index + 1)")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(height: ReplacementPreviewLayout.actionHeight)
+                .padding(.horizontal, 4)
+            }
+            .buttonStyle(.borderless)
+            .keyboardShortcut(shortcut(for: index, modifiers: .command))
+            .accessibilityLabel(Text("replacement.preview.copy"))
+            .help("replacement.preview.copy")
+            .disabled(controller.isReplacing)
+        }
+        .padding(.horizontal, 4)
+        .background(Color(nsColor: .windowBackgroundColor), in: Capsule())
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.trailing, 10)
     }
 
     private func shortcut(for index: Int, modifiers: SwiftUI.EventModifiers) -> KeyboardShortcut? {
