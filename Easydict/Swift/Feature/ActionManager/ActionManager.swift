@@ -142,6 +142,10 @@ class ActionManager: NSObject {
 
         let context = originalElement != nil && originalRange != nil
             ? ReplacementContext(application: application, text: queryText) : nil
+        logInfo(
+            "Replacement context: app=\(application.bundleIdentifier ?? "unknown"), "
+                + "element=\(originalElement != nil), range=\(originalRange != nil), verified=\(context != nil)"
+        )
         do {
             let model = try await DetectManager().detectText(queryText)
             guard isCurrent(identifier) else { return }
