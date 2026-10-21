@@ -45,6 +45,12 @@ class OpenAIService: BaseOpenAIService {
     override var observeKeys: [Defaults.Key<String>] {
         [apiKeyKey, supportedModelsKey]
     }
+
+    var usesPolishingPrompt = false
+
+    override func chatMessageDicts(_ chatQuery: ChatQueryParam) -> [ChatMessage] {
+        usesPolishingPrompt ? PolishingService.polishingMessages(chatQuery) : super.chatMessageDicts(chatQuery)
+    }
 }
 
 // MARK: - OpenAIModel

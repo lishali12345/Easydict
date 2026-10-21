@@ -25,6 +25,10 @@ class PolishingService: AIToolService {
     // MARK: Internal
 
     override func chatMessageDicts(_ chatQuery: ChatQueryParam) -> [ChatMessage] {
+        Self.polishingMessages(chatQuery)
+    }
+
+    static func polishingMessages(_ chatQuery: ChatQueryParam) -> [ChatMessage] {
         let (text, sourceLanguage, _, _, _) = chatQuery.unpack()
         let prompt = polishingPrompt(text: text, in: sourceLanguage)
 
@@ -60,11 +64,11 @@ class PolishingService: AIToolService {
 
     // MARK: Private
 
-    private let polishingSystemPrompt = """
+    private static let polishingSystemPrompt = """
     You are a text polishing expert skilled in refining and enhancing written content. Your task is to improve the clarity, coherence, grammar, and overall quality of the text while maintaining the original meaning and intent. Focus on correcting grammatical errors, improving sentence structure, and enhancing readability. Ensure the polished text is natural and fluent. Only return the polished text, without including redundant quotes or additional notes.
     """
 
-    private func polishingPrompt(text: String, in sourceLanguage: Language) -> String {
+    private static func polishingPrompt(text: String, in sourceLanguage: Language) -> String {
         "Polish the following \(sourceLanguage.queryLanguageName) text to improve its clarity, coherence, grammar, and overall quality while maintaining the original meaning and intent: \"\"\"\(text)\"\"\""
     }
 }

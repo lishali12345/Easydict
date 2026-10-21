@@ -156,7 +156,8 @@ class ActionManager: NSObject {
             } else {
                 let target = type == .polish ? source
                     : (source == .simplifiedChinese ? .english : model.queryTargetLanguage)
-                let service: StreamService = type == .polish ? PolishingService() : OpenAIService()
+                let service = OpenAIService()
+                service.usesPolishingPrompt = type == .polish
                 services.append(service)
                 do {
                     let result = try await completedText(queryText, from: source, to: target, service: service)
