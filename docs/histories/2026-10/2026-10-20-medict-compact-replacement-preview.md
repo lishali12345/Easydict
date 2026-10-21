@@ -1,6 +1,6 @@
 ## 2026-10-20 | 任务：精简 ME-Dict 多语言替换预览
 
-**Links:** [执行计划](../../exec-plans/active/2026-10-20-medict-compact-replacement-preview.md)
+**Links:** [执行计划](../../exec-plans/completed/2026-10/2026-10-20-medict-compact-replacement-preview.md)
 
 ### 执行上下文
 
@@ -65,7 +65,8 @@
   官方 Easydict 318 个条目摘要仍为
   `c410f3b2808ddec2d6ca6776383c05e5dc484f2484110dcf60b9f04b050b7a7e`。
 - 更新后运行时 `AXIsProcessTrusted()` 为 true，已解除调试附加；无需重新授权。
-- Command+1 实际复制和底部 × 关闭保留原文待用户确认。
+- 2026-10-21 用户实际操作确认：图标正常，Command+1 成功复制第一项印尼语译文，
+  在新空白文档粘贴成功；点击底部 × 关闭浮窗后，原英文保持不变。
 - 右对齐半悬浮与国旗迭代：arm64 Release 构建及固定签名安装通过；
   新包与产物 318 个条目摘要一致，官方应用摘要保持不变，运行时辅助功能权限仍为 true。
 - 布局评估确认操作区完整纳入行高和滚动范围；同样译文高度下每行节约 18 pt，
@@ -75,13 +76,14 @@
   编译后的唯一源码调整是 if 表达式的空白格式，未改变已安装行为；
   随后单文件 SwiftLint 无警告，`git diff --check` 通过。
 - 本轮未新增或扩写测试/预览 helper；原生 UI 自动读取超时，未取得新版运行截图。
+- 收到人工验收结果后完成计划归档。本次仅更新文档，未修改代码或重新安装应用。
 
 ### 受影响文件
 
 - `Easydict/Swift/Feature/ActionManager/ReplacementPreviewController.swift`
-- `docs/exec-plans/active/2026-10-20-medict-compact-replacement-preview.md`
+- `docs/exec-plans/completed/2026-10/2026-10-20-medict-compact-replacement-preview.md`
 - `docs/histories/2026-10/2026-10-20-medict-compact-replacement-preview.md`
 
 ### 后续事项
 
-- 确认本机 Command+数字实际复制，以及 × 关闭保留原文。
+- None；预览优化及必要交互验收已完成。
