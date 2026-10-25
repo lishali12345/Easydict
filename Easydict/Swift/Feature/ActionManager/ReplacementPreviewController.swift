@@ -103,6 +103,7 @@ final class ReplacementPreviewController: NSObject, ObservableObject, NSWindowDe
             window.contentViewController = hostingController
             window.setContentSize(size)
         }
+        ReplacementShortcutManager.shared.setPreviewVisible(true)
         NSApp.activate(ignoringOtherApps: true)
         window?.makeKeyAndOrderFront(nil)
     }
@@ -150,6 +151,7 @@ final class ReplacementPreviewController: NSObject, ObservableObject, NSWindowDe
         window?.close()
         window?.contentViewController = nil
         window = nil
+        ReplacementShortcutManager.shared.setPreviewVisible(false)
     }
 
     func windowWillClose(_ notification: Notification) {
@@ -324,24 +326,6 @@ private struct ReplacementPreviewView: View {
                 HStack(spacing: 6) {
                     Image(systemSymbol: .arrowLeftArrowRight)
                     if index < 9 {
-                        Text(verbatim: "⌃\(index + 1)")
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .frame(height: ReplacementPreviewLayout.actionHeight)
-                .padding(.horizontal, 4)
-            }
-            .buttonStyle(.borderless)
-            .keyboardShortcut(shortcut(for: index, modifiers: .control))
-            .accessibilityLabel(Text("replacement.preview.replace"))
-            .help("replacement.preview.replace")
-            .disabled(!controller.canReplace || controller.isReplacing)
-            Button {
-                controller.copy(text)
-            } label: {
-                HStack(spacing: 6) {
-                    Image(systemSymbol: .docOnDoc)
-                    if index < 9 {
                         Text(verbatim: "⌘\(index + 1)")
                             .foregroundStyle(.secondary)
                     }
@@ -351,6 +335,24 @@ private struct ReplacementPreviewView: View {
             }
             .buttonStyle(.borderless)
             .keyboardShortcut(shortcut(for: index, modifiers: .command))
+            .accessibilityLabel(Text("replacement.preview.replace"))
+            .help("replacement.preview.replace")
+            .disabled(!controller.canReplace || controller.isReplacing)
+            Button {
+                controller.copy(text)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemSymbol: .docOnDoc)
+                    if index < 9 {
+                        Text(verbatim: "⌥\(index + 1)")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(height: ReplacementPreviewLayout.actionHeight)
+                .padding(.horizontal, 4)
+            }
+            .buttonStyle(.borderless)
+            .keyboardShortcut(shortcut(for: index, modifiers: .option))
             .accessibilityLabel(Text("replacement.preview.copy"))
             .help("replacement.preview.copy")
             .disabled(controller.isReplacing)

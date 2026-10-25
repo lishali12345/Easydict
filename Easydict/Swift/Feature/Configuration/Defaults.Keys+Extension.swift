@@ -32,13 +32,25 @@ extension Defaults.Keys {
         default: .english
     )
 
-    static let enabledLanguages = Key<[Language]>(
-        "enabledLanguages",
-        default: [.simplifiedChinese, .english, .indonesian, .malay, .filipino, .vietnamese]
-    )
     static let replacementTargetLanguages = Key<[Language]>(
         "replacementTargetLanguages",
         default: [.indonesian, .malay, .filipino, .vietnamese]
+    )
+
+    static let replacementTranslationServiceID = Key<String>(
+        "replacementTranslationServiceID", default: ServiceType.openAI.rawValue
+    )
+    static let replacementPolishingServiceID = Key<String>(
+        "replacementPolishingServiceID", default: ServiceType.openAI.rawValue
+    )
+    static let replacementMode = Key<String>("replacementMode", default: "candidate")
+    static let replacementInstantShortcuts = Key<[String: KeyCombo]>("replacementInstantShortcuts", default: [:])
+    static let replacementInstantShortcutInitializedLanguages = Key<[String]>(
+        "replacementInstantShortcutInitializedLanguages", default: []
+    )
+    static let replacementShortcutMigrationCompleted = Key<Bool>(
+        "replacementShortcutMigrationCompleted",
+        default: false
     )
 
     static let autoShowQueryIcon = Key<Bool>("EZConfiguration_kAutoSelectTextKey", default: true)

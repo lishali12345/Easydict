@@ -210,6 +210,9 @@ public class StreamService: QueryService {
 
     var hideThinkTagContent: Bool = true
 
+    /// A request-local override that never modifies the configured translation prompt.
+    var usesPolishingPrompt = false
+
     /// The optional OpenAI-compatible reasoning mode for stream services.
     /// Subclasses can override this when the selected provider supports the parameter.
     @nonobjc
@@ -506,6 +509,9 @@ public class StreamService: QueryService {
     /// Base on chat query, convert prompt dict to LLM service prompt model.
     /// If enableCustomPrompt is true, we will use custom prompt, otherwise use system prompt.
     func chatMessageDicts(_ chatQuery: ChatQueryParam) -> [ChatMessage] {
+        if usesPolishingPrompt {
+            return PolishingService.polishingMessages(chatQuery)
+        }
         if enableCustomPrompt {
             var chatMessages: [ChatMessage] = []
             let systemPrompt = replaceCustomPromptWithVariable(systemPrompt)

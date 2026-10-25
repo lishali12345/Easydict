@@ -21,9 +21,14 @@ class ActionManager: NSObject {
 
     @objc static let shared = ActionManager()
 
-    /// Translate Chinese directly to English, or preview configured translations for English.
+    /// Preview the configured target languages for any detected source language.
     func translateAndReplace() async {
         await startAction(.translate)
+    }
+
+    /// Translate directly to the language bound to an instant replacement shortcut.
+    func translateAndReplace(to target: Language) async {
+        await startAction(.instant(target))
     }
 
     /// Polish in the detected source language and replace only after the result is complete.
@@ -35,13 +40,14 @@ class ActionManager: NSObject {
 
     private enum ProcessingType {
         case translate
+        case instant(Language)
         case polish
     }
 
     private let systemUtility = SystemUtility.shared
     private var operationID: UUID?
     private var operationTask: Task<(), Never>?
-    private var services: [StreamService] = []
+    private var services: [QueryService] = []
     private var previewController: ReplacementPreviewController?
 
     private func startAction(_ type: ProcessingType) async {
@@ -57,7 +63,10 @@ class ActionManager: NSObject {
         operationID = nil
         operationTask?.cancel()
         operationTask = nil
-        services.forEach { $0.cancelStream() }
+        services.forEach {
+            $0.queryModel.stopAllService()
+            $0.cancelStream()
+        }
         services.removeAll()
         previewController?.close()
         previewController = nil
@@ -155,24 +164,17 @@ class ActionManager: NSObject {
                 return
             }
 
-            if type == .translate, source == .english {
-                await previewTranslations(queryText, context: context, identifier: identifier)
-            } else {
-                let target = type == .polish ? source
-                    : (source == .simplifiedChinese ? .english : model.queryTargetLanguage)
-                let service = OpenAIService()
-                service.usesPolishingPrompt = type == .polish
-                services.append(service)
-                do {
-                    let result = try await completedText(queryText, from: source, to: target, service: service)
-                    guard isCurrent(identifier) else { return }
-                    await replaceDirectly(result, target: target, context: context, identifier: identifier)
-                } catch {
-                    guard isCurrent(identifier) else { return }
-                    let preview = makePreview(languages: [target], context: context, identifier: identifier)
-                    preview.fail(target, error: serviceError(error, from: service))
-                    preview.show()
-                }
+            switch type {
+            case .translate:
+                await previewTranslations(queryText, from: source, context: context, identifier: identifier)
+            case let .instant(target):
+                await processDirectly(
+                    queryText, from: source, destination: (target, false), context: context, identifier: identifier
+                )
+            case .polish:
+                await processDirectly(
+                    queryText, from: source, destination: (source, true), context: context, identifier: identifier
+                )
             }
         } catch {
             guard isCurrent(identifier) else { return }
@@ -183,7 +185,32 @@ class ActionManager: NSObject {
         }
     }
 
-    private func previewTranslations(_ text: String, context: ReplacementContext?, identifier: UUID) async {
+    private func processDirectly(
+        _ text: String, from: Language, destination: (target: Language, polishing: Bool),
+        context: ReplacementContext?, identifier: UUID
+    ) async {
+        let (target, polishing) = destination
+        do {
+            let service = try ReplacementService.configuredService(polishing: polishing)
+            services.append(service)
+            do {
+                let result = try await ReplacementService.completedText(text, from: from, to: target, service: service)
+                guard isCurrent(identifier) else { return }
+                await replaceDirectly(result, target: target, context: context, identifier: identifier)
+            } catch {
+                throw ReplacementService.error(error, from: service)
+            }
+        } catch {
+            guard isCurrent(identifier) else { return }
+            let preview = makePreview(languages: [target], context: context, identifier: identifier)
+            preview.fail(target, error: error)
+            preview.show()
+        }
+    }
+
+    private func previewTranslations(
+        _ text: String, from: Language, context: ReplacementContext?, identifier: UUID
+    ) async {
         let targets = LanguagePreferences.replacementTargetLanguages
         let preview = makePreview(languages: targets, context: context, identifier: identifier)
         if targets.isEmpty {
@@ -193,67 +220,26 @@ class ActionManager: NSObject {
 
         await withTaskGroup(of: Void.self) { group in
             for target in targets {
-                let service = OpenAIService()
-                services.append(service)
-                group.addTask { @MainActor in
-                    do {
-                        let result = try await self.completedText(text, from: .english, to: target, service: service)
-                        guard self.isCurrent(identifier) else { return }
-                        preview.complete(target, text: result)
-                    } catch {
-                        guard self.isCurrent(identifier) else { return }
-                        preview.fail(target, error: self.serviceError(error, from: service))
+                do {
+                    let service = try ReplacementService.configuredService(polishing: false)
+                    services.append(service)
+                    group.addTask { @MainActor in
+                        do {
+                            let result = try await ReplacementService.completedText(
+                                text, from: from, to: target, service: service
+                            )
+                            guard self.isCurrent(identifier) else { return }
+                            preview.complete(target, text: result)
+                        } catch {
+                            guard self.isCurrent(identifier) else { return }
+                            preview.fail(target, error: ReplacementService.error(error, from: service))
+                        }
                     }
+                } catch {
+                    preview.fail(target, error: error)
                 }
             }
         }
-    }
-
-    /// Accumulates the complete stream so a failed request never leaves partial text in another app.
-    private func completedText(
-        _ text: String,
-        from: Language,
-        to: Language,
-        service: StreamService
-    ) async throws
-        -> String {
-        try Task.checkCancellation()
-        service.queryType = .translation
-        let (prehandled, result) = try await service.prehandleQueryText(text, from: from, to: to)
-        if prehandled, let error = result.error { throw error }
-        try Task.checkCancellation()
-
-        // Custom prompt variables must use this request's languages, not the query window defaults.
-        service.queryModel.userSourceLanguage = from
-        service.queryModel.userTargetLanguage = to
-        logInfo(
-            "Replacement request: service=\(service.serviceType().rawValue), model=\(service.model), "
-                + "from=\(from.rawValue), to=\(to.rawValue)"
-        )
-
-        var output = ""
-        for try await chunk in service.contentStreamTranslate(text, from: from, to: to) {
-            try Task.checkCancellation()
-            output += chunk
-        }
-        try Task.checkCancellation()
-        let finalText = service.getFinalResultText(output)
-        guard !finalText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            throw ReplacementError.emptyResult
-        }
-        logInfo(
-            "Replacement completed: service=\(service.serviceType().rawValue), model=\(service.model), "
-                + "to=\(to.rawValue), characters=\(finalText.count)"
-        )
-        return finalText
-    }
-
-    private func serviceError(_ error: Error, from service: StreamService) -> QueryError {
-        QueryError(
-            type: .api,
-            message: "\(service.name()) (\(service.model))",
-            errorDataMessage: error.localizedDescription
-        )
     }
 
     private func replaceDirectly(
@@ -294,7 +280,10 @@ class ActionManager: NSObject {
             guard let self, let preview, let context, operationID == identifier else { return }
             // A completed row can be selected while the remaining translation requests are running.
             operationTask?.cancel()
-            services.forEach { $0.cancelStream() }
+            services.forEach {
+                $0.queryModel.stopAllService()
+                $0.cancelStream()
+            }
             preview.cancelPendingRows()
             operationTask = Task {
                 do {

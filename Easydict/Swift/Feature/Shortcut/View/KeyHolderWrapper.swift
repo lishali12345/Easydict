@@ -26,6 +26,10 @@ struct KeyHolderWrapper: NSViewRepresentable {
 
     @Binding var confictAlterMessage: ShortcutConfictAlertMessage
 
+    static func dismantleNSView(_ nsView: NSViewType, coordinator: Coordinator) {
+        if let recordView = nsView as? RecordView, recordView.isRecording { recordView.endRecording() }
+    }
+
     func makeCoordinator() -> Coordinator {
         .init(shortcutType: type, confictAlterMessage: $confictAlterMessage)
     }
@@ -67,6 +71,7 @@ extension KeyHolderWrapper {
 
         func recordViewShouldBeginRecording(_: KeyHolder.RecordView) -> Bool {
             MyConfiguration.shared.isRecordingSelectTextShortcutKey = true
+            ReplacementShortcutManager.shared.beginRecording()
             return true
         }
 
@@ -76,6 +81,7 @@ extension KeyHolderWrapper {
 
         func recordViewDidEndRecording(_: RecordView) {
             MyConfiguration.shared.isRecordingSelectTextShortcutKey = false
+            ReplacementShortcutManager.shared.endRecording()
         }
 
         func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo?) {

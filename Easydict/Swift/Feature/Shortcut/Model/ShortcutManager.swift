@@ -26,6 +26,7 @@ class ShortcutManager: NSObject {
 
         // Bind global shortcut actions
         setupGlobalShortcutActions()
+        ReplacementShortcutManager.shared.setup()
     }
 }
 

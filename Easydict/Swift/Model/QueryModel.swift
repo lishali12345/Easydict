@@ -22,6 +22,14 @@ open class QueryModel: NSObject, NSCopying {
         startObservingDefaults()
     }
 
+    /// Creates an isolated request model when global query-window preferences must not apply.
+    init(observesLanguageDefaults: Bool) {
+        super.init()
+        if observesLanguageDefaults {
+            startObservingDefaults()
+        }
+    }
+
     // MARK: Public
 
     // MARK: - NSCopying

@@ -22,6 +22,8 @@ struct AdvancedTab: View {
 
     var body: some View {
         Form {
+            ReplacementSettingsSection()
+
             Section {
                 Toggle(isOn: $enableBetaFeature) {
                     AdvancedTabItemView(
@@ -455,8 +457,6 @@ struct AdvancedTab: View {
 
     // MARK: Private
 
-    @Default(.enabledLanguages) private var enabledLanguages
-
     @Default(.enableBetaFeature) private var enableBetaFeature
 
     @Default(.defaultTTSServiceType) private var defaultTTSServiceType
@@ -500,7 +500,7 @@ struct AdvancedTab: View {
     @Default(.maxWindowHeightPercentage) private var maxWindowHeightPercentageValue
 
     private var enabledLanguageOptions: [Language] {
-        enabledLanguages.filter { Language.allAvailableOptions.contains($0) }
+        Language.allAvailableOptions
     }
 
     /// The directory path shown in the picker row, or a placeholder when unset.

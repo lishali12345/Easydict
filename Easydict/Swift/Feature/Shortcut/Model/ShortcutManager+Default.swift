@@ -26,7 +26,7 @@ extension ShortcutManager {
         Defaults[.silentScreenshotOCRShortcut] = KeyCombo(
             key: .s, cocoaModifiers: [.control, .option, .shift]
         )
-        Defaults[.translateAndReplaceShortcut] = KeyCombo(key: .t, cocoaModifiers: [.control, .option])
+        Defaults[.translateAndReplaceShortcut] = KeyCombo(key: .t, cocoaModifiers: [.command, .shift])
         Defaults[.polishAndReplaceShortcut] = KeyCombo(key: .p, cocoaModifiers: [.control, .option])
     }
 
@@ -67,7 +67,17 @@ extension ShortcutManager {
         HotKeyCenter.shared.unregisterHotKey(with: action.rawValue)
 
         // Ensure the action is a global action and keyCombo is valid
+        guard !ReplacementShortcutManager.shared.isRecording,
+              !ReplacementShortcutManager.shared.isPreviewVisible else { return }
         guard let keyCombo, action.isGlobal else {
+            if action == .translateAndReplace {
+                ReplacementShortcutManager.shared.candidateShortcutUnavailable = false
+            }
+            return
+        }
+
+        if action == .translateAndReplace, ShortcutManager.validateShortcut(keyCombo, excluding: action) {
+            ReplacementShortcutManager.shared.candidateShortcutUnavailable = true
             return
         }
 
@@ -76,10 +86,15 @@ extension ShortcutManager {
             keyCombo: keyCombo
         ) { _ in
             Task { @MainActor in
+                guard !ReplacementShortcutManager.shared.isRecording,
+                      !ReplacementShortcutManager.shared.isPreviewVisible else { return }
                 action.executeAction()
             }
         }
 
-        hotKey.register()
+        let registered = hotKey.register()
+        if action == .translateAndReplace {
+            ReplacementShortcutManager.shared.candidateShortcutUnavailable = !registered
+        }
     }
 }

@@ -14,12 +14,27 @@ import Magnet
 import Sauce
 
 extension ShortcutManager {
-    static func validateShortcut(_ keyCombo: KeyCombo, excluding action: ShortcutAction? = nil) -> Bool {
+    static func validateShortcut(
+        _ keyCombo: KeyCombo, excluding action: ShortcutAction? = nil, excludingReplacementLanguage: String? = nil
+    )
+        -> Bool {
         ShortcutManager.shared.confictShortcutTitle = ""
         return validateShortcutConfictBySystem(keyCombo) ||
             validateShortcutConfictByMenuItem(keyCombo) ||
             validateShortcutConfictBySavedShortcut(keyCombo, excluding: action) ||
+            validateShortcutConfictByReplacement(keyCombo, excludingLanguage: excludingReplacementLanguage) ||
             validateShortcutConfictByCustom(keyCombo)
+    }
+}
+
+extension ShortcutManager {
+    private static func validateShortcutConfictByReplacement(_ keyCombo: KeyCombo, excludingLanguage: String?) -> Bool {
+        guard let title = ReplacementShortcutManager.conflictTitle(for: keyCombo, excludingLanguage: excludingLanguage)
+        else {
+            return false
+        }
+        shared.confictShortcutTitle = title
+        return true
     }
 }
 

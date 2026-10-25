@@ -22,7 +22,6 @@ struct GeneralTab: View {
         Form {
             Section {
                 FirstAndSecondLanguageSettingView()
-                LanguagesSettingView()
                 Picker(
                     "setting.general.language.language_detect_optimize",
                     selection: $languageDetectOptimize
@@ -269,7 +268,7 @@ private struct FirstAndSecondLanguageSettingView: View {
         Group {
             Picker("setting.general.language.first_language", selection: $firstLanguage) {
                 ForEach(
-                    enabledLanguages.filter { Language.allAvailableOptions.contains($0) },
+                    Language.allAvailableOptions,
                     id: \.rawValue
                 ) { option in
                     Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
@@ -278,7 +277,7 @@ private struct FirstAndSecondLanguageSettingView: View {
             }
             Picker("setting.general.language.second_language", selection: $secondLanguage) {
                 ForEach(
-                    enabledLanguages.filter { Language.allAvailableOptions.contains($0) },
+                    Language.allAvailableOptions,
                     id: \.rawValue
                 ) { option in
                     Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
@@ -351,7 +350,6 @@ private struct FirstAndSecondLanguageSettingView: View {
 
     @State private var languageDuplicatedAlert: LanguageDuplicateAlert?
 
-    @Default(.enabledLanguages) private var enabledLanguages
     @Default(.firstLanguage) private var firstLanguage
     @Default(.secondLanguage) private var secondLanguage
 

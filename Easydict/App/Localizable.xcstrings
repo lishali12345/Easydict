@@ -22477,37 +22477,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose the languages shown in menus and the translation previews offered for English text."
+            "value" : "Choose and reorder the target languages for Translate and Replace."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "选择下拉菜单中显示的语言，以及英文转译时提供的译文预览。"
+            "value" : "选择并排列翻译并替换的目标语言。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選擇下拉式選單中顯示的語言，以及英文轉譯時提供的譯文預覽。"
+            "value" : "選擇並排列翻譯並取代的目標語言。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elige los idiomas de los menús y las vistas previas de traducción del texto en inglés."
+            "value" : "Elige y ordena los idiomas de destino para traducir y reemplazar."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メニューに表示する言語と、英語から翻訳する際のプレビュー言語を選択します。"
+            "value" : "翻訳して置換の翻訳先の言語を選択し、順序を変更します。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyberte jazyky v ponukách a náhľadoch prekladu anglického textu."
+            "value" : "Vyberte a usporiadajte cieľové jazyky na preklad a nahradenie."
           }
         }
       }
@@ -22559,37 +22559,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select at least one language to show translation previews for English text."
+            "value" : "Select at least one target language to show translation previews."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "至少选择一种目标语言，才能显示英文的译文预览。"
+            "value" : "至少选择一种目标语言，才能显示译文预览。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "至少選擇一種目標語言，才能顯示英文的譯文預覽。"
+            "value" : "至少選擇一種目標語言，才能顯示譯文預覽。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecciona al menos un idioma para ver las traducciones del texto en inglés."
+            "value" : "Selecciona al menos un idioma de destino para ver las traducciones."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英語の翻訳プレビューを表示するには、言語を1つ以上選択してください。"
+            "value" : "翻訳プレビューを表示するには、翻訳先の言語を1つ以上選択してください。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Na zobrazenie náhľadov prekladu anglického textu vyberte aspoň jeden jazyk."
+            "value" : "Na zobrazenie náhľadov prekladu vyberte aspoň jeden cieľový jazyk."
           }
         }
       }
@@ -22682,37 +22682,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "English translation targets"
+            "value" : "Translation target languages"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英文转译目标语言"
+            "value" : "目标翻译语言"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英文轉譯目標語言"
+            "value" : "目標翻譯語言"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destinos del texto en inglés"
+            "value" : "Idiomas de destino de la traducción"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "英語からの翻訳先"
+            "value" : "翻訳先の言語"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cieľové jazyky anglického textu"
+            "value" : "Cieľové jazyky prekladu"
           }
         }
       }
@@ -23133,37 +23133,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable at least one replacement target language in Language settings."
+            "value" : "Enable at least one target language under Translate and Replace in Advanced settings."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "请在语言设置中启用至少一种英文替换目标语言。"
+            "value" : "请在高级设置的“翻译并替换”中启用至少一种目标语言。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "請在語言設定中啟用至少一種英文取代目標語言。"
+            "value" : "請在進階設定的「翻譯並取代」中啟用至少一種目標語言。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa al menos un idioma de destino en los ajustes de idiomas."
+            "value" : "Activa al menos un idioma de destino en Traducir y reemplazar, en los ajustes avanzados."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "言語設定で、英語からの置換先言語を1つ以上有効にしてください。"
+            "value" : "詳細設定の「翻訳して置換」で、翻訳先の言語を1つ以上有効にしてください。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V nastaveniach jazykov povoľte aspoň jeden cieľový jazyk nahradenia."
+            "value" : "V rozšírených nastaveniach v časti Preklad a nahradenie povoľte aspoň jeden cieľový jazyk."
           }
         }
       }
@@ -23492,6 +23492,703 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zrušené"
+          }
+        }
+      }
+    },
+    "replacement.settings.targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target languages"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目标语言"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目標語言"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idiomas de destino"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻訳先の言語"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cieľové jazyky"
+          }
+        }
+      }
+    },
+    "replacement.settings.translation_service" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Translate and Replace service"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻译并替换使用服务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻譯並取代使用服務"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servicio para traducir y reemplazar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻訳して置換に使用するサービス"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba na preklad a nahradenie"
+          }
+        }
+      }
+    },
+    "replacement.settings.polishing_service" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polish and Replace service"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "润色并替换使用服务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "潤飾並取代使用服務"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servicio para mejorar y reemplazar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "推敲して置換に使用するサービス"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba na štylistickú úpravu a nahradenie"
+          }
+        }
+      }
+    },
+    "replacement.settings.mode" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模式选择"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "模式選擇"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モード"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Režim"
+          }
+        }
+      }
+    },
+    "replacement.settings.candidate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Candidate mode"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "候选模式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "候選模式"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo de selección"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "候補モード"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Režim výberu"
+          }
+        }
+      }
+    },
+    "replacement.settings.instant" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant mode"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即时模式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即時模式"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo inmediato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即時モード"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okamžitý režim"
+          }
+        }
+      }
+    },
+    "replacement.settings.candidate_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Using the Translate and Replace shortcut opens a window with translations in your target languages. Use the shortcuts or buttons in each language entry to replace or copy the translation."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通过快捷键触发翻译并替换时，将会弹出目标语言翻译候选框，可通过弹窗界面中目标语言条目中的快捷键或者按钮，选择替换或者拷贝操作"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "透過快速鍵觸發翻譯並取代時，將會彈出目標語言翻譯候選視窗，可透過視窗中目標語言項目的快速鍵或按鈕，選擇取代或拷貝操作。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al usar el atajo de Traducir y reemplazar, se abre una ventana con traducciones a tus idiomas de destino. Usa los atajos o botones de cada idioma para reemplazar o copiar la traducción."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「翻訳して置換」のショートカットを使うと、翻訳先の各言語の候補ウインドウが開きます。各言語の項目にあるショートカットまたはボタンで、置換やコピーを選択できます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skratka na preklad a nahradenie otvorí okno s prekladmi do cieľových jazykov. Pomocou skratiek alebo tlačidiel pri jednotlivých jazykoch môžete preklad vložiť namiesto pôvodného textu alebo skopírovať."
+          }
+        }
+      }
+    },
+    "replacement.settings.instant_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each target language shortcut translates the selected text and replaces it directly. The first nine default to ⌘⇧1–⌘⇧9. The shortcut for opening the candidate window defaults to ⌘⇧T."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用各目标语言的快捷键，将选中文本直接翻译并替换。前九项默认使用 ⌘⇧1～⌘⇧9；打开候选窗口的快捷键默认为 ⌘⇧T。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用各目標語言的快速鍵，將選取文字直接翻譯並取代。前九項預設使用 ⌘⇧1～⌘⇧9；開啟候選視窗的快速鍵預設為 ⌘⇧T。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El atajo de cada idioma traduce el texto seleccionado y lo reemplaza directamente. Los primeros nueve usan ⌘⇧1–⌘⇧9 de forma predeterminada. El atajo predeterminado para abrir la ventana de selección es ⌘⇧T."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各翻訳先の言語のショートカットで、選択したテキストを直接翻訳して置換します。最初の9項目の初期設定は ⌘⇧1〜⌘⇧9 です。候補ウインドウを開くショートカットの初期設定は ⌘⇧T です。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skratka každého cieľového jazyka preloží vybraný text a priamo ho nahradí. Prvých deväť predvolene používa ⌘⇧1–⌘⇧9. Predvolená skratka na otvorenie okna s prekladmi je ⌘⇧T."
+          }
+        }
+      }
+    },
+    "replacement.settings.targets_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose from the full language list and reorder your selected targets. Their order determines the candidate window shortcuts: ⌘1–⌘9 to replace and ⌥1–⌥9 to copy for the first nine entries. Additional entries remain available with the mouse."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可从完整语言列表中选择目标语言并调整顺序。顺序对应候选窗口中的数字快捷键：前九项使用 ⌘1～⌘9 替换、⌥1～⌥9 拷贝；其余条目仍可通过鼠标操作。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可從完整語言列表中選擇目標語言並調整順序。順序對應候選視窗中的數字快速鍵：前九項使用 ⌘1～⌘9 取代、⌥1～⌥9 拷貝；其餘項目仍可透過滑鼠操作。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige idiomas de destino de la lista completa y ordénalos. El orden determina los atajos de la ventana de selección: ⌘1–⌘9 para reemplazar y ⌥1–⌥9 para copiar las primeras nueve opciones. Las demás se pueden usar con el ratón."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての言語から翻訳先を選び、順序を変更できます。順序は候補ウインドウの数字ショートカットに対応します。最初の9項目は ⌘1〜⌘9 で置換、⌥1〜⌥9 でコピーでき、それ以降の項目はマウスで操作できます。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte cieľové jazyky z úplného zoznamu a upravte ich poradie. Poradie určuje skratky v okne s prekladmi: ⌘1–⌘9 na nahradenie a ⌥1–⌥9 na kopírovanie prvých deviatich položiek. Ďalšie položky môžete ovládať myšou."
+          }
+        }
+      }
+    },
+    "replacement.settings.selected_targets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected languages (in order)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已选语言（按顺序）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已選語言（依順序）"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idiomas seleccionados (en orden)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した言語（順序付き）"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybrané jazyky (v poradí)"
+          }
+        }
+      }
+    },
+    "replacement.settings.search_languages" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search languages"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索语言"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋語言"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar idiomas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語を検索"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hľadať jazyky"
+          }
+        }
+      }
+    },
+    "replacement.settings.move_up" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move up"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上移"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上移"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subir"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上へ移動"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posunúť nahor"
+          }
+        }
+      }
+    },
+    "replacement.settings.move_down" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move down"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下移"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下移"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bajar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下へ移動"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posunúť nadol"
+          }
+        }
+      }
+    },
+    "replacement.settings.service_unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose an enabled service"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请选择已启用的服务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請選擇已啟用的服務"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un servicio activado"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有効なサービスを選択"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte povolenú službu"
+          }
+        }
+      }
+    },
+    "replacement.settings.unsupported %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (does not support this action)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@（不支持此操作）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@（不支援此操作）"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (no admite esta acción)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@（この操作には非対応）"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (nepodporuje túto akciu)"
+          }
+        }
+      }
+    },
+    "replacement.settings.shortcut_unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This shortcut is used by another feature or app. Choose a different shortcut."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快捷键被其他功能或应用占用，请重新设置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速鍵已被其他功能或應用程式使用，請重新設定。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra función o aplicación usa este atajo. Elige otro."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このショートカットは別の機能またはアプリで使用されています。別のショートカットを設定してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Túto skratku používa iná funkcia alebo aplikácia. Nastavte inú skratku."
+          }
+        }
+      }
+    },
+    "replacement.error.service_unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected service is disabled or unavailable. Choose an enabled service in Advanced settings."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所选服务已停用或不可用，请在高级设置中选择已启用的服务。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所選服務已停用或無法使用，請在進階設定中選擇已啟用的服務。"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servicio seleccionado está desactivado o no está disponible. Elige un servicio activado en los ajustes avanzados."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したサービスは無効になっているか、利用できません。詳細設定で有効なサービスを選択してください。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybraná služba je vypnutá alebo nedostupná. V rozšírených nastaveniach vyberte povolenú službu."
           }
         }
       }
