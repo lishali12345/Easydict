@@ -31,7 +31,9 @@ class I18nHelper: NSObject {
             return code
         }
 
-        if let localLanguageType = Locale.current.languageType {
+        // Resolve the app's supported localization rather than the regional format locale.
+        if let localization = Bundle.main.preferredLocalizations.first,
+           let localLanguageType = Locale(identifier: localization).languageType {
             return localLanguageType.rawValue
         }
 
