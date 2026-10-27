@@ -1,6 +1,6 @@
 # ME-Dict Apple Silicon 分发流程
 
-- 状态：active
+- 状态：completed
 - 创建日期：2026-10-27
 - 负责人：/root
 - 关联 Issue/PR：none
@@ -36,7 +36,7 @@
 
 ## 风险与决策
 
-- 当前没有有效 Developer ID Application 身份，已请求用户在 Xcode 配置。
+- 用户已配置个人团队 LC4969GPTD 的 Developer ID Application 身份与公证凭据。
 - 公证凭据只使用 Keychain profile；不读取或打包个人应用偏好/密钥。
 - 构建使用独立 DerivedData、显式命令行覆盖签名；不改本机 xcconfig。
 - 公证等待失败保留 submission ID，避免盲目重复上传；成功须检查 Accepted、staple 和 Gatekeeper。
@@ -48,7 +48,7 @@
 - [x] 完成脚本与使用文档。
 - [x] 执行当前环境可完成的构建、签名顺序、DMG 内容验证与审查。
 - [x] 记录脚本交付结果，准备本地提交。
-- [ ] 用户配置 Developer ID Application 和 `ME-Dict-notary` 后执行真实签名、公证与 Gatekeeper 验证。
+- [x] 完成真实 Developer ID archive/export、App/DMG 公证、票据、Gatekeeper 与最终内容验证。
 
 ## 验证
 
@@ -62,10 +62,31 @@
   Applications 软链接、许可证、安装说明及源码归档检查通过；未安装、启动或公开该验证包。
 - Python 语法、相对文档链接、`git diff --check`、无效版本和并发构建拒绝检查通过。
 - review 修复两项：Sparkle ad hoc helper 分层签名；DMG 源码锁定原 commit，公证等待后再校验源码状态。
-  复核无剩余有证据 finding。未新增测试，未执行真实 archive/export、公证与跨机器安装验收。
+  复核无剩余有证据 finding。初次实现时未新增测试，也未执行真实 archive/export、公证与跨机器安装验收。
 - 两份已安装 App 文件哈希与操作前完全一致；日用 ME-Dict 与官方 Easydict 均为 318 项。
-- 当前仍只有 Apple Development 身份；指定 Keychain profile 不存在，真实分发流程明确阻塞，
-  本计划保持 active，后续复用同一任务继续验证。
+- 初次实现时缺少分发证书与公证凭据；本次用户补齐后复用流程完成真实交付。
+
+### 首次真实分发验证
+
+- 版本 `2.24.0 (68)`，源码提交 `3c5210debfba17c8beef3c42353d1e414daa04e0`，
+  run `20261027T062540Z-d5ac5900`；Developer ID 团队 `LC4969GPTD`。
+- 独立 archive/export 成功；14 个 Mach-O 均支持 arm64，主程序仅 arm64，最低 macOS 13.0。
+  固定证书、嵌套签名、Hardened Runtime、安全时间戳、无 get-task-allow、关闭自动更新均通过校验。
+- App 公证 `8a7ae2dd-87ef-4c92-9805-f9c64e937bf8` 为 Accepted。
+- DMG 首次提交在读取 Keychain profile 时失败；用户重新保存后，通过认证的历史记录确认
+  只有 App 提交。备份失败状态及日志、验证原 DMG 哈希后，仅清除未上传 DMG 的提交意图并续跑。
+  未重新编译、未重复提交 App，也未将未知提交结果当作失败直接重传。
+- DMG 公证 `7e552a73-0b3e-4146-9afc-4c0fc30b6792` 为 Accepted；App/DMG
+  staple、票据校验及 Gatekeeper 均通过，manifest 状态为 ready。
+- 最终 `ME-Dict-2.24.0-68-arm64.dmg` 约 60.3 MiB，SHA-256：
+  `0aaebe5f0ca32d0e55e88202dd261fc14ce8e6f763b55ed7c7242a51c1ca0378`。
+- 最终 DMG 只读挂载：App 与已公证导出包逐文件一致，Applications 链接、安装说明、GPLv3
+  许可证和源码归档正确；源码中的 WhatsApp 修复与构建 commit 一致。本机私有签名配置不在源码中。
+- 未安装、启动或注册分发 App。前后本机 ME-Dict 318 项文件摘要均为
+  `84f301bbfe892309432bd074b3d6dcfee78bce1d585d9936f35e246004428d85`，官方 Easydict 均为
+  `c410f3b2808ddec2d6ca6776383c05e5dc484f2484110dcf60b9f04b050b7a7e`。
+- 本次仅补充文档记录，未修改生产源码或打包脚本；未执行跨机器首次安装/覆盖更新验收，
+  此项仍需同事在另一台 Apple Silicon Mac 完成。签名公证不代替辅助功能等首次隐私授权。
 
 ## 完成条件
 

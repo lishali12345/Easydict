@@ -1,6 +1,6 @@
 ## 2026-10-27 | 任务：建立 ME-Dict 独立签名公证与 DMG 分发流程
 
-**Links:** [执行计划（首次真实公证待凭据）](../../exec-plans/active/2026-10-27-medict-distribution.md)
+**Links:** [执行计划](../../exec-plans/completed/2026-10/2026-10-27-medict-distribution.md)
 
 ### 执行上下文
 
@@ -44,6 +44,28 @@
 - 操作前后两份已安装 App 均为 318 项且哈希一致：ME-Dict `ec297b96bc00f9730db7395a3584bfc51c9a0d8f25fa354dac44c8b5ac57a556`，
   官方 Easydict `c410f3b2808ddec2d6ca6776383c05e5dc484f2484110dcf60b9f04b050b7a7e`。
 
+### 首次正式包交付
+
+- 版本 `2.24.0 (68)`，源码提交 `3c5210debfba17c8beef3c42353d1e414daa04e0`，
+  run `20261027T062540Z-d5ac5900`；Developer ID 团队 `LC4969GPTD`。
+- 独立 archive/export 成功；14 个 Mach-O 均支持 arm64，主程序仅 arm64，最低 macOS 13.0。
+  固定证书、嵌套签名、Hardened Runtime、安全时间戳、无 get-task-allow、关闭自动更新均通过校验。
+- App 公证 `8a7ae2dd-87ef-4c92-9805-f9c64e937bf8` 为 Accepted。
+- DMG 首次提交在读取 Keychain profile 时失败；用户重新保存后，通过认证的历史记录确认
+  只有 App 提交。备份失败状态及日志、验证原 DMG 哈希后，仅清除未上传 DMG 的提交意图并续跑。
+  未重新编译、未重复提交 App，也未将未知提交结果当作失败直接重传。
+- DMG 公证 `7e552a73-0b3e-4146-9afc-4c0fc30b6792` 为 Accepted；App/DMG
+  staple、票据校验及 Gatekeeper 均通过，manifest 状态为 ready。
+- 最终 `ME-Dict-2.24.0-68-arm64.dmg` 约 60.3 MiB，SHA-256：
+  `0aaebe5f0ca32d0e55e88202dd261fc14ce8e6f763b55ed7c7242a51c1ca0378`。
+- 最终 DMG 只读挂载：App 与已公证导出包逐文件一致，Applications 链接、安装说明、GPLv3
+  许可证和源码归档正确；源码中的 WhatsApp 修复与构建 commit 一致。本机私有签名配置不在源码中。
+- 未安装、启动或注册分发 App。前后本机 ME-Dict 318 项文件摘要均为
+  `84f301bbfe892309432bd074b3d6dcfee78bce1d585d9936f35e246004428d85`，官方 Easydict 均为
+  `c410f3b2808ddec2d6ca6776383c05e5dc484f2484110dcf60b9f04b050b7a7e`。
+- 本次仅补充文档记录，未修改生产源码或打包脚本；未执行跨机器首次安装/覆盖更新验收，
+  此项仍需同事在另一台 Apple Silicon Mac 完成。签名公证不代替辅助功能等首次隐私授权。
+
 ### 受影响文件
 
 - `scripts/package-medict.py`
@@ -57,8 +79,8 @@
 
 ### 后续事项
 
-- 本机尚无有效 Developer ID Application 证书，`ME-Dict-notary` Keychain profile 不存在。
-  用户完成两项配置后，填写独立 JSON 配置并执行正式 release。
-- 真实 Developer ID archive/export、Apple 公证、票据、Gatekeeper 与另一台 Mac 安装/更新验收尚未完成。
-  当前没有可对外分发的正式 DMG；验证包明确标为 NOT-FOR-DISTRIBUTION，未上传或发布。
-- 保留 active plan，后续在本任务中补齐真实签名、公证证据后归档。
+- 正式 DMG、SHA256SUMS.txt 与 manifest.json 位于本次 run 的 `artifacts/`；未发布远程下载链接。
+- 后续在干净、已提交的 checkout 运行 `python3 scripts/package-medict.py release --version 2.24.0 --build 69`，
+  按实际版本递增构建号；本机忽略的分发配置及 Keychain 凭据可复用。
+- 由同事在另一台 Apple Silicon Mac 验证首次安装、服务配置、权限、实际替换与后续覆盖更新。
+  公证无法代替隐私授权，不保证所有第三方输入框支持直接替换。
