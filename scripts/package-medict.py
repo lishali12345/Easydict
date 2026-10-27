@@ -12,6 +12,34 @@ import uuid
 
 from medict_distribution import (OUTPUT, ROOT, build, create_dmg, load_config, preflight,
                                  run, sha256, signature, verify_app, verify_certificate, write_json)
+from medict_cos import command as cos_command
+
+
+def publish_ready(directory, state, config):
+    """Verify the finalized artifact, then upload or reuse it and print only a verified URL."""
+    expected = f'ME-Dict-{state["version"]}-{state["build"]}-arm64.dmg'
+    if state["status"] != "ready" or state["dmg"] != expected:
+        raise RuntimeError("Publication requires a completed DMG.")
+    if any(state["notarization"][label]["status"] != "Accepted" for label in ("app", "dmg")):
+        raise RuntimeError("App and DMG notarization must both be Accepted.")
+    final = directory / "artifacts" / expected
+    if sha256(final) != state["sha256"]:
+        raise RuntimeError("Completed DMG checksum changed.")
+    signature(final, config)
+    verify_certificate(final, config["certificate_sha1"])
+    run(["xcrun", "stapler", "validate", str(final)], directory / "publish-ticket.log")
+    run(["spctl", "--assess", "--type", "open", "--context", "context:primary-signature",
+         "--verbose=4", str(final)], directory / "publish-gatekeeper.log")
+    state["publish"] = True
+    write_json(directory / "state.json", state)
+    run(cos_command() + ["upload", directory.name], directory / "cos-publish.log")
+    receipt = json.loads((directory / "artifacts/publication.json").read_text())
+    if receipt["status"] != "verified" or receipt["sha256"] != state["sha256"]:
+        raise RuntimeError("COS publication was not verified.")
+    state["publication"] = receipt
+    write_json(directory / "state.json", state)
+    write_json(directory / "artifacts/manifest.json", state)
+    print(f'DOWNLOAD_URL: {receipt["url"]}', flush=True)
 
 
 def notarize(directory, state, label, archive, config, recovered_id=None):
@@ -125,16 +153,21 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("check", help="Validate the signing identity and Keychain notarization profile.")
-    for name in ("build-check", "release"):
-        sub = commands.add_parser(name, help="Unsigned build validation only." if name == "build-check"
-                                  else "Build, sign, notarize and create a distributable DMG.")
+    commands.add_parser("check-publish", help="Check signing, notarization and COS access without uploading.")
+    for name in ("build-check", "release", "publish"):
+        description = {"build-check": "Unsigned build validation only.",
+                       "release": "Build, sign, notarize and create a distributable DMG.",
+                       "publish": "Build, sign, notarize and publish a verified COS download link."}
+        sub = commands.add_parser(name, help=description[name])
         sub.add_argument("--version", required=True)
         sub.add_argument("--build", required=True)
     resume = commands.add_parser("resume", help="Resume notarization using the original binaries and submission IDs.")
     resume.add_argument("run_id", help="Run directory name printed by release, not an arbitrary path.")
     resume.add_argument("--submission-id", help="Recover an upload ID after an interrupted submit response.")
+    upload = commands.add_parser("upload", help="Publish an existing ready DMG without rebuilding.")
+    upload.add_argument("run_id")
     args = parser.parse_args()
-    if args.command in {"build-check", "release"}:
+    if args.command in {"build-check", "release", "publish"}:
         if not re.fullmatch(r"\d+\.\d+\.\d+", args.version):
             parser.error("--version must have three numeric components, for example 2.24.0.")
         if not re.fullmatch(r"[1-9]\d*", args.build):
@@ -145,9 +178,11 @@ def parse_args():
 def main():
     args = parse_args()
     config = None if args.command == "build-check" else load_config()
-    if config:
+    if config and args.command != "upload":
         preflight(config)
-    if args.command == "check":
+    if args.command in {"publish", "check-publish", "upload"}:
+        run(cos_command() + ["check"])
+    if args.command in {"check", "check-publish"}:
         print("Developer ID identity and notarization profile are available.")
         return
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -157,7 +192,7 @@ def main():
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             raise RuntimeError("Another ME-Dict distribution build is running.")
-        if args.command == "resume":
+        if args.command in {"resume", "upload"}:
             if not re.fullmatch(r"[0-9TZ-]+-[a-f0-9]{8}", args.run_id):
                 raise RuntimeError("Invalid run ID.")
             directory = OUTPUT / args.run_id
@@ -169,13 +204,20 @@ def main():
             if state["config"] != config:
                 raise RuntimeError("Signing/profile configuration changed; use the original configuration to resume.")
             if state["status"] == "ready":
+                if args.command == "upload" or state.get("publish"):
+                    publish_ready(directory, state, config)
+                    return
                 final = directory / "artifacts" / state["dmg"]
                 if sha256(final) != state["sha256"]:
                     raise RuntimeError("Completed DMG checksum changed.")
                 run(["xcrun", "stapler", "validate", str(final)])
                 print(f"Already ready: {final}")
                 return
+            if args.command == "upload":
+                raise RuntimeError("DMG is not ready; resume packaging first.")
             finish(directory, state, config, args.submission_id)
+            if state.get("publish"):
+                publish_ready(directory, state, config)
             return
         if config and run(["git", "status", "--porcelain"]).strip():
             raise RuntimeError("Release requires a clean committed checkout; build-check accepts local changes.")
@@ -183,7 +225,8 @@ def main():
         directory = OUTPUT / run_id
         directory.mkdir()
         state = {"status": "building" if config else "build-check", "version": args.version,
-                 "build": args.build, "commit": run(["git", "rev-parse", "HEAD"]).strip(), "config": config}
+                 "build": args.build, "commit": run(["git", "rev-parse", "HEAD"]).strip(), "config": config,
+                 "publish": args.command == "publish"}
         write_json(directory / "state.json", state)
         print(f"Run: {run_id}\nLogs: {directory}", flush=True)
         app = build(directory, args.version, args.build, config)
@@ -194,6 +237,8 @@ def main():
             print(f"Unsigned build check passed: {app}\nNOT FOR DISTRIBUTION; installed apps were not touched.")
             return
         finish(directory, state, config)
+        if state["publish"]:
+            publish_ready(directory, state, config)
 
 
 if __name__ == "__main__":

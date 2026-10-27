@@ -2,7 +2,7 @@
 
 该流程只生成分发产物，不安装、不启动、不注册应用，不读取个人服务偏好或密钥。
 日用版仍使用 [本机更新流程](ME-Dict-local-development.md)；不改 `ME-Dict.local.xcconfig`。
-同事使用说明见 [安装说明](ME-Dict-installation.md)。不包含远程发布和自动更新。
+同事使用说明见 [安装说明](ME-Dict-installation.md)。`publish` 可将 DMG 上传 MeeTar COS；不包含自动更新。
 
 ## 一次性配置
 
@@ -44,6 +44,77 @@
 ```sh
 python3 scripts/package-medict.py check
 ```
+
+## 一条命令发布到 COS
+
+本机签名、公证配置完成后，再一次性配置 COS 工具。复用本机安装的 `meetar-res-admin`
+技能中的上传脚本与本地 `config.yaml`，无需把 COS 密钥复制到本仓库。
+在仓库根目录准备隔离 Python 环境：
+
+```sh
+python3 -m venv .tmp/medict-cos-venv
+.tmp/medict-cos-venv/bin/python -m pip install cos-python-sdk-v5 PyYAML
+```
+
+创建被 Git 忽略的 `ME-Dict.publish.local.json`，只保存工具与凭据文件的路径：
+
+```json
+{
+  "python": ".tmp/medict-cos-venv/bin/python",
+  "uploader": "~/.codex/skills/meetar-res-admin/scripts/upload_to_cos.py",
+  "config": "~/.codex/skills/meetar-res-admin/config.yaml"
+}
+```
+
+路径支持 `~`，相对路径从仓库根目录解析；如本机技能安装位置不同，填写实际路径。
+Python 环境需要有 `cos-python-sdk-v5` 和 `PyYAML`；清理 `.tmp` 后需重新创建环境。
+COS 配置由原工具读取，也沿用其 `TENCENT_COS_*` 环境变量覆盖规则。
+
+只读预检（验证签名身份、公证凭据、COS 依赖与 bucket 访问）：
+
+```sh
+python3 scripts/package-medict.py check-publish
+```
+
+代码提交且工作树干净后，每次迭代只需运行：
+
+```sh
+python3 scripts/package-medict.py publish --version 2.24.0 --build 69
+```
+
+该命令依次构建、Developer ID 签名、App 公证、DMG 打包与公证，然后上传 COS。
+目标固定使用原上传工具的 `file` bucket，保留文件名；对象路径为
+`medict/releases/<version>-<build>/<SHA-256>/ME-Dict-<version>-<build>-arm64.dmg`。
+同一对象已存在时校验并复用，内容不同则报错，绝不覆盖。
+匿名完整下载得到 HTTP 200、正确文件类型及一致的大小和 SHA-256 后，最后输出：
+
+```text
+DOWNLOAD_URL: https://file.meetarapp.com/medict/releases/…/ME-Dict-…-arm64.dmg
+```
+
+链接无临时签名参数，长期可用依赖 COS/CDN 的域名和保留策略。
+运行目录中 `cos-plan.json`、`cos-upload.json`（实际上传时）、`cos-publish.log` 保存上传阶段证据，
+`artifacts/publication.json` 和 `manifest.json` 保存已验证下载链接。
+失败时命令返回非零，不输出成功下载链接；日志/旧回执不能替代本次退出状态。
+
+发布过程的公证、上传或下载校验中断后，执行：
+
+```sh
+python3 scripts/package-medict.py resume <run-id>
+```
+
+`publish` 会保存上传意图，`resume` 在完成公证后自动继续 COS；已有对象只校验复用。
+尚未生成正式包时仍要求原 commit 和干净工作树；DMG 已处于 ready 状态时，可在代码迭代后
+续传原产物，上传前重新核对原签名、票据、Gatekeeper 和哈希。构建尚未完成的失败需重新 publish。
+
+已有通过原 `release` 命令生成的正式包，也可补上传：
+
+```sh
+python3 scripts/package-medict.py upload <run-id>
+```
+
+`upload` 不重编译，不重新提交公证；不能上传 unsigned build-check 产物。
+同事请复制链接到 Safari 下载，再用新下载的 DMG 安装，避免飞书内置下载器添加禁止执行标记。
 
 ## 重复打包
 
@@ -90,7 +161,7 @@ python3 scripts/package-medict.py resume <run-id>
 ```
 
 脚本复用原始文件和 submission ID，校验文件哈希，不会因等待超时重新上传。
-恢复要求原签名配置、原 commit 和干净工作树；如代码已变更，先保存当前工作再恢复原提交，
+未完成打包时，恢复要求原签名配置、原 commit 和干净工作树；如代码已变更，先保存当前工作再恢复原提交，
 或为新代码重新 `release`。构建/导出未完成时修复原因后重新运行 `release`。
 
 极少数情况下，上传已开始但进程未收到 submission ID：查看本次 `*-submit.json`、

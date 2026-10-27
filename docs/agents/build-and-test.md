@@ -61,7 +61,8 @@ Apple 签名身份；不要再用 `CODE_SIGN_IDENTITY=-` 构建并覆盖日用�
 
 ### ME-Dict 分发打包
 
-分发使用 `python3 scripts/package-medict.py`，独立的 Developer ID 配置与
+一条命令发布使用 `python3 scripts/package-medict.py publish --version <版本> --build <构建号>`，
+完成公证后上传 COS 并校验公开下载；`release` 仅生成本地包。两者使用独立的 Developer ID 配置与
 `-medict-distribution` DerivedData，不安装或启动产物；不要运行本机更新脚本来验证分发。
 具体预检、构建、公证、DMG 与恢复命令见
 [分发说明](../user-docs/zh/ME-Dict-distribution.md)。
