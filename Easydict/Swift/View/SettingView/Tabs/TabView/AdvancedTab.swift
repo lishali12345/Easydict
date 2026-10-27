@@ -22,8 +22,6 @@ struct AdvancedTab: View {
 
     var body: some View {
         Form {
-            ReplacementSettingsSection()
-
             Section {
                 Toggle(isOn: $enableBetaFeature) {
                     AdvancedTabItemView(
@@ -33,6 +31,8 @@ struct AdvancedTab: View {
                     )
                 }
             }
+
+            ReplacementSettingsSection()
 
             // Items image color order: blue, green, orange, purple, red, mint, yellow, cyan, indigo
 

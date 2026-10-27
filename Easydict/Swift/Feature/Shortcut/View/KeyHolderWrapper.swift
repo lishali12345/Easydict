@@ -7,6 +7,7 @@
 //
 
 import AppKit
+import Combine
 import Defaults
 import KeyHolder
 import Magnet
@@ -42,6 +43,7 @@ struct KeyHolderWrapper: NSViewRepresentable {
         recordView.clearButtonMode = .whenRecorded
 
         context.coordinator.restoreKeyCombo(recordView)
+        context.coordinator.observeKeyCombo(recordView)
         return recordView
     }
 
@@ -121,6 +123,17 @@ extension KeyHolderWrapper {
             ShortcutManager.shared.bindingGlobalShortcutAction(keyCombo: keyCombo, action: action)
         }
 
+        /// Keep multiple settings entry points in sync without triggering recording callbacks.
+        func observeKeyCombo(_ recordView: RecordView) {
+            guard let key = action.defaultsKey else { return }
+            shortcutObservation = Defaults.publisher(key, options: [])
+                .receive(on: DispatchQueue.main)
+                .sink { [weak recordView] change in
+                    guard let recordView, !recordView.isRecording else { return }
+                    recordView.keyCombo = change.newValue
+                }
+        }
+
         /// Store the key combo for the shortcut type.
         func storeKeyCombo(with keyCombo: KeyCombo?) {
             setKeyCombo(keyCombo)
@@ -129,6 +142,7 @@ extension KeyHolderWrapper {
         // MARK: Private
 
         private var action: ShortcutAction
+        private var shortcutObservation: AnyCancellable?
 
         /// Mapping from ShortcutType to corresponding Defaults.Key
         private var shortcutTypeToDefaultsKey: [ShortcutAction: DefaultsKeyWrapper] {

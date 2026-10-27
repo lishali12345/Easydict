@@ -23619,125 +23619,43 @@
         }
       }
     },
-    "replacement.settings.mode" : {
+    "replacement.settings.enable_instant_shortcuts" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mode"
+            "value" : "Enable instant replacement shortcuts for target languages"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "模式选择"
+            "value" : "启用目标语言即时替换快捷键"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "模式選擇"
+            "value" : "啟用目標語言即時取代快速鍵"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Modo"
+            "value" : "Activar atajos de reemplazo inmediato por idioma de destino"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "モード"
+            "value" : "翻訳先言語の即時置換ショートカットを有効にする"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Režim"
-          }
-        }
-      }
-    },
-    "replacement.settings.candidate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Candidate mode"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "候选模式"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "候選模式"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modo de selección"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "候補モード"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Režim výberu"
-          }
-        }
-      }
-    },
-    "replacement.settings.instant" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Instant mode"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "即时模式"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "即時模式"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modo inmediato"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "即時モード"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Okamžitý režim"
+            "value" : "Povoliť skratky okamžitého nahradenia pre cieľové jazyky"
           }
         }
       }
@@ -23748,37 +23666,37 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Using the Translate and Replace shortcut opens a window with translations in your target languages. Use the shortcuts or buttons in each language entry to replace or copy the translation."
+            "value" : "The Translate and Replace shortcut always opens the target-language candidate window. Use the shortcuts or buttons in each entry to replace or copy a translation. This remains available when instant replacement shortcuts are enabled."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "通过快捷键触发翻译并替换时，将会弹出目标语言翻译候选框，可通过弹窗界面中目标语言条目中的快捷键或者按钮，选择替换或者拷贝操作"
+            "value" : "“翻译并替换”快捷键始终打开目标语言候选窗口，可通过各条目的快捷键或按钮替换或复制译文。启用即时替换快捷键后，仍可使用候选窗口。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "透過快速鍵觸發翻譯並取代時，將會彈出目標語言翻譯候選視窗，可透過視窗中目標語言項目的快速鍵或按鈕，選擇取代或拷貝操作。"
+            "value" : "「翻譯並取代」快速鍵一律開啟目標語言候選視窗，可透過各項目的快速鍵或按鈕取代或複製譯文。啟用即時取代快速鍵後，仍可使用候選視窗。"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al usar el atajo de Traducir y reemplazar, se abre una ventana con traducciones a tus idiomas de destino. Usa los atajos o botones de cada idioma para reemplazar o copiar la traducción."
+            "value" : "El atajo Traducir y reemplazar siempre abre la ventana de idiomas de destino. Usa los atajos o botones de cada entrada para reemplazar o copiar una traducción. La ventana sigue disponible al activar los atajos de reemplazo inmediato."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "「翻訳して置換」のショートカットを使うと、翻訳先の各言語の候補ウインドウが開きます。各言語の項目にあるショートカットまたはボタンで、置換やコピーを選択できます。"
+            "value" : "「翻訳して置換」のショートカットは常に翻訳先言語の候補ウインドウを開きます。各項目のショートカットやボタンで訳文を置換またはコピーできます。即時置換ショートカットを有効にしても候補ウインドウを利用できます。"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skratka na preklad a nahradenie otvorí okno s prekladmi do cieľových jazykov. Pomocou skratiek alebo tlačidiel pri jednotlivých jazykoch môžete preklad vložiť namiesto pôvodného textu alebo skopírovať."
+            "value" : "Skratka Preložiť a nahradiť vždy otvorí okno s prekladmi do cieľových jazykov. Pomocou skratiek alebo tlačidiel pri jednotlivých položkách môžete preklad vložiť alebo skopírovať. Okno zostáva dostupné aj po povolení skratiek okamžitého nahradenia."
           }
         }
       }

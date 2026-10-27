@@ -31,10 +31,17 @@ struct ReplacementSettingsSection: View {
             )
             servicePicker("replacement.settings.polishing_service", selection: $polishingServiceID, polishing: true)
 
-            Picker("replacement.settings.mode", selection: $mode) {
-                Text("replacement.settings.candidate").tag("candidate")
-                Text("replacement.settings.instant").tag("instant")
+            ForEach([ShortcutAction.translateAndReplace, .polishAndReplace]) { action in
+                KeyHolderRowView(
+                    title: action.localizedStringKey(),
+                    action: action,
+                    confictAlterMessage: $shortcutConflict
+                )
             }
+            Text("replacement.settings.candidate_description")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Toggle("replacement.settings.enable_instant_shortcuts", isOn: instantShortcutsEnabled)
             if mode == "instant" {
                 Text("replacement.settings.instant_description")
                     .font(.caption)
@@ -42,10 +49,6 @@ struct ReplacementSettingsSection: View {
                 ForEach(LanguagePreferences.replacementTargetLanguages, id: \.rawValue) { language in
                     ReplacementShortcutRecorder(language: language)
                 }
-            } else {
-                Text("replacement.settings.candidate_description")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
             if shortcutManager.candidateShortcutUnavailable {
                 Text("replacement.settings.shortcut_unavailable")
@@ -56,6 +59,10 @@ struct ReplacementSettingsSection: View {
             Text("menu_translate_and_replace")
         }
         .sheet(isPresented: $showsLanguages) { ReplacementLanguagesSheet() }
+        .keyHolderConfictAlter(
+            Binding(get: { !shortcutConflict.message.isEmpty }, set: { _ in }),
+            $shortcutConflict
+        )
         .onAppear { services = ReplacementService.enabledServices }
         .onReceive(NotificationCenter.default.publisher(for: .serviceHasUpdated).receive(on: DispatchQueue.main)) { _ in
             services = ReplacementService.enabledServices
@@ -66,12 +73,18 @@ struct ReplacementSettingsSection: View {
 
     @State private var showsLanguages = false
     @State private var services: [QueryService] = []
+    @State private var shortcutConflict = ShortcutConfictAlertMessage(title: "", message: "")
     @ObservedObject private var shortcutManager = ReplacementShortcutManager.shared
 
     @Default(.replacementTargetLanguages) private var targets
     @Default(.replacementTranslationServiceID) private var translationServiceID
     @Default(.replacementPolishingServiceID) private var polishingServiceID
     @Default(.replacementMode) private var mode
+
+    // Keep the existing stored values so upgrading preserves instant shortcuts' enabled state.
+    private var instantShortcutsEnabled: Binding<Bool> {
+        Binding(get: { mode == "instant" }, set: { mode = $0 ? "instant" : "candidate" })
+    }
 
     private var targetSummary: String {
         if targets.isEmpty { return String(localized: "setting.languages.empty_targets") }
