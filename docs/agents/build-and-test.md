@@ -59,6 +59,13 @@ Apple 签名身份；不要再用 `CODE_SIGN_IDENTITY=-` 构建并覆盖日用�
 首次从 ad hoc 迁移才使用 `--migrate-from-adhoc`。
 配置方法和验证边界见[本地开发说明](../user-docs/zh/ME-Dict-local-development.md)。
 
+### ME-Dict 分发打包
+
+分发使用 `python3 scripts/package-medict.py`，独立的 Developer ID 配置与
+`-medict-distribution` DerivedData，不安装或启动产物；不要运行本机更新脚本来验证分发。
+具体预检、构建、公证、DMG 与恢复命令见
+[分发说明](../user-docs/zh/ME-Dict-distribution.md)。
+
 ### 通用构建与测试
 
 ```bash
