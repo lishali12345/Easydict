@@ -12,6 +12,7 @@ import Foundation
 @objcMembers
 final class AppBundleIDs: NSObject {
     static let weChat = "com.tencent.xinWeChat"
+    static let whatsApp = "net.whatsapp.WhatsApp"
     static let books = "com.apple.iBooksX"
     static let zenBrowser = "app.zen-browser.zen"
     static let sublimeText = "com.sublimetext.4"

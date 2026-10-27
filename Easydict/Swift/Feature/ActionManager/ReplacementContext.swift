@@ -37,8 +37,9 @@ struct ReplacementContext {
         self.fullText = fullText
         self.selectedRange = range
         self.canSetSelectedText = canSetSelectedText
-        // Chrome web editors can advertise AX writes without updating their editor state.
-        self.usesPasteMenu = application.bundleIdentifier == "com.google.Chrome"
+        // These editors expose AX writes that may not update their actual editing state.
+        self.usesPasteMenu = [AppBundleIDs.googleChrome, AppBundleIDs.whatsApp]
+            .contains(application.bundleIdentifier ?? "")
             && (try? element.role()) == .textArea
         logInfo("Replacement target: app=\(application.bundleIdentifier ?? "unknown"), pasteMenu=\(usesPasteMenu)")
     }
@@ -47,8 +48,13 @@ struct ReplacementContext {
 
     /// Restores the original application, then validates again before a single replacement.
     func replace(with text: String, fromPreview: Bool) async throws {
+        logInfo(
+            "Replacement requested: app=\(application.bundleIdentifier ?? "unknown"), preview=\(fromPreview), pasteMenu=\(usesPasteMenu)"
+        )
         try Task.checkCancellation()
-        guard selectionIsUnchanged else { throw ReplacementError.inputChanged }
+
+        // An inactive Catalyst app may report a different focused AX element.
+        // Revalidate the selection after reactivation, before any write is attempted.
 
         let frontmostPID = NSWorkspace.shared.frontmostApplication?.processIdentifier
         guard frontmostPID == application.processIdentifier
@@ -63,7 +69,8 @@ struct ReplacementContext {
             }
             for _ in 0 ..< 10 {
                 try await Task.sleep(nanoseconds: 50_000_000)
-                if NSWorkspace.shared.frontmostApplication?.processIdentifier == application.processIdentifier {
+                if NSWorkspace.shared.frontmostApplication?.processIdentifier == application.processIdentifier,
+                   selectionIsUnchanged {
                     break
                 }
             }
@@ -123,6 +130,22 @@ struct ReplacementContext {
         return currentRange.location == selectedRange.location && currentRange.length == selectedRange.length
     }
 
+    /// Catalyst menus can omit AXIdentifier, which the general menu lookup requires.
+    private func findPasteMenuItem() throws -> UIElement? {
+        guard let appElement = Application(application) else { return nil }
+        if let item = try appElement.findMenuItem(.paste) { return item }
+        guard application.bundleIdentifier == AppBundleIDs.whatsApp,
+              let menu = try appElement.menu() else { return nil }
+        return try menu.deepFirst { item in
+            guard (try? item.role()) == .menuItem,
+                  (try? item.cmdChar())?.uppercased() == "V",
+                  (try? item.cmdModifiers()) == 0,
+                  let title = try? item.title()
+            else { return false }
+            return SystemMenuItem.paste.matchesTitle(title)
+        }
+    }
+
     /// Uses the original app's Paste action only while the captured selection is still intact.
     private func pasteVerifiedText(_ text: String, expectedText: String) async throws {
         guard expectedText != fullText else { return }
@@ -150,7 +173,7 @@ struct ReplacementContext {
 
         let pasteItem: UIElement
         do {
-            guard let item = try Application(application)?.findMenuItem(.paste),
+            guard let item = try findPasteMenuItem(),
                   try item.isEnabled() == true
             else { throw ReplacementError.writeFailed }
             pasteItem = item
@@ -173,7 +196,7 @@ struct ReplacementContext {
             logInfo("Replacement Paste action reported an error; waiting for writeback verification")
         }
 
-        // Once Paste is dispatched, cancellation must not restore the clipboard before Chrome consumes it.
+        // Once Paste is dispatched, cancellation must not restore the clipboard before the target consumes it.
         // This bounded, unstructured task finishes readback even if the replacement request is cancelled.
         let completed = await Task { @MainActor in
             for _ in 0 ..< 20 {
@@ -184,7 +207,7 @@ struct ReplacementContext {
         }.value
         guard completed else { throw ReplacementError.writeFailed }
         canRestoreClipboard = true
-        logInfo("Replacement writeback verified: pasteMenu=true")
+        logInfo("Replacement writeback verified: app=\(application.bundleIdentifier ?? "unknown"), pasteMenu=true")
         try Task.checkCancellation()
     }
 }
