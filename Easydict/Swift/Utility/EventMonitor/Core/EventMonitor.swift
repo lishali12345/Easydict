@@ -529,9 +529,10 @@ extension EventMonitor {
     }
 
     private func handleSelectedText(_ text: String?) {
-        let trimmed = (text ?? "").removeInvisibleChar().trim()
-        guard !trimmed.isEmpty else { return }
-        let shouldShow = (actionType == .autoSelectQuery) && shouldShowAutoQueryIcon(for: trimmed)
+        let selectedText = text ?? ""
+        let hasText = !selectedText.removeInvisibleChar().trim().isEmpty
+        guard hasText else { return }
+        let shouldShow = (actionType == .autoSelectQuery) && shouldShowAutoQueryIcon(for: selectedText)
         let updateUI = { [weak self] in
             guard let self else { return }
             guard shouldShow else {
@@ -543,9 +544,9 @@ extension EventMonitor {
             mouseMovedThrottleGate.reset()
             popButtonController.isPopButtonVisible = true
             startHighFrequencyEventMonitor()
-            selectedText = trimmed
+            self.selectedText = selectedText
             cancelDismissPopButton()
-            selectedTextBlock?(trimmed)
+            selectedTextBlock?(selectedText)
         }
 
         if Thread.isMainThread {

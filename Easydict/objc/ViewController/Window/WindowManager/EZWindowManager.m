@@ -334,16 +334,12 @@ static EZWindowManager *_instance;
 
      !!!: text may be @"" when no selected text in Chrome, so we need to handle it.
      */
-    queryText = [[queryText ns_removeInvisibleChar] ns_trim];
-    if (queryText.length == 0) {
+    // Check for a missing selection without changing the captured text.
+    if ([[queryText ns_removeInvisibleChar] ns_trim].length == 0) {
         BOOL isSelectionQuery = actionType == EZActionTypeShortcutQuery || actionType == EZActionTypeAutoSelectQuery;
         if (isSelectionQuery) {
             queryText = MyConfiguration.shared.keepPrevResultWhenEmpty ? nil : @"";
         }
-    }
-    // Remove the excerpt info of the books only when the frontmost app is Books.app
-    else {
-        queryText = [queryText removeBooksExcerptInfo];
     }
         
     self.selectedText = queryText;

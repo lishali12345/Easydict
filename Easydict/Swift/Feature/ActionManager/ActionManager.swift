@@ -155,32 +155,24 @@ class ActionManager: NSObject {
             "Replacement context: app=\(application.bundleIdentifier ?? "unknown"), "
                 + "element=\(originalElement != nil), range=\(originalRange != nil), verified=\(context != nil)"
         )
+        var source: Language = .auto
         do {
-            let model = try await DetectManager().detectText(queryText)
-            guard isCurrent(identifier) else { return }
-            let source = model.detectedLanguage
-            guard source != .auto else {
-                showNotice(NSLocalizedString("replacement.error.detect_language", comment: ""), identifier: identifier)
-                return
-            }
-
-            switch type {
-            case .translate:
-                await previewTranslations(queryText, from: source, context: context, identifier: identifier)
-            case let .instant(target):
-                await processDirectly(
-                    queryText, from: source, destination: (target, false), context: context, identifier: identifier
-                )
-            case .polish:
-                await processDirectly(
-                    queryText, from: source, destination: (source, true), context: context, identifier: identifier
-                )
-            }
+            source = try await DetectManager().detectText(queryText).detectedLanguage
         } catch {
-            guard isCurrent(identifier) else { return }
-            showNotice(
-                NSLocalizedString("replacement.error.detect_language", comment: ""),
-                identifier: identifier
+            logInfo("Replacement language detection was unavailable; preserving automatic source language")
+        }
+        guard isCurrent(identifier), !Task.isCancelled else { return }
+
+        switch type {
+        case .translate:
+            await previewTranslations(queryText, from: source, context: context, identifier: identifier)
+        case let .instant(target):
+            await processDirectly(
+                queryText, from: source, destination: (target, false), context: context, identifier: identifier
+            )
+        case .polish:
+            await processDirectly(
+                queryText, from: source, destination: (source, true), context: context, identifier: identifier
             )
         }
     }

@@ -136,7 +136,8 @@ class NiuTransService: QueryService {
         to: Language
     ) async throws
         -> QueryResult {
-        try await withCheckedThrowingContinuation { continuation in
+        guard text.count <= 5000 else { throw QueryError.textTooLong(maximum: 5000) }
+        return try await withCheckedThrowingContinuation { continuation in
             niuTransTranslate(text, from: from, to: to) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
@@ -177,7 +178,7 @@ extension NiuTransService {
 
         let params: [String: Any] = [
             "apikey": apiKey,
-            "src_text": text.truncated(5000),
+            "src_text": text,
             "from": sourceLangCode,
             "to": targetLangCode,
             "source": "Easydict",

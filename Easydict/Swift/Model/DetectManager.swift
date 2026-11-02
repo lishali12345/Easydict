@@ -385,7 +385,8 @@ public final class DetectManager: NSObject {
             handleDetectedLanguage(
                 detectedLanguage,
                 queryText: queryText,
-                error: error ?? fallbackError,
+                // Optimization failure must not prevent a request using the local result or auto.
+                error: error == nil ? nil : fallbackError,
                 completion: completion
             )
         }

@@ -46,11 +46,12 @@ class GoogleService: QueryService {
         to: Language
     ) async throws
         -> QueryResult {
-        let processedText = maxTextLength(text, fromLanguage: from)
+        let maximum = EZLanguageManager.shared().isChineseLanguage(from) ? 1800 : 5000
+        guard text.count <= maximum else { throw QueryError.textTooLong(maximum: maximum) }
 
         // TODO: We should the Google web translate API instead.
         // Two APIs are hard to maintain, and they may differ with web translation.
-        let queryDictionary = processedText.shouldQueryDictionary(
+        let queryDictionary = text.shouldQueryDictionary(
             withLanguage: from,
             maxWordCount: 1
         )
@@ -66,9 +67,9 @@ class GoogleService: QueryService {
 
             if queryDictionary {
                 // This API can get word info, like pronunciation.
-                webAppTranslate(processedText, from: from, to: to, completion: completion)
+                webAppTranslate(text, from: from, to: to, completion: completion)
             } else {
-                gtxTranslate(processedText, from: from, to: to, completion: completion)
+                gtxTranslate(text, from: from, to: to, completion: completion)
             }
         }
     }

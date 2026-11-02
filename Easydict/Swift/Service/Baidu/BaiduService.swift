@@ -176,13 +176,13 @@ final class BaiduService: QueryService {
             throw QueryError.error(type: .parameter, message: "翻译的文本为空")
         }
 
-        let trimmedText = (text as NSString).ns_trimToMaxLength(5000) as String
+        guard text.count <= 5000 else { throw QueryError.textTooLong(maximum: 5000) }
         apiTranslate.result = result
         let fromCode = languageCode(forLanguage: from).map(Language.init(rawValue:)) ?? from
         let toCode = languageCode(forLanguage: to).map(Language.init(rawValue:)) ?? to
 
         return try await withCheckedThrowingContinuation { continuation in
-            apiTranslate.translate(trimmedText, from: fromCode, to: toCode) { [weak self] result, error in
+            apiTranslate.translate(text, from: fromCode, to: toCode) { [weak self] result, error in
                 guard let self else {
                     continuation.resume(
                         throwing: QueryError.error(
@@ -321,14 +321,13 @@ final class BaiduService: QueryService {
 
     /// Requests detected language for the given text.
     private func requestDetectedLanguage(for text: String) async throws -> Language {
-        let queryString = (text as NSString).ns_trimToMaxLength(73) as String
         let url = "\(kBaiduTranslateURL)/langdetect"
 
         do {
             let response = try await AF.request(
                 url,
                 method: .post,
-                parameters: ["query": queryString],
+                parameters: ["query": text],
                 encoder: URLEncodedFormParameterEncoder.default
             )
             .validate()

@@ -15,11 +15,6 @@ import SwiftUI
 struct AdvancedTab: View {
     // MARK: Internal
 
-    // Query text processing
-    @Default(.replaceNewlineWithSpace) var replaceNewlineWithSpace: Bool
-    @Default(.automaticallyRemoveCodeCommentSymbols) var automaticallyRemoveCodeCommentSymbols: Bool
-    @Default(.automaticWordSegmentation) var automaticWordSegmentation: Bool
-
     var body: some View {
         Form {
             Section {
@@ -198,51 +193,8 @@ struct AdvancedTab: View {
                         subtitleText: "setting.advance.auto_select_all_text_field_text_desc"
                     )
                 }
-                Toggle(isOn: $enableRemoveBooksExcerptInfo) {
-                    AdvancedTabItemView(
-                        color: .mint,
-                        icon: .book,
-                        labelText: "setting.advance.enable_remove_books_excerpt_info"
-                    )
-                }
             } header: {
                 Text("setting.advance.header.text_selection_and_replacement")
-            }
-
-            // Query text processing
-            Section {
-                Toggle(isOn: $replaceNewlineWithSpace) {
-                    AdvancedTabItemView(
-                        color: .blue,
-                        icon: .arrowForwardSquare,
-                        labelText: "setting.advance.automatically_replace_newline_with_space"
-                    )
-                }
-                Toggle(isOn: $automaticallyRemoveCodeCommentSymbols) {
-                    AdvancedTabItemView(
-                        color: .green,
-                        icon: .chevronLeftForwardslashChevronRight,
-                        labelText: "setting.advance.automatically_remove_code_comment_symbols"
-                    )
-                }
-                Toggle(isOn: $automaticWordSegmentation) {
-                    AdvancedTabItemView(
-                        color: .orange,
-                        icon: .textWordSpacing,
-                        labelText: "setting.advance.automatically_split_words"
-                    )
-                }
-            } header: {
-                Text("setting.advance.header.query_text_processing")
-            } footer: {
-                HStack {
-                    Text("setting.advance.footer.query_text_processing_desc")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        .padding(.leading, 10)
-
-                    Spacer()
-                }
             }
 
             // OCR settings section
@@ -475,7 +427,6 @@ struct AdvancedTab: View {
     @Default(.forceGetSelectedTextType) private var forceGetSelectedTextType
 
     // mouse select from Books.app
-    @Default(.enableRemoveBooksExcerptInfo) private var enableRemoveBooksExcerptInfo
 
     // Mouse select query
     @Default(.autoShowQueryIcon) private var autoShowQueryIcon

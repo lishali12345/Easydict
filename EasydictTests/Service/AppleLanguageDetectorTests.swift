@@ -142,13 +142,13 @@ struct AppleLanguageDetectorTests {
 
     @Test("Numeric Text Detection", .tags(.apple, .unit))
     func testNumericTextDetection() {
-        // Pure numbers should fallback to English as default
-        #expect(detector.detectLanguage(text: "123456") == .english)
-        #expect(detector.detectLanguage(text: "99.99") == .english)
+        // Numbers have no identifiable natural language.
+        #expect(detector.detectLanguage(text: "123456") == .auto)
+        #expect(detector.detectLanguage(text: "99.99") == .auto)
 
         // Numbers with currency
-        #expect(detector.detectLanguage(text: "$10.99") == .english)
-        #expect(detector.detectLanguage(text: "€15.50") == .english)
+        #expect(detector.detectLanguage(text: "$10.99") == .auto)
+        #expect(detector.detectLanguage(text: "€15.50") == .auto)
     }
 
     @Test("Empty and Whitespace Text Detection", .tags(.apple, .unit))
@@ -397,17 +397,36 @@ struct AppleLanguageDetectorTests {
 
     @Test("Special Characters and Symbols", .tags(.apple, .unit))
     func testSpecialCharactersAndSymbols() {
-        // Emoji-heavy text should default to English
-        #expect(detector.detectLanguage(text: "😀😃😄😁😆😅😂🤣") == .english)
+        // Emoji-only text has no identifiable natural language.
+        #expect(detector.detectLanguage(text: "😀😃😄😁😆😅😂🤣") == .auto)
 
-        // Punctuation-heavy text should default to English
-        #expect(detector.detectLanguage(text: "!@#$%^&*()_+-=[]{}|;':\",./<>?") == .english)
+        // Punctuation-only text has no identifiable natural language.
+        #expect(detector.detectLanguage(text: "!@#$%^&*()_+-=[]{}|;':\",./<>?") == .auto)
 
         // Mixed symbols with text
         #expect(detector.detectLanguage(text: "Hello! 😀👍🎉") == .english)
 
         // Chinese with emojis - Chinese characters should dominate
         #expect(detector.detectLanguage(text: "你好！😀👍🎉") == .simplifiedChinese)
+    }
+
+    @Test("Decorated nickname detection terminates and resets analysis", .tags(.apple, .unit))
+    func testDecoratedNicknameDoesNotRecurse() {
+        let nickname = "👑_ɦαɳƭµ ૨เɱɓα🐒"
+        let firstResult = detector.detectLanguage(text: nickname)
+
+        // A nickname need not belong to one language, but repeated analysis must finish.
+        for _ in 0 ..< 3 {
+            #expect(detector.detectLanguage(text: nickname) == firstResult)
+            #expect(detector.detectLanguage(text: "") == .auto)
+            #expect(detector.rawProbabilities.isEmpty)
+            #expect(detector.adjustedProbabilities.isEmpty)
+            #expect(detector.chineseCharacterCount == 0)
+            #expect(detector.englishCharacterCount == 0)
+            #expect(!detector.hasMixedScripts)
+            #expect(!detector.isAnalyzed)
+            #expect(detector.detectLanguage(text: "Hello world") == .english)
+        }
     }
 
     @Test("Unusual Text Patterns", .tags(.apple, .unit))

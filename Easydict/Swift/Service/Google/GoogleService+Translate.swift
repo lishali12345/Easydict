@@ -557,10 +557,7 @@ extension GoogleService {
             return
         }
 
-        // 截取一部分识别语言就行
-        let queryString = (text as NSString).trimmingToMaxLength(73)
-
-        sendGTXTranslate(queryString, from: .auto, to: .auto) { responseObject, _, _, error in
+        sendGTXTranslate(text, from: .auto, to: .auto) { responseObject, _, _, error in
             if let error = error {
                 completion(.auto, error)
                 return
@@ -588,10 +585,7 @@ extension GoogleService {
             return
         }
 
-        // 截取一部分识别语言就行
-        let queryString = (text as NSString).trimmingToMaxLength(73)
-
-        sendWebAppTranslate(queryString, from: .auto, to: .auto) { responseObject, _, _, error in
+        sendWebAppTranslate(text, from: .auto, to: .auto) { responseObject, _, _, error in
             if let error = error {
                 completion(.auto, error)
                 return

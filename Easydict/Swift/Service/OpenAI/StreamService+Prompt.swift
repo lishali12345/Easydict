@@ -25,7 +25,10 @@ extension StreamService {
         text: String, from sourceLanguage: Language, to targetLanguage: Language
     )
         -> String {
-        "Translate the following \(sourceLanguage.queryLanguageName) text into \(targetLanguage.queryLanguageName) text: \"\"\"\(text)\"\"\""
+        if sourceLanguage == .auto {
+            return "Identify the language of the following text and translate it into \(targetLanguage.queryLanguageName): \"\"\"\(text)\"\"\""
+        }
+        return "Translate the following \(sourceLanguage.queryLanguageName) text into \(targetLanguage.queryLanguageName) text: \"\"\"\(text)\"\"\""
     }
 
     func translationMessages(_ chatQuery: ChatQueryParam) -> [ChatMessage] {
@@ -729,12 +732,13 @@ extension StreamService {
             with: queryModel.queryTargetLanguage.rawValue
         )
         runtimePrompt = runtimePrompt.replacingOccurrences(
-            of: "${{queryText}}",
-            with: queryModel.queryText
-        )
-        runtimePrompt = runtimePrompt.replacingOccurrences(
             of: "${{firstLanguage}}",
             with: MyConfiguration.shared.firstLanguage.rawValue
+        )
+        // Insert source text last so template-like content inside it stays literal.
+        runtimePrompt = runtimePrompt.replacingOccurrences(
+            of: "${{queryText}}",
+            with: queryModel.queryText
         )
         return runtimePrompt
     }

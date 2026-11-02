@@ -69,7 +69,10 @@ class PolishingService: AIToolService {
     """
 
     private static func polishingPrompt(text: String, in sourceLanguage: Language) -> String {
-        "Polish the following \(sourceLanguage.queryLanguageName) text to improve its clarity, coherence, grammar, and overall quality while maintaining the original meaning and intent: \"\"\"\(text)\"\"\""
+        if sourceLanguage == .auto {
+            return "Polish the following text to improve its clarity, coherence, grammar, and overall quality while preserving its original language, meaning, and intent: \"\"\"\(text)\"\"\""
+        }
+        return "Polish the following \(sourceLanguage.queryLanguageName) text to improve its clarity, coherence, grammar, and overall quality while maintaining the original meaning and intent: \"\"\"\(text)\"\"\""
     }
 }
 

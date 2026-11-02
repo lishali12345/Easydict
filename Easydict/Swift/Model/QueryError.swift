@@ -123,6 +123,14 @@ public class QueryError: NSError, LocalizedError, AbortError, @unchecked Sendabl
         return errorString
     }
 
+    /// Rejects an oversized request instead of silently dropping part of its input.
+    public static func textTooLong(maximum: Int) -> QueryError {
+        let message = String(
+            format: NSLocalizedString("query.error.text_too_long", comment: ""), maximum
+        )
+        return .init(type: .parameter, message: message)
+    }
+
     public static func error(type: ErrorType) -> QueryError {
         .init(type: type)
     }

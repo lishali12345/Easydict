@@ -669,6 +669,8 @@
 		4A4AD874D0B9446CA4EB9873 /* ReplacementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB63622ACE42F0BECBC1DD /* ReplacementService.swift */; };
 		DEC8C93B1106447FA7FFA5EC /* ReplacementShortcutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE1E7C646B243EEB8F102F0 /* ReplacementShortcutManager.swift */; };
 		77DB0D0F69014582B585BFA2 /* ReplacementShortcutRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E417F5299148CDB7AEEB45 /* ReplacementShortcutRecorder.swift */; };
+		CBA5A101ABA94B3DAA9DBE72 /* QueryModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8014F97B631A4206A4BA2065 /* QueryModelTests.swift */; };
+		18B54E390E0B4D939026313F /* StreamServicePromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D59A607654465EBAEE7853 /* StreamServicePromptTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1461,6 +1463,8 @@
 		C8DB63622ACE42F0BECBC1DD /* ReplacementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementService.swift"; sourceTree = "<group>"; };
 		6EE1E7C646B243EEB8F102F0 /* ReplacementShortcutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementShortcutManager.swift"; sourceTree = "<group>"; };
 		91E417F5299148CDB7AEEB45 /* ReplacementShortcutRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementShortcutRecorder.swift"; sourceTree = "<group>"; };
+		8014F97B631A4206A4BA2065 /* QueryModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryModelTests.swift; sourceTree = "<group>"; };
+		18D59A607654465EBAEE7853 /* StreamServicePromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamServicePromptTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1548,6 +1552,7 @@
 		03022F2F2B370B7100B63209 /* EasydictTests */ = {
 			isa = PBXGroup;
 			children = (
+				8D4FDDE8705245A893CAD251 /* Model */,
 				BE5912DE778CDCD8495CA4E5 /* Feature */,
 				03C408F72EF5CAFB0025A1F0 /* Service */,
 				141F5505BB90A4CC1D55C12A /* Utility */,
@@ -3677,6 +3682,7 @@
 		A20908020000000000000021 /* OpenAI */ = {
 			isa = PBXGroup;
 			children = (
+				18D59A607654465EBAEE7853 /* StreamServicePromptTests.swift */,
 				A20908020000000000000014 /* OpenAIStreamTaskControlTests.swift */,
 			);
 			path = OpenAI;
@@ -3994,6 +4000,14 @@
 				378E73A7EA8FC8FB9C975A63 /* Pods_EasydictTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8D4FDDE8705245A893CAD251 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8014F97B631A4206A4BA2065 /* QueryModelTests.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4423,6 +4437,8 @@
 				03C408F92EF5CB830025A1F0 /* ServiceTests.swift in Sources */,
 				A20908020000000000000004 /* OpenAIStreamTaskControlTests.swift in Sources */,
 				0312584F2E1802650072320C /* AppleLanguageDetectorTests.swift in Sources */,
+				CBA5A101ABA94B3DAA9DBE72 /* QueryModelTests.swift in Sources */,
+				18B54E390E0B4D939026313F /* StreamServicePromptTests.swift in Sources */,
 				03A8846E2F12000100D5C0DE /* TaskTimeoutTests.swift in Sources */,
 				A1D1807E2F8D100100B1C0D1 /* ThrottleGateTests.swift in Sources */,
 				B95E8E65988E4351BF03462E /* UtilityFunctionsTests.swift in Sources */,

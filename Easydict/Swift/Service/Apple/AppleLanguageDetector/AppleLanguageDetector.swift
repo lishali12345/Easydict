@@ -20,7 +20,7 @@ import NaturalLanguage
 /// - Weighted language hints with user preference boost
 /// - Hierarchical post-processing: Chinese/English verification → Mixed content → Short text corrections
 /// - Accurate Chinese simplified/traditional detection
-/// - Mixed script analysis with recursive detection
+/// - Mixed script analysis without rewriting the input
 /// - User preferred language fallback for ambiguous cases
 ///
 /// **Usage:**
@@ -95,7 +95,7 @@ public class AppleLanguageDetector: NSObject {
     public func detectLanguage(text: String) -> Language {
         // Reset analysis state for each detection
         resetAnalysis()
-        return detectLanguageInternal(text: text, applyPostProcessing: true)
+        return detectLanguageInternal(text: text)
     }
 
     /// Get detailed language detection probabilities for analysis and debugging
@@ -153,26 +153,25 @@ public class AppleLanguageDetector: NSObject {
     /// Chinese text detection utility for classical Chinese analysis
     private var chineseGenreAnalyzer: ChineseGenreAnalyzer?
 
-    /// Internal unified language detection with configurable post-processing
+    /// Detect the original text once, then apply non-recursive result corrections.
     ///
-    /// Combines detection logic and optional post-processing corrections.
-    /// Used by both the public interface and internal mixed-content analysis.
     ///
     /// - Parameters:
     ///   - text: Text to analyze for language detection
-    ///   - applyPostProcessing: Whether to apply post-processing corrections
     /// - Returns: Detected Language enum value (.auto for empty text)
-    private func detectLanguageInternal(text: String, applyPostProcessing: Bool) -> Language {
+    private func detectLanguageInternal(text: String) -> Language {
         // Handle empty or whitespace-only text
         if text.isEmpty || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return .auto
         }
 
+        guard text.contains(where: { $0.isLetter }) else { return .auto }
+
         rawProbabilities = detectLanguageDict(text: text)
 
         // Handle empty results (e.g., numeric-only text like "729")
         guard !rawProbabilities.isEmpty else {
-            return detectFallbackLanguage(for: text)
+            return .auto
         }
 
         // Apply user preferred language weight correction
@@ -186,22 +185,19 @@ public class AppleLanguageDetector: NSObject {
         }
 
         guard let mostConfident = sortedLanguages.first else {
-            return detectFallbackLanguage(for: text)
+            return .auto
         }
 
         let topConfidence = mostConfident.value
         let nlLanguage = mostConfident.key
         var detectedLanguage = languageMapper.languageEnum(from: nlLanguage)
 
-        // Apply post-processing corrections if requested
-        if applyPostProcessing {
-            detectedLanguage = applyPostProcessingCorrections(
-                detectedLanguage: detectedLanguage,
-                confidence: topConfidence,
-                text: text,
-                allProbabilities: adjustedProbabilities
-            )
-        }
+        detectedLanguage = applyPostProcessingCorrections(
+            detectedLanguage: detectedLanguage,
+            confidence: topConfidence,
+            text: text,
+            allProbabilities: adjustedProbabilities
+        )
 
         if isDebugLogEnabled {
             print("Final detected text: \(text.prefix200)")
@@ -309,8 +305,7 @@ public class AppleLanguageDetector: NSObject {
         // Priority 2: Handle common misdetections with mixed content
         if let correctedLanguage = handleMixedContent(
             detectedLanguage: detectedLanguage,
-            text: cleanText,
-            confidence: confidence
+            text: cleanText
         ) {
             return correctedLanguage
         }
@@ -329,114 +324,37 @@ public class AppleLanguageDetector: NSObject {
         return detectedLanguage
     }
 
-    /// Detect fallback language for edge cases
-    ///
-    /// Handles scenarios where Apple's NL framework returns empty results,
-    /// typically for numeric-only text or unrecognizable input.
-    ///
-    /// - Parameter text: Input text that failed normal detection
-    /// - Returns: .english as safe fallback for most cases
-    private func detectFallbackLanguage(for text: String) -> Language {
-        // Check if numeric-only
-        if text.trimmingCharacters(in: .whitespacesAndNewlines).isNumeric {
-            // For numeric text, default to English (simpler and more predictable)
-            return .english
-        }
-
-        // For other edge cases, default to English
-        return .english
-    }
-
-    /// Handle mixed content detection and script analysis in one unified function
-    ///
-    /// Combines the functionality of handleMixedContentDetection and analyzeMixedScriptText
-    /// to provide comprehensive mixed-content language detection without recursion depth tracking.
-    ///
-    /// - Parameters:
-    ///   - detectedLanguage: Language detected by ML system
-    ///   - text: Input text to analyze
-    ///   - confidence: Detection confidence score
-    /// - Returns: Corrected language if applicable, nil to continue processing
+    /// Resolve mixed scripts using only statistics and probabilities from the original text.
+    /// Ambiguous content remains automatic instead of re-detecting a filtered string.
     private func handleMixedContent(
         detectedLanguage: Language,
-        text: String,
-        confidence: Double
+        text: String
     )
         -> Language? {
-        // Use unified analysis to get comprehensive character statistics
         analyzeTextCharacterComposition(for: text)
+        guard hasMixedScripts, detectedLanguage == .english else { return nil }
 
-        // Handle mixed scripts intelligently
-        if hasMixedScripts {
-            if detectedLanguage == .english {
-                // Calculate ratios to determine dominance
-                let englishWordCount = text.englishWordCount
-                let nonEnglishText = removeEnglishCharacters(from: text)
-                let pureWordNonEnglishText = nonEnglishText.removingNonLetters()
-                let nonEnglishWordCount = pureWordNonEnglishText.count
+        let otherLetters = text.filter { $0.isLetter && !String($0).isEnglishAlphabet }
+        guard !otherLetters.isEmpty, text.englishWordCount <= otherLetters.count else { return .english }
 
-                // If English words are more than non-English, or if non-English words are present, return English
-                if englishWordCount > nonEnglishWordCount || nonEnglishWordCount == 0 {
-                    return .english
-                }
-
-                // Since we have removed English characters, it won't be deteced as English anymore.
-                // Make sure this recursive call will not cause infinite loop.
-                let nonEnglishLanguage = detectLanguageInternal(
-                    text: pureWordNonEnglishText,
-                    applyPostProcessing: true
-                )
-                if nonEnglishLanguage != .english, nonEnglishLanguage != .auto {
-                    return nonEnglishLanguage
-                }
-            }
+        // Script analysis is local only; the recognizer always receives the original text.
+        if otherLetters.allSatisfy({ String($0).isChineseTextByRegex }) {
+            return determineChineseType(for: text, detectedLanguage: .simplifiedChinese)
+        }
+        if otherLetters.wholeMatch(of: /[\p{Han}\p{Hiragana}\p{Katakana}]+/) != nil {
+            return .japanese
+        }
+        if otherLetters.wholeMatch(of: /[\p{Han}\p{Hangul}]+/) != nil {
+            return .korean
         }
 
-        return nil
-    }
-
-    /// Remove English alphabetic characters while preserving other languages
-    ///
-    /// Filters out ASCII English letters (a-z, A-Z) while keeping:
-    /// - Non-Latin scripts (Chinese, Japanese, Korean, Arabic, Cyrillic, etc.)
-    /// - Latin characters with diacritics (café, naïve, español)
-    /// - Numbers, punctuation, and whitespace
-    ///
-    /// Used for mixed-script analysis to isolate non-English content for recursive detection.
-    ///
-    /// Examples: "apple苹果" → "苹果", "Hello 你好" → "你好"
-    ///
-    /// - Parameter text: Input text containing mixed languages
-    /// - Returns: Text with English letters removed, trimmed of excess whitespace
-    private func removeEnglishCharacters(from text: String) -> String {
-        // Process character by character to properly filter English content
-        var result = ""
-        var previousWasSpace = false
-
-        for char in text {
-            let charString = String(char)
-
-            // Keep non-English characters
-            if !charString.isEnglishAlphabet {
-                // Add character, but avoid duplicate spaces
-                if char.isWhitespace {
-                    if !previousWasSpace, !result.isEmpty {
-                        result.append(char)
-                        previousWasSpace = true
-                    }
-                } else {
-                    result.append(char)
-                    previousWasSpace = false
-                }
-            } else {
-                // Skip English characters, but maintain spacing
-                if !previousWasSpace, !result.isEmpty {
-                    previousWasSpace = true
-                }
-            }
+        // Preference weights can promote English over the recognizer's original leading candidate.
+        if let candidate = rawProbabilities.max(by: { $0.value < $1.value }),
+           candidate.key != .english {
+            let language = languageMapper.languageEnum(from: candidate.key)
+            return determineChineseType(for: text, detectedLanguage: language) ?? language
         }
-
-        return result.trimmingCharacters(in: .whitespacesAndNewlines)
+        return .auto
     }
 
     /// Determine Chinese type (simplified,traditional, or classical)
@@ -481,7 +399,7 @@ public class AppleLanguageDetector: NSObject {
     /// Handle corrections for short text and obvious misdetections
     ///
     /// Applies conservative corrections for edge cases:
-    /// - Numeric-heavy text → English
+    /// - Numeric-heavy text → Undetermined
     /// - Short low-confidence Latin text → English (if probability supports it)
     /// - Very short text → User preferred language or English fallback
     ///
@@ -500,7 +418,7 @@ public class AppleLanguageDetector: NSObject {
         -> Language? {
         // Handle numeric-heavy text
         if text.isNumericHeavy {
-            return .english
+            return .auto
         }
 
         // Handle short text with low confidence

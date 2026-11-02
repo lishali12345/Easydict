@@ -55,7 +55,7 @@ open class QueryModel: NSObject, NSCopying {
 
     // MARK: Internal
 
-    /// Normalized query text derived from the input text.
+    /// Exact input text shared by detection and query services.
     private(set) var queryText: String = ""
 
     /// Selection type for text capture.
@@ -101,12 +101,12 @@ open class QueryModel: NSObject, NSCopying {
     var inputText: String {
         get { inputTextStorage }
         set {
-            if newValue != inputTextStorage {
+            if !newValue.utf8.elementsEqual(inputTextStorage.utf8) {
                 audioURL = nil
                 needDetectLanguage = true
-                queryText = newValue.handlingInputText()
             }
 
+            queryText = newValue
             inputTextStorage = newValue
 
             if queryText.isEmpty {

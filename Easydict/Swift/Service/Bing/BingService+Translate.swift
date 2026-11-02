@@ -44,12 +44,15 @@ extension BingService {
             return
         }
 
-        let trimmedText = maxTextLength(text, fromLanguage: from)
+        guard text.count <= 1000 else {
+            completion(result, QueryError.textTooLong(maximum: 1000))
+            return
+        }
         let fromCode = languageCode(forLanguage: from) ?? ""
         let toCode = languageCode(forLanguage: to) ?? ""
 
         bingRequest.translateText(
-            text: trimmedText,
+            text: text,
             from: fromCode,
             to: toCode
         ) { [weak self] translateData, lookupData, translateError, lookupError in
@@ -68,7 +71,7 @@ extension BingService {
             var needRetry = false
             let error = processTranslateResult(
                 translateData,
-                text: trimmedText,
+                text: text,
                 from: from,
                 to: to,
                 needRetry: &needRetry

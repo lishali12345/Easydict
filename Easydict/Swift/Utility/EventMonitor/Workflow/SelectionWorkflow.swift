@@ -44,14 +44,15 @@ final class SelectionWorkflow {
 
         Task {
             do {
-                let text = try await systemUtility.getSelectedText(strategy: .accessibility)?.trim() ?? ""
+                let text = try await systemUtility.getSelectedText(strategy: .accessibility) ?? ""
+                let hasText = !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 let editable = systemUtility.isFocusedTextField()
                 isSelectedTextEditable = editable
                 let frontmostBundleID = frontmostApp?.bundleIdentifier ?? ""
                 let isBrowser = AppleScriptTask.isBrowserSupportingAppleScript(frontmostBundleID)
                 let preferAppleScript = MyConfiguration.shared.preferAppleScriptAPI
 
-                if !text.isEmpty {
+                if hasText {
                     if MyConfiguration.shared.autoSelectText {
                         let startMonitoring = onStartMonitoringKeyboard ?? self.onStartMonitoringKeyboard
                         await startMonitoring?()
@@ -86,7 +87,7 @@ final class SelectionWorkflow {
                     return
                 }
 
-                if text.isEmpty {
+                if !hasText {
                     handleForceGetSelectedTextOnAXError(axError: .success, completion: completion)
                     return
                 }
@@ -132,18 +133,18 @@ final class SelectionWorkflow {
     ) async {
         do {
             let selectedText = try await AppleScriptTask.getSelectedTextFromBrowser(bundleID)
-            let trimmed = selectedText?.trim() ?? ""
-            if !trimmed.isEmpty {
+            let text = selectedText ?? ""
+            if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 let isEditable = systemUtility?.isFocusedTextField() ?? false
                 isSelectedTextEditable = isEditable
-                completion(.init(text: trimmed, selectTextType: .appleScript, isEditable: isEditable))
+                completion(.init(text: text, selectTextType: .appleScript, isEditable: isEditable))
                 return
             }
             logInfo("AppleScript get selected text is empty, try to use force get selected text for browser")
             tryForceGetSelectedText(completion)
         } catch {
             logError("Failed to get selected text from browser: \(error)")
-            if !accessibilityFallback.isEmpty {
+            if !accessibilityFallback.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 logInfo("Fallback to use Accessibility selected text: \(accessibilityFallback)")
                 let isEditable = systemUtility?.isFocusedTextField() ?? false
                 isSelectedTextEditable = isEditable
@@ -294,13 +295,13 @@ final class SelectionWorkflow {
 
         getSelectedTextByMenuBarActionCopy { [weak self] text, error in
             guard let self else { return }
-            let trimmed = text?.trim() ?? ""
-            if !trimmed.isEmpty {
-                logInfo("Get selected text by menu bar action copy success: \(trimmed)")
+            let selectedText = text ?? ""
+            if !selectedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                logInfo("Get selected text by menu bar action copy success: \(selectedText)")
                 let isEditable = systemUtility?.isFocusedTextField() ?? false
                 isSelectedTextEditable = isEditable
                 completion(.init(
-                    text: trimmed,
+                    text: selectedText,
                     selectTextType: .menuBarActionCopy,
                     isEditable: isEditable
                 ))

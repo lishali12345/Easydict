@@ -6,7 +6,6 @@
 //  Copyright © 2023 izual. All rights reserved.
 //
 
-import AppKit
 import Foundation
 
 // MARK: - String Input Text Handling
@@ -40,11 +39,6 @@ extension String {
     /// Segment English text to words
     func segmentWords() -> String {
         (self as NSString).segmentWords() as String
-    }
-
-    /// Handle input text with configuration settings
-    func handlingInputText() -> String {
-        (self as NSString).handleInputText() as String
     }
 
     // MARK: - ObjC Method Wrappers
@@ -116,86 +110,6 @@ extension NSString {
         }
 
         return queryText as NSString
-    }
-
-    /// Remove the excerpt copyright notice from Books.app selection text.
-    func removeBooksExcerptInfo() -> NSString {
-        guard MyConfiguration.shared.enableRemoveBooksExcerptInfo else {
-            return self
-        }
-
-        let frontmostBundleIdentifier = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
-        guard frontmostBundleIdentifier == AppBundleIDs.books else {
-            return self
-        }
-
-        if let extracted = extractBooksExcerptContent() {
-            return extracted as NSString
-        }
-
-        return self
-    }
-
-    // MARK: - Books Excerpt Parsing
-
-    private func extractBooksExcerptContent() -> String? {
-        let text = self as String
-
-        // Books wraps the excerpt in curly quotes and appends a copyright notice.
-        // The Chinese notice wording has changed over time, so only the wording
-        // shared by both simplified and traditional Chinese is required.
-        // Captures are lazy so the shortest excerpt is kept when the text holds
-        // more than one quoted block; the notice is anchored to the end of the
-        // text so that the lazy match cannot stop early.
-        //
-        // English: “...” Excerpt From <book> This material may be protected by copyright.
-        // Chinese: “...” 摘录来自 <book> 此内容可能受版权保护。
-        //          (older) “...” 摘 <book> 此材料受版权保护。
-        let enRegex =
-            #/^“(.+?)”\s+Excerpt From.+?This material may be protected by copyright\.\s*$/#
-                .dotMatchesNewlines()
-
-        let zhRegex =
-            #/^“(.+?)”\s+摘.+?版[权權]保[护護]。\s*$/#
-                .dotMatchesNewlines()
-
-        let regexes: [Regex<(Substring, Substring)>] = [
-            enRegex,
-            zhRegex,
-        ]
-
-        for regex in regexes {
-            if let match = text.firstMatch(of: regex) {
-                return String(match.output.1).trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-        }
-
-        return nil
-    }
-
-    /// Handle input text with configuration settings
-
-    func handleInputText() -> NSString {
-        guard length > 0 else { return self }
-
-        var queryText = self as NSString
-
-        // Apply automatic word segmentation
-        if MyConfiguration.shared.automaticWordSegmentation {
-            queryText = queryText.segmentWords()
-        }
-
-        // Remove comment blocks if enabled
-        if MyConfiguration.shared.automaticallyRemoveCodeCommentSymbols {
-            queryText = queryText.removeCommentBlockSymbols()
-        }
-
-        // Replace newlines with whitespace if enabled
-        if MyConfiguration.shared.replaceNewlineWithSpace {
-            queryText = queryText.replacingNewlinesWithWhitespace()
-        }
-
-        return queryText.trimmingCharacters(in: .whitespacesAndNewlines) as NSString
     }
 
     // MARK: Private Methods

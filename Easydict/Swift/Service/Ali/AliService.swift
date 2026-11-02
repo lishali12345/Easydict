@@ -55,7 +55,7 @@ class AliService: QueryService {
     ) async throws
         -> QueryResult {
         let limit = 5000
-        let text = String(text.prefix(limit))
+        guard text.count <= limit else { throw QueryError.textTooLong(maximum: limit) }
 
         let transType = AliTranslateType.transType(from: from, to: to)
         guard transType != .unsupported else {

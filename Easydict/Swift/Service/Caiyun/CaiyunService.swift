@@ -63,7 +63,7 @@ public final class CaiyunService: QueryService {
 
         // Docs: https://docs.caiyunapp.com/lingocloud-api/
         let parameters: Parameters = [
-            "source": text.split(separator: "\n", omittingEmptySubsequences: false),
+            "source": [text],
             "trans_type": transType.rawValue,
             "media": "text",
             "request_id": "Easydict",

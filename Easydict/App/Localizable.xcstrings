@@ -6385,6 +6385,47 @@
         }
       }
     },
+    "query.error.text_too_long" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This service accepts at most %ld characters. The original text was not truncated."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este servicio admite como máximo %ld caracteres. El texto original no se ha truncado."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このサービスで送信できる文字数は最大 %ld 文字です。元のテキストは切り詰めていません。"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Táto služba prijíma najviac %ld znakov. Pôvodný text nebol skrátený."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此服务最多支持 %ld 个字符，原文未被截断。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此服務最多支援 %ld 個字元，原文未被截斷。"
+          }
+        }
+      }
+    },
     "query_failed" : {
       "localizations" : {
         "en" : {
