@@ -38,7 +38,7 @@ struct ReplacementContext {
         self.selectedRange = range
         self.canSetSelectedText = canSetSelectedText
         // These editors expose AX writes that may not update their actual editing state.
-        self.usesPasteMenu = [AppBundleIDs.googleChrome, AppBundleIDs.whatsApp]
+        self.usesPasteMenu = [AppBundleIDs.googleChrome, AppBundleIDs.safari, AppBundleIDs.whatsApp]
             .contains(application.bundleIdentifier ?? "")
             && (try? element.role()) == .textArea
         logInfo("Replacement target: app=\(application.bundleIdentifier ?? "unknown"), pasteMenu=\(usesPasteMenu)")
