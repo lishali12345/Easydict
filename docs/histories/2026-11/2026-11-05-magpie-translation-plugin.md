@@ -1,6 +1,6 @@
 ## 2026-11-05 | 任务：接入 Magpie 翻译术语与本机记录插件
 
-**Links:** [执行计划](../../exec-plans/completed/2026-11/2026-11-05-magpie-translation-plugin.md)、[使用说明](../../../integrations/magpie-meetar-translation/README.md)
+**Links:** [执行计划](../../exec-plans/completed/2026-11/2026-11-05-magpie-translation-plugin.md)、[独立工程与使用说明](../../user-docs/zh/ME-Dict-magpie-plugin.md)
 
 ### 执行上下文
 
