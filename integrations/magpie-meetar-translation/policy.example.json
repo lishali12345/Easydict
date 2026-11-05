@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "context": "MeeTar is a voice livestreaming and interactive social app. Relevant conversations may concern Hosts, Agencies, room interactions, app features, recharge, withdrawals, policies, and troubleshooting. Use this context to disambiguate terms only when the source supports it.",
+  "style": "Use accurate, natural, concise everyday language suitable for relaxed conversations. Understand common local internet slang and abbreviations. Keep the source's emotional tone and degree of formality; do not make complaints artificially friendly or turn ordinary messages into formal business correspondence.",
+  "terms": [
+    {
+      "source": "主播",
+      "english": "Host",
+      "meaning": "A livestreaming role in MeeTar; not a computer host or an unrelated event host."
+    },
+    {
+      "source": "代理",
+      "english": "Agency",
+      "meaning": "The MeeTar business organization associated with Hosts. Do not confuse the organization with an individual representative, a network proxy, or an unrelated use of the word."
+    }
+  ]
+}
