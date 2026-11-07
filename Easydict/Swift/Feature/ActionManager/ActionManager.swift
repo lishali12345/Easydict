@@ -94,6 +94,8 @@ class ActionManager: NSObject {
         let originalElement = try? Application(application)?.focusedUIElement()
         let originalText = try? originalElement?.value()
         let originalRange = try? originalElement?.selectedTextRange()
+        let originalMarkers = application.bundleIdentifier == AppBundleIDs.googleChrome
+            ? originalElement.flatMap { ChromeReplacementSelection.selectionIdentity(in: $0) } : nil
         let enableSelectAll = Defaults[.autoSelectAllTextFieldText]
         if frontmostApplication?.processIdentifier != application.processIdentifier {
             guard application.activate(options: .activateIgnoringOtherApps) else {
@@ -131,26 +133,52 @@ class ActionManager: NSObject {
                 return
             }
         }
-        if let originalRange {
-            let expectedRange = enableSelectAll && originalRange.length == 0
-                ? CFRange(location: 0, length: (originalText as NSString?)?.length ?? 0) : originalRange
-            guard let range = try? element?.selectedTextRange(),
-                  range.location == expectedRange.location, range.length == expectedRange.length
-            else {
+        // Chrome's AX selection can omit paragraph breaks. Resolve its original-text range first.
+        let selectedText: String? = try? element?.attribute(.selectedText)
+        guard let selectionText = selectedText?.isEmpty == false ? selectedText : capturedText else {
+            showNotice(NSLocalizedString("replacement.error.no_selection", comment: ""), identifier: identifier)
+            return
+        }
+        let context = originalElement != nil && originalRange != nil
+            ? ReplacementContext(application: application, text: selectionText) : nil
+        if let originalMarkers, originalRange?.length != 0 {
+            guard let element, ChromeReplacementSelection.selectionIdentity(in: element) == originalMarkers else {
                 showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
                 return
             }
         }
-        // Prefer the untrimmed AX selection so validation and replacement refer to the exact UTF-16 range.
-        let selectedText: String? = try? element?.attribute(.selectedText)
-        let queryText = selectedText?.isEmpty == false ? selectedText : capturedText
-        guard let queryText, !queryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        if let originalRange {
+            let selectionMatches: Bool
+            if enableSelectAll, originalRange.length == 0 {
+                if let context {
+                    selectionMatches = context.selectsAll
+                } else {
+                    let range = try? element?.selectedTextRange()
+                    selectionMatches = range?.location == 0 && range?.length == (originalText as NSString?)?.length
+                }
+            } else if let range = try? element?.selectedTextRange() {
+                selectionMatches = range.location == originalRange.location && range.length == originalRange.length
+            } else {
+                selectionMatches = false
+            }
+            guard selectionMatches else {
+                showNotice(ReplacementError.inputChanged.localizedDescription, identifier: identifier)
+                return
+            }
+        }
+        let queryText: String
+        if let context {
+            queryText = context.selectedText
+        } else if application.bundleIdentifier == AppBundleIDs.googleChrome,
+                  let capturedText, !capturedText.isEmpty {
+            queryText = capturedText
+        } else {
+            queryText = selectionText
+        }
+        guard !queryText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             showNotice(NSLocalizedString("replacement.error.no_selection", comment: ""), identifier: identifier)
             return
         }
-
-        let context = originalElement != nil && originalRange != nil
-            ? ReplacementContext(application: application, text: queryText) : nil
         logInfo(
             "Replacement context: app=\(application.bundleIdentifier ?? "unknown"), "
                 + "element=\(originalElement != nil), range=\(originalRange != nil), verified=\(context != nil)"

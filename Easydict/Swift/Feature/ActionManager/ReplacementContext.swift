@@ -20,21 +20,50 @@ struct ReplacementContext {
         guard let appElement = Application(application),
               let element = try? appElement.focusedUIElement(),
               let fullText = try? element.value(),
-              let range = try? element.selectedTextRange(),
-              range.location >= 0, range.length > 0,
-              range.location <= (fullText as NSString).length,
-              range.length <= (fullText as NSString).length - range.location,
-              (fullText as NSString).substring(with: NSRange(location: range.location, length: range.length)) == text
+              let range = try? element.selectedTextRange()
         else {
             return nil
         }
+
+        let chromeSelection: ChromeReplacementSelection?
+        let snapshot: ReplacementTextSnapshot
+        if application.bundleIdentifier == AppBundleIDs.googleChrome,
+           (try? element.role()) == .textArea {
+            chromeSelection = ChromeReplacementSelection(element: element, fullText: fullText, selectedText: text)
+            if let chromeSelection {
+                snapshot = chromeSelection.snapshot
+            } else if !fullText.contains("\n"), !fullText.contains("\r"),
+                      let exact = ReplacementTextSnapshot(
+                          fullText: fullText, range: NSRange(location: range.location, length: range.length),
+                          selectedText: text
+                      ) {
+                snapshot = exact
+            } else {
+                logInfo("Replacement selection could not be mapped to Chrome's original text")
+                return nil
+            }
+        } else {
+            chromeSelection = nil
+            guard let exact = ReplacementTextSnapshot(
+                fullText: fullText, range: NSRange(location: range.location, length: range.length), selectedText: text
+            ) else { return nil }
+            snapshot = exact
+        }
+
+        // AX reads cross a process boundary; reject edits that happened while resolving the markers.
+        guard let currentText = try? element.value(), currentText.utf8.elementsEqual(fullText.utf8),
+              let currentRange = try? element.selectedTextRange(),
+              currentRange.location == range.location, currentRange.length == range.length,
+              chromeSelection?.selectionIsUnchanged(in: element) ?? true
+        else { return nil }
 
         let canSetSelectedText = (try? element.attributeIsSettable(.selectedText)) == true
         guard canSetSelectedText || (try? element.attributeIsSettable(.value)) == true else { return nil }
 
         self.application = application
         self.element = element
-        self.fullText = fullText
+        self.snapshot = snapshot
+        self.chromeSelection = chromeSelection
         self.selectedRange = range
         self.canSetSelectedText = canSetSelectedText
         // These editors expose AX writes that may not update their actual editing state.
@@ -45,6 +74,9 @@ struct ReplacementContext {
     }
 
     // MARK: Internal
+
+    var selectedText: String { snapshot.selectedText }
+    var selectsAll: Bool { snapshot.selectsAll }
 
     /// Restores the original application, then validates again before a single replacement.
     func replace(with text: String, fromPreview: Bool) async throws {
@@ -83,10 +115,7 @@ struct ReplacementContext {
             throw ReplacementError.inputChanged
         }
 
-        let expectedText = (fullText as NSString).replacingCharacters(
-            in: NSRange(location: selectedRange.location, length: selectedRange.length),
-            with: text
-        )
+        let expectedText = snapshot.replacing(with: text)
         if usesPasteMenu {
             try await pasteVerifiedText(text, expectedText: expectedText)
             return
@@ -99,7 +128,7 @@ struct ReplacementContext {
             } else {
                 try element.setAttribute(.value, value: expectedText)
             }
-            guard let updatedText = try element.value(), updatedText == expectedText else {
+            guard let updatedText = try element.value(), updatedText.utf8.elementsEqual(expectedText.utf8) else {
                 throw ReplacementError.writeFailed
             }
         } catch {
@@ -111,7 +140,8 @@ struct ReplacementContext {
 
     private let application: NSRunningApplication
     private let element: UIElement
-    private let fullText: String
+    private let snapshot: ReplacementTextSnapshot
+    private let chromeSelection: ChromeReplacementSelection?
     private let selectedRange: CFRange
     private let canSetSelectedText: Bool
     private let usesPasteMenu: Bool
@@ -122,12 +152,13 @@ struct ReplacementContext {
               let focusedElement = try? appElement.focusedUIElement(),
               focusedElement == element,
               let currentText = try? element.value(),
-              currentText == fullText,
+              currentText.utf8.elementsEqual(snapshot.fullText.utf8),
               let currentRange = try? element.selectedTextRange()
         else {
             return false
         }
         return currentRange.location == selectedRange.location && currentRange.length == selectedRange.length
+            && (chromeSelection?.selectionIsUnchanged(in: element) ?? true)
     }
 
     /// Catalyst menus can omit AXIdentifier, which the general menu lookup requires.
@@ -148,7 +179,7 @@ struct ReplacementContext {
 
     /// Uses the original app's Paste action only while the captured selection is still intact.
     private func pasteVerifiedText(_ text: String, expectedText: String) async throws {
-        guard expectedText != fullText else { return }
+        guard !expectedText.utf8.elementsEqual(snapshot.fullText.utf8) else { return }
         let pasteboard = NSPasteboard.general
         let originalChangeCount = pasteboard.changeCount
         let savedItems = pasteboard.backupItems()
@@ -200,7 +231,7 @@ struct ReplacementContext {
         // This bounded, unstructured task finishes readback even if the replacement request is cancelled.
         let completed = await Task { @MainActor in
             for _ in 0 ..< 20 {
-                if (try? element.value()) == expectedText { return true }
+                if let value = try? element.value(), value.utf8.elementsEqual(expectedText.utf8) { return true }
                 try? await Task.sleep(nanoseconds: 25_000_000)
             }
             return false

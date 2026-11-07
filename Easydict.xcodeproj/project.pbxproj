@@ -671,6 +671,9 @@
 		77DB0D0F69014582B585BFA2 /* ReplacementShortcutRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E417F5299148CDB7AEEB45 /* ReplacementShortcutRecorder.swift */; };
 		CBA5A101ABA94B3DAA9DBE72 /* QueryModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8014F97B631A4206A4BA2065 /* QueryModelTests.swift */; };
 		18B54E390E0B4D939026313F /* StreamServicePromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D59A607654465EBAEE7853 /* StreamServicePromptTests.swift */; };
+		D72110072026000100000002 /* ReplacementTextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72110072026000100000001 /* ReplacementTextSnapshot.swift */; };
+		D72110072026000100000004 /* ChromeReplacementSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72110072026000100000003 /* ChromeReplacementSelection.swift */; };
+		D72110072026000100000006 /* ReplacementTextSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72110072026000100000005 /* ReplacementTextSnapshotTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1465,6 +1468,9 @@
 		91E417F5299148CDB7AEEB45 /* ReplacementShortcutRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplacementShortcutRecorder.swift"; sourceTree = "<group>"; };
 		8014F97B631A4206A4BA2065 /* QueryModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryModelTests.swift; sourceTree = "<group>"; };
 		18D59A607654465EBAEE7853 /* StreamServicePromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamServicePromptTests.swift; sourceTree = "<group>"; };
+		D72110072026000100000001 /* ReplacementTextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplacementTextSnapshot.swift; sourceTree = "<group>"; };
+		D72110072026000100000003 /* ChromeReplacementSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromeReplacementSelection.swift; sourceTree = "<group>"; };
+		D72110072026000100000005 /* ReplacementTextSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplacementTextSnapshotTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2402,6 +2408,8 @@
 				03A00D872E616D56001A4D82 /* ActionManager.swift */,
 				81838343AFB34184A0D38EA6 /* ReplacementPreviewController.swift */,
 				1A2AEF543A484782AF4F7CE5 /* ReplacementContext.swift */,
+				D72110072026000100000003 /* ChromeReplacementSelection.swift */,
+				D72110072026000100000001 /* ReplacementTextSnapshot.swift */,
 				C8DB63622ACE42F0BECBC1DD /* ReplacementService.swift */,
 			);
 			path = ActionManager;
@@ -3700,6 +3708,7 @@
 		BE5912DE778CDCD8495CA4E5 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				D72110072026000100000007 /* ActionManager */,
 				A12760012026090500000003 /* Query */,
 				02DEDC0420260430000000C1 /* Markdown */,
 				030732CB2F24862A0001382A /* OCR */,
@@ -4008,6 +4017,14 @@
 				8014F97B631A4206A4BA2065 /* QueryModelTests.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D72110072026000100000007 /* ActionManager */ = {
+			isa = PBXGroup;
+			children = (
+				D72110072026000100000005 /* ReplacementTextSnapshotTests.swift */,
+			);
+			path = ActionManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4422,6 +4439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D72110072026000100000006 /* ReplacementTextSnapshotTests.swift in Sources */,
 				1CC83D91B3954BE7894CC2C8 /* MDictReaderTests.swift in Sources */,
 				02DEDC0420260430000000BE /* MarkdownRendererTests.swift in Sources */,
 				A12760012026090500000001 /* ReverseTranslationTests.swift in Sources */,
@@ -4863,6 +4881,8 @@
 				03715A292E6D25170067259C /* ActionManager.swift in Sources */,
 				54E731E14C864FEB84463BFD /* ReplacementPreviewController.swift in Sources */,
 				6D77D635590348A9A49431EF /* ReplacementContext.swift in Sources */,
+				D72110072026000100000004 /* ChromeReplacementSelection.swift in Sources */,
+				D72110072026000100000002 /* ReplacementTextSnapshot.swift in Sources */,
 				4A4AD874D0B9446CA4EB9873 /* ReplacementService.swift in Sources */,
 				EA9943F02B5354C400EE7B97 /* ShowWindowPositionExtensions.swift in Sources */,
 				96B2F1C52C07782400AD3126 /* GitHubReleaseFetcher.swift in Sources */,
